@@ -115,8 +115,9 @@ export default function PropertiesPage() {
           const perms: string[] = meData.user?.permissions || [];
           const roles: string[] = meData.user?.roles || [];
           const isAdmin = roles.includes('ADMIN');
-          setCanCreateProperty(isAdmin || perms.includes('properties:create'));
-          setCanCreateUnit(isAdmin || perms.includes('units:create'));
+          const isManager = roles.includes('PROPERTY_MANAGER');
+          setCanCreateProperty(isAdmin || isManager || perms.includes('properties:create'));
+          setCanCreateUnit(isAdmin || isManager || perms.includes('units:create'));
         }
       } catch (e) {
         console.error('Failed to check user permissions:', e);
@@ -280,6 +281,7 @@ export default function PropertiesPage() {
                 onClick={() => {
                   setFormError(null);
                   setFormSuccess(null);
+                  if (!propCode) setPropCode(`PROP-${Math.floor(100 + Math.random() * 900)}`);
                   setIsPropertyModalOpen(true);
                 }}
                 className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-teal-900/10 transition-colors"

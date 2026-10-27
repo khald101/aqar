@@ -14,14 +14,60 @@ const AmarahApp = (function () {
     { email: 'tenant@amarah.local', name: 'عمر التميمي', role: 'TENANT', label: 'المستأجر' }
   ];
 
+  // Dynamic Properties Store
+  let propertiesList = [
+    {
+      id: 'prop-1',
+      code: 'PROP-101',
+      name: 'برج النخبة السكني',
+      type: 'سكني وتجاري',
+      typeBadge: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      city: 'الرياض',
+      district: 'حي العليا',
+      units: 16,
+      rented: 15,
+      occupancy: 94,
+      owner: 'محمد بن راشد',
+      deed: '3109482910'
+    },
+    {
+      id: 'prop-2',
+      code: 'PROP-102',
+      name: 'مجمع الواحة التجاري',
+      type: 'تجاري ومكاتب',
+      typeBadge: 'bg-blue-50 text-blue-700 border-blue-200',
+      city: 'جدة',
+      district: 'طريق الملك عبدالعزيز',
+      units: 20,
+      rented: 18,
+      occupancy: 90,
+      owner: 'عبدالرحمن الفيصل',
+      deed: '4192847192'
+    },
+    {
+      id: 'prop-3',
+      code: 'PROP-103',
+      name: 'أبراج ومجمعات العلياء',
+      type: 'فلل فاخرة',
+      typeBadge: 'bg-purple-50 text-purple-700 border-purple-200',
+      city: 'الدمام',
+      district: 'حي الشاطئ',
+      units: 12,
+      rented: 11,
+      occupancy: 92,
+      owner: 'شركة الأفق للتطوير',
+      deed: '5928194012'
+    }
+  ];
+
   // RBAC Permission Map
   const rolePermissions = {
     ADMIN: ['*'],
-    PROPERTY_MANAGER: ['dashboard:view', 'properties:view', 'contracts:view', 'maintenance:view', 'tenants:view', 'owners:view', 'ai:insights'],
+    PROPERTY_MANAGER: ['dashboard:view', 'properties:view', 'properties:create', 'properties:edit', 'units:view', 'units:create', 'contracts:view', 'contracts:create', 'maintenance:view', 'tenants:view', 'owners:view', 'ai:insights'],
     ACCOUNTANT: ['dashboard:view', 'contracts:view', 'financial:payments', 'financial:view', 'financial:journal', 'financial:expenses', 'owners:settlements', 'owners:view'],
-    MAINTENANCE_SUPERVISOR: ['dashboard:view', 'properties:view', 'maintenance:view'],
-    TECHNICIAN: ['maintenance:view'],
-    OWNER: ['portal:owner'],
+    MAINTENANCE_SUPERVISOR: ['dashboard:view', 'properties:view', 'maintenance:view', 'units:view'],
+    TECHNICIAN: ['maintenance:view', 'units:view'],
+    OWNER: ['portal:owner', 'properties:view', 'properties:create'],
     TENANT: ['portal:tenant']
   };
 
@@ -284,6 +330,10 @@ const AmarahApp = (function () {
 
   // 1. DASHBOARD VIEW
   function getDashboardView() {
+    const totalUnits = propertiesList.reduce((acc, p) => acc + p.units, 0);
+    const rentedUnits = propertiesList.reduce((acc, p) => acc + p.rented, 0);
+    const avgOcc = Math.round((rentedUnits / totalUnits) * 100) || 92;
+
     return `
       <div class="space-y-6">
         <!-- Top Welcome Banner -->
@@ -306,9 +356,9 @@ const AmarahApp = (function () {
               <span class="text-xs font-bold text-slate-500">إجمالي الأصول</span>
               <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm"><i class="fa-solid fa-building"></i></div>
             </div>
-            <div class="text-2xl font-black text-slate-900">4 <span class="text-xs font-semibold text-slate-400">عقارات</span></div>
+            <div class="text-2xl font-black text-slate-900">${propertiesList.length} <span class="text-xs font-semibold text-slate-400">عقارات</span></div>
             <div class="text-[11px] text-teal-700 font-semibold mt-1 flex items-center gap-1">
-              <i class="fa-solid fa-arrow-trend-up"></i> 48 وحدة سكنية وتجارية
+              <i class="fa-solid fa-arrow-trend-up"></i> ${totalUnits} وحدة سكنية وتجارية
             </div>
           </div>
 
@@ -317,8 +367,8 @@ const AmarahApp = (function () {
               <span class="text-xs font-bold text-slate-500">نسبة الإشغال</span>
               <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm"><i class="fa-solid fa-chart-line"></i></div>
             </div>
-            <div class="text-2xl font-black text-emerald-600">92%</div>
-            <div class="text-[11px] text-slate-500 font-medium mt-1">44 وحدة مؤجرة / 4 شاغرة</div>
+            <div class="text-2xl font-black text-emerald-600">${avgOcc}%</div>
+            <div class="text-[11px] text-slate-500 font-medium mt-1">${rentedUnits} وحدة مؤجرة / ${totalUnits - rentedUnits} شاغرة</div>
           </div>
 
           <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
@@ -409,8 +459,10 @@ const AmarahApp = (function () {
     `;
   }
 
-  // 2. PROPERTIES VIEW
+  // 2. PROPERTIES VIEW (Interactive with Real Property Creation)
   function getPropertiesView() {
+    const canCreate = currentUser.role === 'ADMIN' || currentUser.role === 'PROPERTY_MANAGER' || currentUser.role === 'OWNER';
+
     return `
       <div class="space-y-6">
         <div class="flex items-center justify-between flex-wrap gap-3">
@@ -418,71 +470,91 @@ const AmarahApp = (function () {
             <h2 class="text-lg font-bold text-slate-900">إدارة العقارات والأصول الاستثمارية</h2>
             <p class="text-xs text-slate-500">استعراض الأبراج، المجمعات التجارية، والوحدات السكنية والمكتبية</p>
           </div>
-          <button onclick="alert('خاصية إضافة عقار جديد')" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> إضافة عقار جديد
-          </button>
+          ${canCreate ? `
+            <button onclick="AmarahApp.openPropertyModal()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md shadow-teal-900/10 flex items-center gap-2 transition-all">
+              <i class="fa-solid fa-plus"></i> إضافة عقار جديد
+            </button>
+          ` : ''}
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Property Card 1 -->
-          <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">سكني وتجاري</span>
-              <span class="text-xs text-slate-400 font-mono">PROP-101</span>
+        <!-- Properties Grid List -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="propertiesCardsContainer">
+          ${propertiesList.map(p => `
+            <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs hover:shadow-md transition-shadow">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${p.typeBadge || 'bg-teal-50 text-teal-700 border border-teal-200'}">${p.type}</span>
+                <span class="text-xs text-slate-400 font-mono font-bold">${p.code}</span>
+              </div>
+              <h3 class="text-base font-black text-slate-900 mb-1">${p.name}</h3>
+              <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-teal-600"></i> ${p.city} - ${p.district}</p>
+              <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-2xl text-center text-xs mb-4">
+                <div><span class="block text-slate-400 text-[10px]">الوحدات</span><strong class="text-slate-800">${p.units}</strong></div>
+                <div><span class="block text-slate-400 text-[10px]">المؤجرة</span><strong class="text-emerald-700">${p.rented}</strong></div>
+                <div><span class="block text-slate-400 text-[10px]">الإشغال</span><strong class="text-teal-700">${p.occupancy}%</strong></div>
+              </div>
+              <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+                <span class="text-slate-500">المالك: ${p.owner}</span>
+                <span class="text-teal-600 font-bold cursor-pointer hover:underline" onclick="alert('تفاصيل وحدات ' + '${p.name}')">عرض الوحدات &larr;</span>
+              </div>
             </div>
-            <h3 class="text-base font-black text-slate-900 mb-1">برج النخبة السكني</h3>
-            <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-teal-600"></i> الرياض - حي العليا</p>
-            <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-2xl text-center text-xs mb-4">
-              <div><span class="block text-slate-400 text-[10px]">الوحدات</span><strong class="text-slate-800">16</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">المؤجرة</span><strong class="text-emerald-700">15</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">الإشغال</span><strong class="text-teal-700">94%</strong></div>
-            </div>
-            <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-              <span class="text-slate-500">المالك: محمد بن راشد</span>
-              <span class="text-teal-600 font-bold cursor-pointer hover:underline">عرض الوحدات &larr;</span>
-            </div>
-          </div>
-
-          <!-- Property Card 2 -->
-          <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">تجاري ومكاتب</span>
-              <span class="text-xs text-slate-400 font-mono">PROP-102</span>
-            </div>
-            <h3 class="text-base font-black text-slate-900 mb-1">مجمع الواحة التجاري</h3>
-            <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-teal-600"></i> جدة - طريق الملك عبدالعزيز</p>
-            <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-2xl text-center text-xs mb-4">
-              <div><span class="block text-slate-400 text-[10px]">الوحدات</span><strong class="text-slate-800">20</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">المؤجرة</span><strong class="text-emerald-700">18</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">الإشغال</span><strong class="text-teal-700">90%</strong></div>
-            </div>
-            <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-              <span class="text-slate-500">المالك: عبدالرحمن الفيصل</span>
-              <span class="text-teal-600 font-bold cursor-pointer hover:underline">عرض الوحدات &larr;</span>
-            </div>
-          </div>
-
-          <!-- Property Card 3 -->
-          <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">فلل فاخرة</span>
-              <span class="text-xs text-slate-400 font-mono">PROP-103</span>
-            </div>
-            <h3 class="text-base font-black text-slate-900 mb-1">أبراج ومجمعات العلياء</h3>
-            <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-teal-600"></i> الدمام - حي الشاطئ</p>
-            <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-2xl text-center text-xs mb-4">
-              <div><span class="block text-slate-400 text-[10px]">الوحدات</span><strong class="text-slate-800">12</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">المؤجرة</span><strong class="text-emerald-700">11</strong></div>
-              <div><span class="block text-slate-400 text-[10px]">الإشغال</span><strong class="text-teal-700">92%</strong></div>
-            </div>
-            <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-              <span class="text-slate-500">المالك: شركة الأفق</span>
-              <span class="text-teal-600 font-bold cursor-pointer hover:underline">عرض الوحدات &larr;</span>
-            </div>
-          </div>
+          `).join('')}
         </div>
       </div>
     `;
+  }
+
+  // Property Modal Logic (Open, Close, Submit)
+  function openPropertyModal() {
+    const nextCode = 'PROP-' + (100 + propertiesList.length + 1);
+    document.getElementById('newPropCode').value = nextCode;
+    document.getElementById('newPropName').value = '';
+    document.getElementById('newPropDistrict').value = '';
+    document.getElementById('newPropDeed').value = '';
+    document.getElementById('propertyModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePropertyModal() {
+    document.getElementById('propertyModal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function handlePropertySubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('newPropName').value.trim();
+    const code = document.getElementById('newPropCode').value.trim().toUpperCase();
+    const type = document.getElementById('newPropType').value;
+    const city = document.getElementById('newPropCity').value;
+    const district = document.getElementById('newPropDistrict').value.trim();
+    const deed = document.getElementById('newPropDeed').value.trim();
+    const units = parseInt(document.getElementById('newPropUnits').value) || 10;
+    const owner = document.getElementById('newPropOwner').value;
+
+    let badgeClass = 'bg-teal-50 text-teal-700 border-teal-200';
+    if (type.includes('تجاري')) badgeClass = 'bg-blue-50 text-blue-700 border-blue-200';
+    else if (type.includes('فلل')) badgeClass = 'bg-purple-50 text-purple-700 border-purple-200';
+    else if (type.includes('مستودع')) badgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+
+    const newProp = {
+      id: 'prop-' + (propertiesList.length + 1),
+      code: code || ('PROP-' + (100 + propertiesList.length + 1)),
+      name: name,
+      type: type,
+      typeBadge: badgeClass,
+      city: city,
+      district: district || 'وسط المدينة',
+      units: units,
+      rented: 0,
+      occupancy: 0,
+      owner: owner,
+      deed: deed || '310' + Math.floor(1000000 + Math.random() * 9000000)
+    };
+
+    propertiesList.push(newProp);
+    closePropertyModal();
+    renderMainView();
+
+    alert(`تم تسجيل الأصل العقاري "${name}" بنجاح في النظام!`);
   }
 
   // 3. CONTRACTS VIEW
@@ -982,6 +1054,16 @@ const AmarahApp = (function () {
             <span class="text-[11px] text-teal-700 font-bold mt-1 block">محولة لحساب الآيبان بنك الراجحي</span>
           </div>
         </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">إضافة أصل عقاري جديد للمحفظة</h3>
+            <p class="text-xs text-slate-500">تسجيل برج أو مبنى جديد لحسابه الاستثماري</p>
+          </div>
+          <button onclick="AmarahApp.openPropertyModal()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> تسجيل عقار جديد
+          </button>
+        </div>
       </div>
     `;
   }
@@ -1045,15 +1127,15 @@ const AmarahApp = (function () {
             <tbody class="divide-y divide-slate-100">
               <tr>
                 <td class="py-3 px-3">${getRoleBadge('ADMIN')}</td>
-                <td class="py-3 px-3 font-bold text-slate-800">مدير النظام الأعلى</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold text-[10px]">كامل الصلاحيات (*)</span></td>
+                <td class="py-3 px-3 font-bold text-slate-800">مدير النظام الأعلى (مالك النظام)</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold text-[10px]">كامل الصلاحيات (*) بما فيها إضافة وتعديل العقارات</span></td>
                 <td class="py-3 px-3 text-slate-500">جميع الأقسام وقواعد البيانات</td>
               </tr>
               <tr>
                 <td class="py-3 px-3">${getRoleBadge('PROPERTY_MANAGER')}</td>
                 <td class="py-3 px-3 font-bold text-slate-800">مدير الأملاك والعقارات</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px]">العقارات، العقود، المستأجرون، الصيانة</span></td>
-                <td class="py-3 px-3 text-slate-500">العمليات التشغيلية</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px]">إضافة العقارات، الوحدات، العقود، المستأجرين</span></td>
+                <td class="py-3 px-3 text-slate-500">العمليات التشغيلية وإدارة الأصول</td>
               </tr>
               <tr>
                 <td class="py-3 px-3">${getRoleBadge('ACCOUNTANT')}</td>
@@ -1066,6 +1148,12 @@ const AmarahApp = (function () {
                 <td class="py-3 px-3 font-bold text-slate-800">مشرف الصيانة الميدانية</td>
                 <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px]">تذاكر الصيانة، توجيه الفنيين</span></td>
                 <td class="py-3 px-3 text-slate-500">قسم الصيانة</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3">${getRoleBadge('OWNER')}</td>
+                <td class="py-3 px-3 font-bold text-slate-800">المالك والمستثمر العقاري</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold text-[10px]">تسجيل العقارات، تقارير الأرباح</span></td>
+                <td class="py-3 px-3 text-slate-500">بوابة المالك والأصول المملوكة</td>
               </tr>
               <tr>
                 <td class="py-3 px-3">${getRoleBadge('TENANT')}</td>
@@ -1102,6 +1190,13 @@ const AmarahApp = (function () {
             </thead>
             <tbody class="divide-y divide-slate-100 font-mono text-[11px]">
               <tr>
+                <td class="py-3 px-3 text-slate-500">2026-10-27 22:45:00</td>
+                <td class="py-3 px-3 font-sans font-bold text-slate-900">${currentUser.email}</td>
+                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold text-[10px]">CREATE</span></td>
+                <td class="py-3 px-3 font-sans text-slate-700">Property: ${propertiesList[propertiesList.length-1]?.code || 'PROP-103'}</td>
+                <td class="py-3 px-3 text-slate-400">127.0.0.1</td>
+              </tr>
+              <tr>
                 <td class="py-3 px-3 text-slate-500">2026-10-27 22:15:30</td>
                 <td class="py-3 px-3 font-sans font-bold text-slate-900">tenant@amarah.local</td>
                 <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">PAYMENT</span></td>
@@ -1114,13 +1209,6 @@ const AmarahApp = (function () {
                 <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px]">UPDATE</span></td>
                 <td class="py-3 px-3 font-sans text-slate-700">Contract: CNT-2026-101</td>
                 <td class="py-3 px-3 text-slate-400">127.0.0.1</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 text-slate-500">2026-10-27 20:30:00</td>
-                <td class="py-3 px-3 font-sans font-bold text-slate-900">manager@amarah.local</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold text-[10px]">LOGIN</span></td>
-                <td class="py-3 px-3 font-sans text-slate-700">User Session Initiated</td>
-                <td class="py-3 px-3 text-slate-400">10.0.0.45</td>
               </tr>
             </tbody>
           </table>
@@ -1285,6 +1373,9 @@ const AmarahApp = (function () {
     openNewTicketModal,
     closeNewTicketModal,
     handleTicketSubmit,
+    openPropertyModal,
+    closePropertyModal,
+    handlePropertySubmit,
     updateAiSim,
     showNotification,
     resetData
