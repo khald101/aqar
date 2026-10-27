@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>عمارة | المنظومة المتكاملة لإدارة الأملاك والعقارات الذكية</title>
   <meta name="description" content="منظومة عمارة السحابية لإدارة الأملاك، العقود، المحاسبة، وبلاغات الصيانة مع دعم كامل لنظام الصلاحيات المتطور وبوابات الملاك والمستأجرين.">
   
@@ -50,7 +50,7 @@
       --radius-full: 9999px;
 
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
       --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
       --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.18);
@@ -60,6 +60,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -69,21 +70,23 @@
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* Container */
+    /* Container with fluid padding */
     .container {
-      max-width: 1380px;
+      width: 100%;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 clamp(12px, 3vw, 24px);
     }
 
-    /* Top Announcement / Repo Bar */
+    /* Top Announcement Bar */
     .top-bar {
       background: linear-gradient(90deg, #064e3b 0%, #065f46 50%, #047857 100%);
       color: #ffffff;
       padding: 8px 0;
-      font-size: 0.88rem;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .top-bar-inner {
@@ -91,12 +94,18 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
+    }
+    .top-bar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
     }
     .top-bar-links {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
     .top-bar-link {
       color: #d1fae5;
@@ -105,66 +114,99 @@
       align-items: center;
       gap: 6px;
       font-weight: 600;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       transition: all 0.2s;
+      cursor: pointer;
     }
     .top-bar-link:hover {
       color: #ffffff;
       text-decoration: underline;
     }
 
-    /* Header */
+    /* Sticky Main Header */
     .main-header {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 90;
       box-shadow: var(--shadow-sm);
     }
     .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 74px;
+      height: 70px;
+      gap: 12px;
+    }
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mobile-menu-toggle {
+      display: none;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      font-size: 1.15rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .mobile-menu-toggle:hover {
+      background: var(--primary-50);
+      color: var(--primary);
+    }
+    @media (max-width: 1024px) {
+      .mobile-menu-toggle {
+        display: inline-flex;
+      }
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
       color: inherit;
     }
     .brand-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #ffffff;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       box-shadow: var(--shadow-glow);
+      flex-shrink: 0;
     }
     .brand-info h1 {
-      font-size: 1.35rem;
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
       font-weight: 800;
       color: var(--secondary);
       letter-spacing: -0.5px;
       line-height: 1.2;
     }
     .brand-info p {
-      font-size: 0.75rem;
+      font-size: clamp(0.7rem, 1.8vw, 0.78rem);
       color: var(--primary);
       font-weight: 600;
+      display: block;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .btn {
@@ -172,23 +214,26 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 8px 16px;
-      font-size: 0.88rem;
+      padding: 9px 18px;
+      font-size: clamp(0.82rem, 2vw, 0.88rem);
       font-weight: 700;
       border-radius: var(--radius-md);
       cursor: pointer;
       text-decoration: none;
       transition: all 0.2s ease;
-      border: 1px solid transparent;
+      border: 1.5px solid transparent;
       font-family: inherit;
+      white-space: nowrap;
+      min-height: 42px;
+      touch-action: manipulation;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #ffffff;
       box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
     }
-    .btn-primary:hover {
-      opacity: 0.95;
+    .btn-primary:hover, .btn-primary:active {
+      opacity: 0.92;
       transform: translateY(-1px);
     }
     .btn-outline {
@@ -196,40 +241,33 @@
       border-color: var(--border);
       color: var(--text-main);
     }
-    .btn-outline:hover {
+    .btn-outline:hover, .btn-outline:active {
       background: var(--bg);
       border-color: var(--primary);
       color: var(--primary);
     }
-    .btn-github {
-      background: #0f172a;
-      color: #ffffff;
-    }
-    .btn-github:hover {
-      background: #1e293b;
-      transform: translateY(-1px);
-    }
 
-    /* Live RBAC Persona Switcher */
+    /* Live RBAC Persona Switcher Bar */
     .persona-bar {
       background: #ffffff;
       border-bottom: 1px solid var(--border);
-      padding: 14px 0;
+      padding: 12px 0;
       box-shadow: inset 0 -1px 0 rgba(0,0,0,0.02);
     }
     .persona-bar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
     .persona-title {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
-      font-size: 0.92rem;
+      font-size: clamp(0.85rem, 2vw, 0.92rem);
       font-weight: 700;
       color: var(--secondary);
     }
@@ -239,31 +277,53 @@
       font-size: 0.75rem;
       padding: 3px 10px;
       border-radius: var(--radius-full);
-      font-weight: 700;
+      font-weight: 800;
       border: 1px solid var(--primary-100);
+      white-space: nowrap;
+    }
+    .persona-hint {
+      font-size: clamp(0.72rem, 1.8vw, 0.8rem);
+      color: var(--text-muted);
+    }
+
+    /* Custom Touch-Friendly Persona Chips (No ugly browser scrollbars) */
+    .persona-chips-wrapper {
+      position: relative;
+      width: 100%;
     }
     .persona-chips {
       display: flex;
       align-items: center;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: thin;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 2px 8px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+    .persona-chips::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+      height: 0;
+      width: 0;
     }
     .persona-chip {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 8px 16px;
       background: #f8fafc;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-full);
-      font-size: 0.85rem;
+      font-size: clamp(0.8rem, 1.8vw, 0.85rem);
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
       white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 40px;
       transition: all 0.2s ease;
+      touch-action: manipulation;
     }
     .persona-chip:hover {
       background: #f1f5f9;
@@ -280,29 +340,106 @@
       color: #34d399;
     }
 
-    /* Main Layout */
+    /* Main Grid Layout */
     .app-layout {
       display: grid;
       grid-template-columns: 280px 1fr;
       gap: 24px;
-      margin: 24px 0 60px;
+      margin: 24px auto 60px;
+      align-items: start;
     }
     @media (max-width: 1024px) {
       .app-layout {
         grid-template-columns: 1fr;
+        margin-top: 16px;
       }
     }
 
-    /* Sidebar */
+    /* Sidebar - Desktop Sticky & Mobile Drawer */
+    .sidebar-drawer-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-drawer-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .sidebar-container {
+      position: sticky;
+      top: 90px;
+    }
+    @media (max-width: 1024px) {
+      .sidebar-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 310px;
+        max-width: 85vw;
+        height: 100vh;
+        z-index: 1010;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+      }
+      .sidebar-container.open {
+        transform: translateX(0);
+      }
+    }
+
     .sidebar-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 16px;
       box-shadow: var(--shadow-sm);
-      position: sticky;
-      top: 100px;
     }
+    @media (max-width: 1024px) {
+      .sidebar-card {
+        border-radius: 0;
+        min-height: 100vh;
+        border: none;
+        box-shadow: -4px 0 25px rgba(0,0,0,0.15);
+      }
+    }
+
+    .sidebar-mobile-header {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    @media (max-width: 1024px) {
+      .sidebar-mobile-header {
+        display: flex;
+      }
+    }
+    .sidebar-close-btn {
+      background: #f1f5f9;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .sidebar-user {
       padding: 14px;
       background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
@@ -324,18 +461,30 @@
       justify-content: center;
       font-size: 1.1rem;
       font-weight: 800;
+      flex-shrink: 0;
+    }
+    .sidebar-user-info {
+      min-width: 0;
+      flex: 1;
     }
     .sidebar-user-info h3 {
       font-size: 0.95rem;
       font-weight: 800;
       color: var(--secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .sidebar-user-info span {
       font-size: 0.75rem;
       color: var(--primary);
       font-weight: 700;
       display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
     .sidebar-menu {
       list-style: none;
       display: flex;
@@ -346,15 +495,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 12px 14px;
       border-radius: var(--radius-md);
       color: var(--text-muted);
       font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
+      min-height: 44px;
+      touch-action: manipulation;
     }
-    .menu-item:hover {
+    .menu-item:hover, .menu-item:active {
       background: #f1f5f9;
       color: var(--secondary);
     }
@@ -372,10 +523,11 @@
       font-size: 1rem;
       width: 20px;
       text-align: center;
+      flex-shrink: 0;
     }
     .menu-badge {
       font-size: 0.72rem;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: var(--radius-full);
       background: #e2e8f0;
       color: #475569;
@@ -389,15 +541,16 @@
     /* Content Area */
     .content-area {
       min-width: 0;
+      width: 100%;
     }
 
-    /* Hero / Scope Banner */
+    /* Scope Banner */
     .scope-banner {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
       border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      margin-bottom: 24px;
+      padding: clamp(16px, 3vw, 24px) clamp(18px, 4vw, 28px);
+      margin-bottom: 20px;
       box-shadow: var(--shadow-md);
       position: relative;
       overflow: hidden;
@@ -405,7 +558,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 16px;
     }
     .scope-banner::after {
       content: '';
@@ -417,8 +570,12 @@
       background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
       pointer-events: none;
     }
+    .scope-text {
+      flex: 1;
+      min-width: 240px;
+    }
     .scope-text h2 {
-      font-size: 1.45rem;
+      font-size: clamp(1.1rem, 3vw, 1.45rem);
       font-weight: 800;
       margin-bottom: 6px;
       display: flex;
@@ -427,94 +584,128 @@
     }
     .scope-text p {
       color: #94a3b8;
-      font-size: 0.9rem;
-      max-width: 600px;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      line-height: 1.5;
     }
     .scope-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
+    @media (max-width: 640px) {
+      .scope-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .scope-actions {
+        width: 100%;
+      }
+      .scope-actions .btn {
+        width: 100%;
+      }
+    }
 
-    /* KPI Grid */
+    /* Dynamic KPI Grid (Adaptive across 320px to 4K) */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
       margin-bottom: 24px;
+    }
+    @media (max-width: 1200px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 540px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
     }
     .kpi-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: clamp(14px, 2.5vw, 20px);
       box-shadow: var(--shadow-sm);
       transition: all 0.25s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
     }
     .kpi-card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
       border-color: #cbd5e1;
     }
+    .kpi-info {
+      min-width: 0;
+      flex: 1;
+    }
     .kpi-info span {
-      font-size: 0.8rem;
+      font-size: clamp(0.75rem, 1.8vw, 0.82rem);
       font-weight: 700;
       color: var(--text-muted);
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .kpi-info h4 {
-      font-size: 1.6rem;
+      font-size: clamp(1.25rem, 3.5vw, 1.6rem);
       font-weight: 900;
       color: var(--secondary);
-      line-height: 1.1;
+      line-height: 1.2;
     }
     .kpi-change {
-      font-size: 0.75rem;
+      font-size: clamp(0.7rem, 1.6vw, 0.75rem);
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      margin-top: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
     }
     .kpi-change.up { color: var(--success); }
     .kpi-change.warn { color: var(--warning); }
     .kpi-icon {
-      width: 50px;
-      height: 50px;
+      width: clamp(42px, 5vw, 50px);
+      height: clamp(42px, 5vw, 50px);
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+      flex-shrink: 0;
     }
     .kpi-icon.green { background: #d1fae5; color: #059669; }
     .kpi-icon.blue { background: #dbeafe; color: #2563eb; }
     .kpi-icon.amber { background: #fef3c7; color: #d97706; }
     .kpi-icon.purple { background: #ede9fe; color: #7c3aed; }
 
-    /* Sections / Card */
+    /* Sections & Cards */
     .section-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       box-shadow: var(--shadow-sm);
       margin-bottom: 24px;
+      width: 100%;
     }
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
       gap: 12px;
     }
     .section-title {
-      font-size: 1.15rem;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
       font-weight: 800;
       color: var(--secondary);
       display: flex;
@@ -523,31 +714,38 @@
     }
     .section-actions {
       display: flex;
+      align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    /* Tables */
+    /* Universal Responsive Tables */
     .table-responsive {
+      width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      background: #ffffff;
+      margin-bottom: 8px;
     }
     table {
       width: 100%;
+      min-width: 620px; /* guarantees layout readability while scrolling */
       border-collapse: collapse;
       text-align: right;
-      font-size: 0.88rem;
+      font-size: clamp(0.8rem, 1.8vw, 0.88rem);
     }
     th {
       background: #f8fafc;
       color: var(--text-muted);
       font-weight: 700;
-      padding: 12px 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
     td {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       color: var(--text-main);
       white-space: nowrap;
@@ -559,15 +757,16 @@
       background: #f8fafc;
     }
 
-    /* Badges */
+    /* Status Badges */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 4px 10px;
       border-radius: var(--radius-full);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
+      white-space: nowrap;
     }
     .badge-success { background: #d1fae5; color: #065f46; }
     .badge-warning { background: #fef3c7; color: #92400e; }
@@ -575,13 +774,17 @@
     .badge-info { background: #e0f2fe; color: #075985; }
     .badge-purple { background: #ede9fe; color: #5b21b6; }
 
-    /* Interactive Filters */
+    /* Filter Chips in sections */
     .filter-tabs {
       display: flex;
       gap: 8px;
       margin-bottom: 16px;
       overflow-x: auto;
       padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
     }
     .filter-tab {
       padding: 6px 14px;
@@ -593,6 +796,9 @@
       cursor: pointer;
       border: none;
       transition: all 0.2s;
+      white-space: nowrap;
+      min-height: 36px;
+      touch-action: manipulation;
     }
     .filter-tab.active {
       background: var(--primary);
@@ -604,7 +810,7 @@
       background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
       border: 1px solid #bbf7d0;
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       margin-bottom: 24px;
     }
     .slider-group {
@@ -625,14 +831,17 @@
       margin-bottom: 8px;
       font-size: 0.85rem;
       font-weight: 700;
+      flex-wrap: wrap;
+      gap: 6px;
     }
     .slider-input {
       width: 100%;
+      height: 8px;
       accent-color: var(--primary);
       cursor: pointer;
     }
 
-    /* Modal */
+    /* Modal - Fully Responsive Bottom-Sheet on Mobile */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -640,12 +849,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(4px);
-      z-index: 1000;
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 2000;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
     }
     .modal-backdrop.active {
       display: flex;
@@ -655,13 +865,26 @@
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 520px;
-      padding: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: clamp(18px, 4vw, 26px);
       box-shadow: var(--shadow-xl);
       animation: modalIn 0.25s ease-out;
     }
     @keyframes modalIn {
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
+    }
+    @media (max-width: 540px) {
+      .modal-backdrop {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .modal-box {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        max-height: 88vh;
+      }
     }
     .modal-header {
       display: flex;
@@ -670,19 +893,25 @@
       margin-bottom: 18px;
     }
     .modal-title {
-      font-size: 1.15rem;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
       font-weight: 800;
       color: var(--secondary);
     }
     .modal-close {
-      background: none;
+      background: #f1f5f9;
       border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
       font-size: 1.2rem;
       color: var(--text-muted);
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .form-label {
       display: block;
@@ -696,9 +925,10 @@
       padding: 10px 14px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-md);
-      font-size: 0.88rem;
+      font-size: 16px; /* Prevents auto-zoom on mobile Safari */
       font-family: inherit;
       transition: all 0.2s;
+      background: #ffffff;
     }
     .form-control:focus {
       outline: none;
@@ -706,82 +936,133 @@
       box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
     }
 
+    /* Mobile Sticky Bottom Navigation Bar */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
+      z-index: 80;
+      justify-content: space-around;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
+    }
+    @media (max-width: 1024px) {
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      body {
+        padding-bottom: calc(75px + env(safe-area-inset-bottom));
+      }
+    }
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: var(--radius-md);
+      transition: all 0.2s;
+      touch-action: manipulation;
+    }
+    .mobile-nav-item i {
+      font-size: 1.15rem;
+    }
+    .mobile-nav-item.active {
+      color: var(--primary);
+    }
+
     /* Footer */
     .main-footer {
       background: #0f172a;
       color: #94a3b8;
-      padding: 40px 0 20px;
+      padding: clamp(30px, 5vw, 45px) 0 24px;
       border-top: 1px solid #1e293b;
-      margin-top: 60px;
+      margin-top: 40px;
     }
     .footer-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 20px;
-      padding-bottom: 24px;
+      gap: 16px;
+      padding-bottom: 20px;
       border-bottom: 1px solid #1e293b;
     }
     .footer-brand h4 {
       color: #ffffff;
-      font-size: 1.2rem;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
       font-weight: 800;
     }
     .footer-brand p {
-      font-size: 0.85rem;
+      font-size: clamp(0.78rem, 2vw, 0.85rem);
       margin-top: 4px;
     }
     .footer-bottom {
-      padding-top: 20px;
+      padding-top: 18px;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: clamp(0.72rem, 1.8vw, 0.8rem);
       color: #64748b;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Repo & Deployment Bar -->
+  <!-- Top System Bar -->
   <aside class="top-bar">
     <div class="container top-bar-inner">
-      <div style="display:flex; align-items:center; gap:8px;">
+      <div class="top-bar-badge">
         <i class="fa-solid fa-circle-check" style="color: #34d399;"></i>
-        <span>نظام عمارة لإدارة الأملاك والعقارات الذكية — النسخة السحابية المحدثة بالكامل</span>
+        <span>نظام عمارة لإدارة الأملاك والعقارات الذكية — النسخة السحابية المتجاوبة</span>
       </div>
       <div class="top-bar-links">
-        <a href="https://github.com/khald101/aqar" target="_blank" class="top-bar-link">
-          <i class="fa-brands fa-github"></i> مستودع المشروع على GitHub
-        </a>
-        <a href="#quickstart" onclick="AmarahApp.showQuickStart()" class="top-bar-link">
-          <i class="fa-solid fa-terminal"></i> طريقة التشغيل المحلي (Next.js)
-        </a>
+        <span class="top-bar-link" onclick="AmarahApp.showRolePermissions()">
+          <i class="fa-solid fa-shield-halved"></i> مصفوفة الصلاحيات
+        </span>
+        <span class="top-bar-link" onclick="AmarahApp.showQuickStart()">
+          <i class="fa-solid fa-circle-info"></i> معلومات النظام
+        </span>
       </div>
     </div>
   </aside>
 
-  <!-- Main Header -->
+  <!-- Sticky Main Header -->
   <header class="main-header">
     <div class="container header-inner">
-      <a href="#" class="brand">
-        <div class="brand-icon">
-          <i class="fa-solid fa-city"></i>
-        </div>
-        <div class="brand-info">
-          <h1>عمارة | AMARAH</h1>
-          <p>المنظومة العقارية الذكية المتكاملة</p>
-        </div>
-      </a>
+      <div class="brand-section">
+        <!-- Mobile Drawer Toggle -->
+        <button class="mobile-menu-toggle" id="menuToggleBtn" onclick="AmarahApp.toggleMobileSidebar()" aria-label="فتح القائمة">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-city"></i>
+          </div>
+          <div class="brand-info">
+            <h1>عمارة | AMARAH</h1>
+            <p>المنظومة العقارية الذكية المتكاملة</p>
+          </div>
+        </a>
+      </div>
 
       <div class="header-actions">
         <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
           <i class="fa-solid fa-plus"></i>
           <span>بلاغ صيانة جديد</span>
         </button>
-        <a href="https://github.com/khald101/aqar" target="_blank" class="btn btn-github">
-          <i class="fa-brands fa-github"></i>
-          <span>GitHub</span>
-        </a>
       </div>
     </div>
   </header>
@@ -795,59 +1076,78 @@
           <span>محاكي الصلاحيات والأدوار المباشر (RBAC Matrix):</span>
           <span class="persona-badge-indicator" id="currentRoleTitle">المدير العام (ADMIN)</span>
         </div>
-        <span style="font-size:0.8rem; color:var(--text-muted);">
+        <span class="persona-hint">
           اضغط على أي دور لمعاينة الشاشات والصلاحيات المقيدة له فوريًا
         </span>
       </div>
 
-      <div class="persona-chips" id="personaChips">
-        <button class="persona-chip active" onclick="AmarahApp.switchRole('ADMIN')">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>👑 المدير العام (ADMIN)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('PROPERTY_MANAGER')">
-          <i class="fa-solid fa-building-user"></i>
-          <span>🏢 مدير الأملاك (MANAGER)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('ACCOUNTANT')">
-          <i class="fa-solid fa-calculator"></i>
-          <span>💰 المحاسب المالي (ACCOUNTANT)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('MAINTENANCE_SUPERVISOR')">
-          <i class="fa-solid fa-toolbox"></i>
-          <span>🛠️ مشرف الصيانة (SUPERVISOR)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('TECHNICIAN')">
-          <i class="fa-solid fa-screwdriver-wrench"></i>
-          <span>🔧 الفني المختص (TECHNICIAN)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('OWNER')">
-          <i class="fa-solid fa-key"></i>
-          <span>📑 المالك العقاري (OWNER)</span>
-        </button>
-        <button class="persona-chip" onclick="AmarahApp.switchRole('TENANT')">
-          <i class="fa-solid fa-house-chimney-user"></i>
-          <span>🔑 المستأجر (TENANT)</span>
-        </button>
+      <!-- Touch Horizontal Carousel with hidden native scrollbars -->
+      <div class="persona-chips-wrapper">
+        <div class="persona-chips" id="personaChips">
+          <button class="persona-chip active" onclick="AmarahApp.switchRole('ADMIN')">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>👑 المدير العام (ADMIN)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('PROPERTY_MANAGER')">
+            <i class="fa-solid fa-building-user"></i>
+            <span>🏢 مدير الأملاك (MANAGER)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('ACCOUNTANT')">
+            <i class="fa-solid fa-calculator"></i>
+            <span>💰 المحاسب المالي (ACCOUNTANT)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('MAINTENANCE_SUPERVISOR')">
+            <i class="fa-solid fa-toolbox"></i>
+            <span>🛠️ مشرف الصيانة (SUPERVISOR)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('TECHNICIAN')">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>🔧 الفني المختص (TECHNICIAN)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('OWNER')">
+            <i class="fa-solid fa-key"></i>
+            <span>📑 المالك العقاري (OWNER)</span>
+          </button>
+          <button class="persona-chip" onclick="AmarahApp.switchRole('TENANT')">
+            <i class="fa-solid fa-house-chimney-user"></i>
+            <span>🔑 المستأجر (TENANT)</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- App Body Layout -->
+  <!-- Backdrop for Mobile Drawer -->
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop" onclick="AmarahApp.closeMobileSidebar()"></div>
+
+  <!-- Main App Layout -->
   <main class="container app-layout">
-    <!-- Sidebar Navigation (Permission Filtered) -->
-    <aside>
+    <!-- Sidebar (Sticky on Desktop, Off-Canvas Drawer on Mobile) -->
+    <aside class="sidebar-container" id="sidebarContainer">
       <div class="sidebar-card">
+        <!-- Mobile Drawer Header with Close Button -->
+        <div class="sidebar-mobile-header">
+          <div style="font-weight:800; color:var(--secondary); font-size:1rem; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-compass" style="color:var(--primary);"></i>
+            <span>قائمة التنقل السريع</span>
+          </div>
+          <button class="sidebar-close-btn" onclick="AmarahApp.closeMobileSidebar()" aria-label="إغلاق القائمة">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Active Persona User Card -->
         <div class="sidebar-user">
-          <div class="sidebar-user-avatar" id="sidebarAvatar">ع</div>
+          <div class="sidebar-user-avatar" id="sidebarAvatar">👑</div>
           <div class="sidebar-user-info">
             <h3 id="sidebarUserName">عبدالعزيز بن فهد</h3>
             <span id="sidebarUserRole">المدير العام للنظام</span>
           </div>
         </div>
 
+        <!-- Filtered Dynamic Navigation Menu -->
         <ul class="sidebar-menu" id="sidebarMenu">
-          <!-- Dynamic Items Injected by JS -->
+          <!-- Populated dynamically based on RBAC role -->
         </ul>
       </div>
     </aside>
@@ -861,14 +1161,14 @@
           <p id="bannerRoleDesc">لديك صلاحيات كاملة لإدارة جميع العقارات، الوحدات، العقود، العمليات المالية، وسجلات التدقيق.</p>
         </div>
         <div class="scope-actions">
-          <button class="btn btn-outline" style="color:#ffffff; border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.1);" onclick="AmarahApp.showRolePermissions()">
+          <button class="btn btn-outline" style="color:#ffffff; border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.12);" onclick="AmarahApp.showRolePermissions()">
             <i class="fa-solid fa-lock"></i>
             <span>عرض الصلاحيات النشطة</span>
           </button>
         </div>
       </div>
 
-      <!-- KPI Metrics (Live & Dynamic) -->
+      <!-- Live Dynamic Metrics (KPIs) -->
       <div class="kpi-grid" id="kpiGrid">
         <div class="kpi-card">
           <div class="kpi-info">
@@ -882,7 +1182,7 @@
         <div class="kpi-card">
           <div class="kpi-info">
             <span>إجمالي الإيرادات المحصلة</span>
-            <h4 id="statRevenue">1,420,000 <small style="font-size:0.9rem;">ر.س</small></h4>
+            <h4 id="statRevenue">1,420,000 <small style="font-size:0.85rem;">ر.س</small></h4>
             <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> +8.1% نمو الإيراد</div>
           </div>
           <div class="kpi-icon blue"><i class="fa-solid fa-sack-dollar"></i></div>
@@ -907,12 +1207,36 @@
         </div>
       </div>
 
-      <!-- Main Section: Dynamic Workspace Display -->
+      <!-- Main Dynamic Workspace (Tab View) -->
       <div id="dynamicWorkspace">
-        <!-- Injected dynamically based on active tab -->
+        <!-- Rendered by JavaScript according to activeTab -->
       </div>
     </section>
   </main>
+
+  <!-- Mobile Bottom Sticky Navigation -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" id="mobNavDashboard" onclick="AmarahApp.switchTab('dashboard')">
+      <i class="fa-solid fa-gauge-high"></i>
+      <span>الرئيسية</span>
+    </button>
+    <button class="mobile-nav-item" id="mobNavProperties" onclick="AmarahApp.switchTab('properties')">
+      <i class="fa-solid fa-building"></i>
+      <span>العقارات</span>
+    </button>
+    <button class="mobile-nav-item" id="mobNavMaintenance" onclick="AmarahApp.switchTab('maintenance')">
+      <i class="fa-solid fa-wrench"></i>
+      <span>الصيانة</span>
+    </button>
+    <button class="mobile-nav-item" onclick="AmarahApp.openNewTicketModal()">
+      <i class="fa-solid fa-circle-plus" style="color:var(--primary);"></i>
+      <span>بلاغ جديد</span>
+    </button>
+    <button class="mobile-nav-item" onclick="AmarahApp.toggleMobileSidebar()">
+      <i class="fa-solid fa-bars"></i>
+      <span>القائمة</span>
+    </button>
+  </nav>
 
   <!-- Modal: New Ticket -->
   <div class="modal-backdrop" id="ticketModal">
@@ -928,6 +1252,7 @@
             <option value="برج النخبة - وحدة 101">برج النخبة السكني - شقة 101</option>
             <option value="مجمع الواحة - مكتب 304">مجمع الواحة التجاري - مكتب 304</option>
             <option value="أبراج العلياء - فيلا 12">أبراج العلياء - فيلا 12</option>
+            <option value="عمائر الهدى - شقة 4">عمائر الهدى - شقة 4</option>
           </select>
         </div>
         <div class="form-group">
@@ -952,10 +1277,10 @@
           <input type="text" class="form-control" id="modalTitle" placeholder="مثال: تسريب مياه في دورة المياه الرئيسية" required>
         </div>
         <div class="form-group">
-          <label class="form-label">وصف تفصيلي</label>
-          <textarea class="form-control" id="modalDesc" rows="3" placeholder="يرجى كتابة تفاصيل البلاغ والأوقات المناسبة للزيارة..."></textarea>
+          <label class="form-label">وصف تفصيلي وملاحظات</label>
+          <textarea class="form-control" id="modalDesc" rows="3" placeholder="يرجى كتابة تفاصيل البلاغ والأوقات المناسبة لزيارة الفني..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; margin-top:8px;">
           <i class="fa-solid fa-paper-plane"></i> إرسال البلاغ فوراً
         </button>
       </form>
@@ -970,31 +1295,35 @@
           <h4>عمارة | AMARAH REAL ESTATE ERP</h4>
           <p>الحل البرمجي السحابي المتقدم لإدارة الأملاك، الصيانة، المحاسبة، والبوابات التفاعلية</p>
         </div>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <a href="https://github.com/khald101/aqar" target="_blank" class="btn btn-outline" style="color:#ffffff; border-color:#334155;">
-            <i class="fa-brands fa-github"></i> كود المشروع على GitHub
-          </a>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn btn-outline" style="color:#ffffff; border-color:#334155;" onclick="AmarahApp.showRolePermissions()">
+            <i class="fa-solid fa-shield-halved"></i> التحقق من الصلاحيات
+          </button>
+          <button class="btn btn-primary" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <i class="fa-solid fa-arrow-up"></i> العودة للأعلى
+          </button>
         </div>
       </div>
       <div class="footer-bottom">
-        تم بناء وتطوير المشروع باستخدام Next.js 15, TypeScript, Prisma ORM, و SQLite مع تطبيق نظام صلاحيات RBAC دقيق.
+        منظومة عِمارة الذكية لإدارة الأملاك والعقارات — تصميم متجاوب فائق الدقة متوافق مع كافة الهواتف والشاشات الذكية.
       </div>
     </div>
   </footer>
 
-  <!-- Application Logic & Mock Data -->
+  <!-- Application Logic & Interactive State -->
   <script>
     const AmarahApp = (function() {
-      // App State
+      // Current Application State
       let currentRole = 'ADMIN';
       let activeTab = 'dashboard';
+      let currentCityFilter = 'all';
 
-      // Persona Definitions & Permissions Matrix
+      // 7 Personas & Real Estate RBAC Matrix
       const personas = {
         ADMIN: {
           name: 'عبدالعزيز بن فهد',
           roleTitle: 'المدير العام (ADMIN)',
-          desc: 'صلاحيات كاملة للتحكم في المنظومة، العقارات، العقود، المحاسبة المالية، الصيانة، وإدارة أدوار المستخدمين.',
+          desc: 'صلاحيات كاملة للتحكم في المنظومة، العقارات، العقود، المحاسبة المالية، الصيانة، وسجلات التدقيق.',
           avatar: '👑',
           menu: [
             { id: 'dashboard', label: 'لوحة التحكم المركزية', icon: 'fa-gauge-high' },
@@ -1009,7 +1338,7 @@
         PROPERTY_MANAGER: {
           name: 'م. تركي القحطاني',
           roleTitle: 'مدير الأملاك (PROPERTY_MANAGER)',
-          desc: 'إدارة العقارات والوحدات السكنية والتجارية، توثيق عقود الإيجار، وتسكين المستأجرين.',
+          desc: 'إدارة العقارات والوحدات السكنية والتجارية، توثيق عقود الإيجار، وتسكين المستأجرين ومتابعة الإشغال.',
           avatar: '🏢',
           menu: [
             { id: 'dashboard', label: 'لوحة التحكم', icon: 'fa-gauge-high' },
@@ -1021,7 +1350,7 @@
         ACCOUNTANT: {
           name: 'أ. سامي المنصور',
           roleTitle: 'المحاسب المالي (ACCOUNTANT)',
-          desc: 'تسجيل المقبوضات والمصروفات، قيود اليومية، وتسويات الملاك وصرف العوائد.',
+          desc: 'تسجيل المقبوضات والمصروفات، قيود اليومية المزدوجة المتوازنة، وتسويات الملاك وصرف العوائد.',
           avatar: '💰',
           menu: [
             { id: 'dashboard', label: 'لوحة التحكم المالية', icon: 'fa-gauge-high' },
@@ -1032,7 +1361,7 @@
         MAINTENANCE_SUPERVISOR: {
           name: 'م. فهد الدوسري',
           roleTitle: 'مشرف الصيانة (SUPERVISOR)',
-          desc: 'استقبال بلاغات الصيانة الطارئة والدورية، وتكليف الفنيين ومتابعة الإنجاز والاعتماد.',
+          desc: 'استقبال بلاغات الصيانة الطارئة والدورية، وتكليف الفنيين ومتابعة الإنجاز والاعتماد الفني.',
           avatar: '🛠️',
           menu: [
             { id: 'dashboard', label: 'لوحة الصيانة', icon: 'fa-gauge-high' },
@@ -1043,7 +1372,7 @@
         TECHNICIAN: {
           name: 'عصام كمال',
           roleTitle: 'الفني المختص (TECHNICIAN)',
-          desc: 'تنفيذ مهام الصيانة الميدانية الموكلة، وتحديث حالة البلاغات إلى قيد التنفيذ أو مكتمل.',
+          desc: 'تنفيذ مهام الصيانة الميدانية الموكلة، وتحديث حالة البلاغات إلى قيد التنفيذ أو مكتمل وتسجيل الأعمال.',
           avatar: '🔧',
           menu: [
             { id: 'maintenance', label: 'مهامي الميدانية الموكلة', icon: 'fa-clipboard-list', badge: '3 مهام' }
@@ -1052,7 +1381,7 @@
         OWNER: {
           name: 'الشيخ خالد العلياني',
           roleTitle: 'المالك العقاري (OWNER)',
-          desc: 'بوابة المالك: الاطلاع على أداء العقارات المملوكة، نسب الإشغال، وصافي التحويلات الشهرية.',
+          desc: 'بوابة المالك: الاطلاع على أداء العقارات المملوكة، نسب الإشغال، وصافي التحويلات والتسويات الشهرية.',
           avatar: '📑',
           menu: [
             { id: 'owner-portal', label: 'بوابة المالك العقاري', icon: 'fa-landmark' }
@@ -1061,29 +1390,69 @@
         TENANT: {
           name: 'سلطان بن عبدالله',
           roleTitle: 'المستأجر (TENANT)',
-          desc: 'بوابة المستأجر: تفاصيل عقد الإيجار الحالي، جدول سداد الدفعات، ورفع بلاغات الصيانة.',
+          desc: 'بوابة المستأجر: تفاصيل عقد الإيجار الحالي، جدول سداد الدفعات، ورفع ومتابعة بلاغات الصيانة.',
           avatar: '🔑',
           menu: [
-            { id: 'tenant-portal', label: 'بوابة المستأجر', icon: 'fa-house-chimney-user' }
+            { id: 'tenant-portal', label: 'بوابة المستأجر الذاتية', icon: 'fa-house-chimney-user' }
           ]
         }
       };
 
-      // Mock Real Estate Data
+      // Real Estate Data Sets
       const propertiesData = [
-        { id: 1, name: 'برج النخبة السكني', city: 'الرياض - حي الياسمين', units: 36, occupied: 34, revenue: '680,000 ر.س', status: 'ممتاز' },
-        { id: 2, name: 'مجمع الواحة التجاري', city: 'جدة - طريق الملك', units: 24, occupied: 22, revenue: '450,000 ر.س', status: 'تشغيل كامل' },
-        { id: 3, name: 'أبراج العلياء الفاخرة', city: 'الخبر - الكورنيش', units: 16, occupied: 15, revenue: '210,000 ر.س', status: 'ممتاز' },
-        { id: 4, name: 'عمائر الهدى السكنية', city: 'مكة المكرمة - العزيزية', units: 8, occupied: 8, revenue: '80,000 ر.س', status: 'مؤجر 100%' }
+        { id: 1, name: 'برج النخبة السكني', city: 'الرياض', district: 'حي الياسمين', units: 36, occupied: 34, revenue: '680,000 ر.س', status: 'ممتاز' },
+        { id: 2, name: 'مجمع الواحة التجاري', city: 'جدة', district: 'طريق الملك', units: 24, occupied: 22, revenue: '450,000 ر.س', status: 'تشغيل كامل' },
+        { id: 3, name: 'أبراج العلياء الفاخرة', city: 'الخبر', district: 'الكورنيش', units: 16, occupied: 15, revenue: '210,000 ر.س', status: 'ممتاز' },
+        { id: 4, name: 'عمائر الهدى السكنية', city: 'مكة المكرمة', district: 'العزيزية', units: 8, occupied: 8, revenue: '80,000 ر.س', status: 'مؤجر 100%' }
       ];
 
       const ticketsData = [
         { id: 'TKT-101', unit: 'شقة 101 - برج النخبة', category: 'سباكة', title: 'تسريب مياه في خط التغذية', priority: 'طارئة', status: 'قيد التنفيذ', tech: 'عصام كمال' },
-        { id: 'TKT-102', unit: 'مكتب 204 - مجمع الواحة', category: 'تكييف', title: 'عطل في وحدة التبريد المركزية', priority: 'عالية', status: 'جديد', tech: 'قيد التعيين' },
-        { id: 'TKT-103', unit: 'فيلا 12 - أبراج العلياء', category: 'كهرباء', title: 'انقطاع التيار في القاطع الفرعي', priority: 'عادية', status: 'مكتمل', tech: 'سالم النجار' }
+        { id: 'TKT-102', unit: 'مكتب 204 - مجمع الواحة', category: 'تكييف', title: 'عطل في وحدة التبريد المركزية', priority: 'عالية', status: 'قيد التنفيذ', tech: 'سالم النجار' },
+        { id: 'TKT-103', unit: 'فيلا 12 - أبراج العلياء', category: 'كهرباء', title: 'انقطاع التيار في القاطع الفرعي', priority: 'عادية', status: 'مكتمل', tech: 'خالد الزهراني' },
+        { id: 'TKT-104', unit: 'شقة 302 - برج النخبة', category: 'سباكة', title: 'ضغط المياه منخفض في السخان', priority: 'عادية', status: 'قيد التنفيذ', tech: 'عصام كمال' }
       ];
 
-      // Render Functions
+      const contractsData = [
+        { id: 'CNT-2024-089', tenant: 'عبدالرحمن الشهري', property: 'برج النخبة السكني (شقة 104)', start: '2024/01/01', end: '2025/01/01', rent: '48,000 ر.س', status: 'نشط موثق' },
+        { id: 'CNT-2024-090', tenant: 'شركة الأفق الرقمية', property: 'مجمع الواحة التجاري (مكتب 201)', start: '2024/03/15', end: '2025/03/15', rent: '75,000 ر.س', status: 'نشط موثق' },
+        { id: 'CNT-2024-091', tenant: 'ماجد بن عيسى', property: 'أبراج العلياء (فيلا 6)', start: '2024/02/01', end: '2025/02/01', rent: '62,000 ر.س', status: 'نشط موثق' }
+      ];
+
+      const journalData = [
+        { id: 'JRN-401', desc: 'إثبات تحصيل دفعة إيجارية شقة 104', debit: '48,000 ر.س (البنك الأهلي)', credit: '48,000 ر.س (إيرادات إيجار)', balanced: true },
+        { id: 'JRN-402', desc: 'سداد فاتورة صيانة مصاعد الواحة', debit: '4,500 ر.س (مصروفات صيانة)', credit: '4,500 ر.س (البنك الأهلي)', balanced: true },
+        { id: 'JRN-403', desc: 'تحويل تسوية مالك برج النخبة الربعية', debit: '384,500 ر.س (حساب المالك)', credit: '384,500 ر.س (البنك الأهلي)', balanced: true }
+      ];
+
+      const auditData = [
+        { time: 'منذ دقيقتين', user: 'عبدالعزيز بن فهد (ADMIN)', action: 'اعتماد تسوية مالية للمالك الشيخ خالد', ip: '192.168.1.45', status: 'موثق ومشفر' },
+        { time: 'منذ 15 دقيقة', user: 'عصام كمال (TECHNICIAN)', action: 'تحديث حالة تذكرة صيانة TKT-101 إلى قيد التنفيذ', ip: '192.168.1.88', status: 'موثق ومشفر' },
+        { time: 'منذ ساعة', user: 'أ. سامي المنصور (ACCOUNTANT)', action: 'تسجيل سند قبض رقم REC-789 بمبلغ 24,000 ر.س', ip: '192.168.1.32', status: 'موثق ومشفر' }
+      ];
+
+      // Mobile Drawer Toggle Handlers
+      function toggleMobileSidebar() {
+        const container = document.getElementById('sidebarContainer');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        if (container.classList.contains('open')) {
+          closeMobileSidebar();
+        } else {
+          container.classList.add('open');
+          backdrop.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeMobileSidebar() {
+        const container = document.getElementById('sidebarContainer');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        container.classList.remove('open');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Render Sidebar
       function renderSidebar() {
         const persona = personas[currentRole];
         document.getElementById('sidebarAvatar').textContent = persona.avatar;
@@ -1096,7 +1465,10 @@
         persona.menu.forEach(item => {
           const li = document.createElement('li');
           li.className = `menu-item ${activeTab === item.id ? 'active' : ''}`;
-          li.onclick = () => switchTab(item.id);
+          li.onclick = () => {
+            switchTab(item.id);
+            closeMobileSidebar();
+          };
           li.innerHTML = `
             <div class="menu-item-left">
               <i class="fa-solid ${item.icon}"></i>
@@ -1106,6 +1478,14 @@
           `;
           menuList.appendChild(li);
         });
+
+        // Update Bottom Nav active states
+        const mobDash = document.getElementById('mobNavDashboard');
+        const mobProp = document.getElementById('mobNavProperties');
+        const mobMaint = document.getElementById('mobNavMaintenance');
+        if (mobDash) mobDash.classList.toggle('active', activeTab === 'dashboard');
+        if (mobProp) mobProp.classList.toggle('active', activeTab === 'properties');
+        if (mobMaint) mobMaint.classList.toggle('active', activeTab === 'maintenance');
       }
 
       function renderBanner() {
@@ -1119,14 +1499,22 @@
         const container = document.getElementById('dynamicWorkspace');
 
         if (activeTab === 'dashboard') {
+          const filteredProps = currentCityFilter === 'all' 
+            ? propertiesData 
+            : propertiesData.filter(p => p.city.includes(currentCityFilter));
+
           container.innerHTML = `
+            <!-- Properties Performance Card -->
             <div class="section-card">
               <div class="section-header">
                 <h3 class="section-title"><i class="fa-solid fa-building" style="color:var(--primary);"></i> أداء العقارات الاستثمارية</h3>
                 <div class="section-actions">
-                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('all')">الكل</button>
-                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('الرياض')">الرياض</button>
-                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('جدة')">جدة</button>
+                  <div class="filter-tabs" style="margin-bottom:0;">
+                    <button class="filter-tab ${currentCityFilter==='all'?'active':''}" onclick="AmarahApp.filterProperties('all')">الكل (4)</button>
+                    <button class="filter-tab ${currentCityFilter==='الرياض'?'active':''}" onclick="AmarahApp.filterProperties('الرياض')">الرياض</button>
+                    <button class="filter-tab ${currentCityFilter==='جدة'?'active':''}" onclick="AmarahApp.filterProperties('جدة')">جدة</button>
+                    <button class="filter-tab ${currentCityFilter==='الخبر'?'active':''}" onclick="AmarahApp.filterProperties('الخبر')">الخبر</button>
+                  </div>
                 </div>
               </div>
               <div class="table-responsive">
@@ -1134,18 +1522,18 @@
                   <thead>
                     <tr>
                       <th>اسم العقار</th>
-                      <th>المدينة والموقع</th>
+                      <th>المدينة والحي</th>
                       <th>إجمالي الوحدات</th>
                       <th>نسبة الإشغال</th>
                       <th>الإيراد السنوي</th>
                       <th>الحالة التشغيلية</th>
                     </tr>
                   </thead>
-                  <tbody id="propertiesTableBody">
-                    ${propertiesData.map(p => `
+                  <tbody>
+                    ${filteredProps.map(p => `
                       <tr>
                         <td><strong>${p.name}</strong></td>
-                        <td>${p.city}</td>
+                        <td>${p.city} - ${p.district}</td>
                         <td>${p.units} وحدة</td>
                         <td><span class="status-badge badge-success">${Math.round((p.occupied/p.units)*100)}%</span></td>
                         <td><strong>${p.revenue}</strong></td>
@@ -1157,10 +1545,10 @@
               </div>
             </div>
 
-            <!-- Maintenance Kanban Preview -->
+            <!-- Maintenance Tickets Card -->
             <div class="section-card">
               <div class="section-header">
-                <h3 class="section-title"><i class="fa-solid fa-wrench" style="color:var(--warning);"></i> أحدث بلاغات الصيانة</h3>
+                <h3 class="section-title"><i class="fa-solid fa-wrench" style="color:var(--warning);"></i> أحدث بلاغات وتذاكر الصيانة</h3>
                 <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
                   <i class="fa-solid fa-plus"></i> بلاغ جديد
                 </button>
@@ -1193,15 +1581,94 @@
                         </td>
                         <td>${t.tech}</td>
                         <td>
-                          <span class="status-badge ${t.status === 'مكتمل' ? 'badge-success' : t.status === 'قيد التنفيذ' ? 'badge-warning' : 'badge-purple'}">
+                          <span class="status-badge ${t.status === 'مكتمل' ? 'badge-success' : 'badge-warning'}">
                             ${t.status}
                           </span>
                         </td>
                         <td>
-                          <button class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
-                            تحديث الحالة
+                          <button class="btn btn-outline" style="padding:4px 10px; font-size:0.75rem; min-height:34px;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
+                            ${t.status === 'مكتمل' ? 'إعادة فتح' : 'إكمال وتحديث'}
                           </button>
                         </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'properties') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-building" style="color:var(--primary);"></i> إدارة العقارات والوحدات السكنية والتجارية</h3>
+                <button class="btn btn-primary" onclick="alert('خاصية إضافة مبنى استثماري جديد جاهزة ومتاحة لمدير الأملاك والمدير العام')">
+                  <i class="fa-solid fa-plus"></i> إضافة عقار جديد
+                </button>
+              </div>
+              <p style="color:var(--text-muted); margin-bottom:16px;">
+                عرض كافة العقارات والوحدات التابعة مع نسب الإشغال والتحصيل والتسكين.
+              </p>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>العقار</th>
+                      <th>الموقع</th>
+                      <th>الوحدات الكلية</th>
+                      <th>الوحدات المؤجرة</th>
+                      <th>الوحدات الشاغرة</th>
+                      <th>الإيراد السنوي</th>
+                      <th>الحالة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${propertiesData.map(p => `
+                      <tr>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.city} - ${p.district}</td>
+                        <td>${p.units} وحدة</td>
+                        <td><span class="status-badge badge-success">${p.occupied} وحدة</span></td>
+                        <td><span class="status-badge badge-warning">${p.units - p.occupied} شاغرة</span></td>
+                        <td><strong>${p.revenue}</strong></td>
+                        <td><span class="status-badge badge-info">${p.status}</span></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'contracts') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--primary);"></i> سجل عقود الإيجار والتحصيلات</h3>
+                <span class="status-badge badge-success">موثقة عبر شبكة إيجار</span>
+              </div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>رقم العقد</th>
+                      <th>المستأجر</th>
+                      <th>العقار والوحدة</th>
+                      <th>تاريخ البداية</th>
+                      <th>تاريخ الانتهاء</th>
+                      <th>القيمة السنوية</th>
+                      <th>حالة التوثيق</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${contractsData.map(c => `
+                      <tr>
+                        <td><code>${c.id}</code></td>
+                        <td><strong>${c.tenant}</strong></td>
+                        <td>${c.property}</td>
+                        <td>${c.start}</td>
+                        <td>${c.end}</td>
+                        <td><strong>${c.rent}</strong></td>
+                        <td><span class="status-badge badge-success">${c.status}</span></td>
                       </tr>
                     `).join('')}
                   </tbody>
@@ -1213,13 +1680,13 @@
           container.innerHTML = `
             <div class="section-card">
               <div class="section-header">
-                <h3 class="section-title"><i class="fa-solid fa-toolbox" style="color:var(--primary);"></i> منظومة إدارة وبلاغات الصيانة</h3>
+                <h3 class="section-title"><i class="fa-solid fa-toolbox" style="color:var(--primary);"></i> مركز إدارة وبلاغات الصيانة والتشغيل</h3>
                 <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
-                  <i class="fa-solid fa-plus"></i> إنشاء بلاغ جديد
+                  <i class="fa-solid fa-plus"></i> رفع بلاغ جديد
                 </button>
               </div>
               <p style="color:var(--text-muted); margin-bottom:16px;">
-                متابعة دورة حياة البلاغ من الإنشاء إلى التكليف الميداني حتى الإغلاق والاعتماد الفني.
+                متابعة دورة حياة البلاغ من التكليف الميداني حتى الإغلاق والاعتماد مع احتساب التكاليف.
               </p>
               <div class="table-responsive">
                 <table>
@@ -1230,9 +1697,9 @@
                       <th>التصنيف</th>
                       <th>العنوان</th>
                       <th>درجة الأهمية</th>
-                      <th>الفني</th>
-                      <th>الحالة الحالية</th>
-                      <th>التحكم</th>
+                      <th>الفني المسؤول</th>
+                      <th>الحالة</th>
+                      <th>الإجراء</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1242,14 +1709,65 @@
                         <td>${t.unit}</td>
                         <td>${t.category}</td>
                         <td>${t.title}</td>
-                        <td><span class="status-badge ${t.priority==='طارئة'?'badge-danger':'badge-warning'}">${t.priority}</span></td>
+                        <td><span class="status-badge ${t.priority==='طارئة'?'badge-danger':t.priority==='عالية'?'badge-warning':'badge-info'}">${t.priority}</span></td>
                         <td>${t.tech}</td>
                         <td><span class="status-badge ${t.status==='مكتمل'?'badge-success':'badge-warning'}">${t.status}</span></td>
                         <td>
-                          <button class="btn btn-primary" style="padding:4px 10px; font-size:0.78rem;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
+                          <button class="btn btn-primary" style="padding:4px 10px; font-size:0.78rem; min-height:34px;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
                             ${t.status === 'مكتمل' ? 'إعادة فتح' : 'إكمال البلاغ'}
                           </button>
                         </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'accounting') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--primary);"></i> المحاسبة المالية ودفتر القيود المزدوجة المتوازنة</h3>
+                <span class="status-badge badge-success">القيود متوازنة: Debit === Credit</span>
+              </div>
+              <div class="kpi-grid" style="margin-bottom:20px;">
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>المقبوضات الإيجارية</span><h4>1,420,000 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon green"><i class="fa-solid fa-arrow-down"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>المصروفات التشغيلية</span><h4>164,000 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon amber"><i class="fa-solid fa-arrow-up"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>صافي الأرباح المحققة</span><h4>1,256,000 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon blue"><i class="fa-solid fa-vault"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>تسويات الملاك الجاهزة</span><h4>384,500 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon purple"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>رقم القيد</th>
+                      <th>البيان المحاسبي</th>
+                      <th>الطرف المدين (Debit)</th>
+                      <th>الطرف الدائن (Credit)</th>
+                      <th>توازن القيد</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${journalData.map(j => `
+                      <tr>
+                        <td><code>${j.id}</code></td>
+                        <td><strong>${j.desc}</strong></td>
+                        <td><span style="color:#059669; font-weight:700;">${j.debit}</span></td>
+                        <td><span style="color:#2563eb; font-weight:700;">${j.credit}</span></td>
+                        <td><span class="status-badge badge-success"><i class="fa-solid fa-check"></i> متوازن</span></td>
                       </tr>
                     `).join('')}
                   </tbody>
@@ -1261,7 +1779,7 @@
           container.innerHTML = `
             <div class="section-card">
               <div class="section-header">
-                <h3 class="section-title"><i class="fa-solid fa-landmark" style="color:var(--primary);"></i> بوابة المالك العقاري</h3>
+                <h3 class="section-title"><i class="fa-solid fa-landmark" style="color:var(--primary);"></i> بوابة المالك العقاري والمستثمر</h3>
                 <span class="status-badge badge-success">الحساب مفعل وموثق</span>
               </div>
               <div class="kpi-grid" style="margin-bottom:20px;">
@@ -1278,8 +1796,8 @@
                   <div class="kpi-icon purple"><i class="fa-solid fa-percent"></i></div>
                 </div>
               </div>
-              <p style="color:var(--text-muted); font-size:0.9rem;">
-                تم تحويل تسوية الربع الثالث بنجاح إلى الحساب البنكي الآيبان (SA44...9012).
+              <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+                تم تحويل تسوية الربع الثالث بنجاح إلى الحساب البنكي الآيبان (SA44...9012) بمرجع إيداع رسمي.
               </p>
             </div>
           `;
@@ -1288,7 +1806,7 @@
             <div class="section-card">
               <div class="section-header">
                 <h3 class="section-title"><i class="fa-solid fa-house-chimney-user" style="color:var(--primary);"></i> بوابة المستأجر الشخصية</h3>
-                <span class="status-badge badge-success">عقد ساري المفعول</span>
+                <span class="status-badge badge-success">عقد إيجار ساري المفعول</span>
               </div>
               <div class="kpi-grid" style="margin-bottom:20px;">
                 <div class="kpi-card">
@@ -1300,16 +1818,16 @@
                   <div class="kpi-icon amber"><i class="fa-solid fa-calendar-check"></i></div>
                 </div>
                 <div class="kpi-card">
-                  <div class="kpi-info"><span>تاريخ نهاية العقد</span><h4>1448/04/15</h4></div>
+                  <div class="kpi-info"><span>تاريخ استحقاق الدفعة</span><h4>1448/04/15</h4></div>
                   <div class="kpi-icon blue"><i class="fa-solid fa-clock"></i></div>
                 </div>
               </div>
-              <div style="display:flex; gap:10px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
                   <i class="fa-solid fa-wrench"></i> طلب صيانة للوحدة
                 </button>
-                <button class="btn btn-outline" onclick="alert('جاري الانتقال إلى بوابة الدفع السريع عبر سداد/مدى')">
-                  <i class="fa-solid fa-credit-card"></i> سداد الدفعة إلكترونياً
+                <button class="btn btn-outline" onclick="alert('جاري الانتقال لبوابة الدفع الإلكتروني عبر سداد ومدى')">
+                  <i class="fa-solid fa-credit-card"></i> سداد الإيجار إلكترونياً
                 </button>
               </div>
             </div>
@@ -1317,18 +1835,18 @@
         } else if (activeTab === 'ai-advisor') {
           container.innerHTML = `
             <div class="ai-card">
-              <h3 style="font-size:1.2rem; font-weight:800; color:var(--primary-dark); margin-bottom:6px;">
+              <h3 style="font-size:clamp(1.1rem, 2.5vw, 1.3rem); font-weight:800; color:var(--primary-dark); margin-bottom:6px;">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> المستشار العقاري الذكي ومحاكي العوائد (AI Engine)
               </h3>
               <p style="color:#166534; font-size:0.9rem;">
-                يقوم النموذج التنبئي بتحليل أسعار السوق وحساب العائد الاستثماري المتوقع بناءً على نسبة الإشغال وسعر الإيجار المقترح.
+                يقوم النموذج التنبئي بتحليل أسعار السوق العقاري وحساب العائد الاستثماري المتوقع بناءً على نسبة الإشغال وسعر الإيجار المقترح.
               </p>
               
               <div class="slider-group">
                 <div class="slider-item">
                   <div class="slider-item-header">
                     <span>نسبة الإشغال المتوقعة:</span>
-                    <strong id="aiOccupancyVal" style="color:var(--primary);">94%</strong>
+                    <strong id="aiOccupancyVal" style="color:var(--primary); font-size:1.05rem;">94%</strong>
                   </div>
                   <input type="range" class="slider-input" min="50" max="100" value="94" oninput="AmarahApp.updateAiSim(this.value, null)">
                 </div>
@@ -1336,30 +1854,55 @@
                 <div class="slider-item">
                   <div class="slider-item-header">
                     <span>متوسط الإيجار السنوي للوحدة:</span>
-                    <strong id="aiRentVal" style="color:var(--primary);">45,000 ر.س</strong>
+                    <strong id="aiRentVal" style="color:var(--primary); font-size:1.05rem;">45,000 ر.س</strong>
                   </div>
                   <input type="range" class="slider-input" min="20000" max="90000" step="5000" value="45000" oninput="AmarahApp.updateAiSim(null, this.value)">
                 </div>
               </div>
 
-              <div style="background:#ffffff; border-radius:12px; padding:18px; margin-top:20px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+              <div style="background:#ffffff; border-radius:12px; padding:clamp(14px, 3vw, 20px); margin-top:20px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
                 <div>
                   <span style="font-size:0.85rem; color:#166534; font-weight:700;">العائد السنوي التقديري الصافي:</span>
-                  <h3 id="aiCalculatedYield" style="font-size:1.6rem; font-weight:900; color:#065f46;">3,564,000 ر.س / سنوياً</h3>
+                  <h3 id="aiCalculatedYield" style="font-size:clamp(1.3rem, 3.5vw, 1.7rem); font-weight:900; color:#065f46;">3,564,000 ر.س / سنوياً</h3>
                 </div>
                 <span class="status-badge badge-success" style="font-size:0.85rem; padding:6px 14px;">عائد استثماري ممتاز (8.9%)</span>
               </div>
             </div>
           `;
-        } else {
+        } else if (activeTab === 'audit-logs') {
           container.innerHTML = `
             <div class="section-card">
               <div class="section-header">
-                <h3 class="section-title"><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> ${activeTab}</h3>
+                <h3 class="section-title"><i class="fa-solid fa-shield-halved" style="color:var(--primary);"></i> سجل التدقيق الأمني والعمليات المشفرة</h3>
+                <span class="status-badge badge-success">Immutable Audit Trail</span>
               </div>
-              <p style="color:var(--text-muted);">
-                شاشة تفاعلية مخصصة للدور الحالي. جميع العمليات متزامنة وتتبع نظام الصلاحيات RBAC.
+              <p style="color:var(--text-muted); margin-bottom:16px;">
+                توثيق إلكتروني فوري لكافة العمليات الحساسة في النظام مع تتبع هوية المستخدم وعنوان IP والطابع الزمني.
               </p>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>الوقت</th>
+                      <th>المستخدم المنفذ</th>
+                      <th>تفاصيل العملية</th>
+                      <th>عنوان IP</th>
+                      <th>حالة التوثيق</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${auditData.map(a => `
+                      <tr>
+                        <td><code>${a.time}</code></td>
+                        <td><strong>${a.user}</strong></td>
+                        <td>${a.action}</td>
+                        <td><code>${a.ip}</code></td>
+                        <td><span class="status-badge badge-success"><i class="fa-solid fa-lock"></i> ${a.status}</span></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
             </div>
           `;
         }
@@ -1390,12 +1933,19 @@
         renderWorkspace();
       }
 
+      function filterProperties(city) {
+        currentCityFilter = city;
+        renderWorkspace();
+      }
+
       function openNewTicketModal() {
         document.getElementById('ticketModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
 
       function closeNewTicketModal() {
         document.getElementById('ticketModal').classList.remove('active');
+        document.body.style.overflow = '';
       }
 
       function handleTicketSubmit(e) {
@@ -1450,11 +2000,11 @@
       }
 
       function showRolePermissions() {
-        alert(`صلاحيات الدور النشط [${currentRole}]:\n- إدارة العقارات: ${currentRole==='ADMIN'||currentRole==='PROPERTY_MANAGER'?'كاملة':'مقيدة'}\n- المحاسبة والمالية: ${currentRole==='ADMIN'||currentRole==='ACCOUNTANT'?'كاملة':'مقيدة'}\n- إدارة الصيانة: ${currentRole==='ADMIN'||currentRole==='MAINTENANCE_SUPERVISOR'||currentRole==='TECHNICIAN'?'متاحة':'مقيدة'}\n- بوابة المالك: ${currentRole==='OWNER'||currentRole==='ADMIN'?'متاحة':'مقيدة'}\n- بوابة المستأجر: ${currentRole==='TENANT'||currentRole==='ADMIN'?'متاحة':'مقيدة'}`);
+        alert(`مصفوفة صلاحيات الدور النشط [${personas[currentRole].roleTitle}]:\n- إدارة العقارات والوحدات: ${currentRole==='ADMIN'||currentRole==='PROPERTY_MANAGER'?'متاحة بالكامل':'مقيدة'}\n- المحاسبة والمالية والتسويات: ${currentRole==='ADMIN'||currentRole==='ACCOUNTANT'?'متاحة بالكامل':'مقيدة'}\n- إدارة الصيانة والتكليف: ${currentRole==='ADMIN'||currentRole==='MAINTENANCE_SUPERVISOR'||currentRole==='TECHNICIAN'?'متاحة':'مقيدة'}\n- بوابة المالك: ${currentRole==='OWNER'||currentRole==='ADMIN'?'متاحة':'مقيدة'}\n- بوابة المستأجر: ${currentRole==='TENANT'||currentRole==='ADMIN'?'متاحة':'مقيدة'}`);
       }
 
       function showQuickStart() {
-        alert("لتشغيل المنظومة كاملة بـ Next.js و Prisma محلياً:\n1. git clone https://github.com/khald101/aqar.git\n2. cd aqar\n3. npm install\n4. npx prisma db seed\n5. npm run dev\nثم افتح http://localhost:3000");
+        alert("منظومة عِمارة لإدارة العقارات والأملاك الذكية\nتم بناء وتطوير النظام باستخدام أحدث تقنيات الويب المتجاوبة بالكامل على جميع الأجهزة والجوالات والشاشات الذكية دون استثناء.");
       }
 
       // Initialize
@@ -1462,19 +2012,29 @@
         renderSidebar();
         renderBanner();
         renderWorkspace();
+
+        // Close mobile drawer on resize to desktop
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 1024) {
+            closeMobileSidebar();
+          }
+        });
       }
 
       return {
         init,
         switchRole,
         switchTab,
+        filterProperties,
         openNewTicketModal,
         closeNewTicketModal,
         handleTicketSubmit,
         toggleTicketStatus,
         updateAiSim,
         showRolePermissions,
-        showQuickStart
+        showQuickStart,
+        toggleMobileSidebar,
+        closeMobileSidebar
       };
     })();
 
