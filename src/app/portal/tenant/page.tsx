@@ -69,66 +69,50 @@ export default function TenantPortalPage() {
   const [description, setDescription] = useState('');
   const [availableTime, setAvailableTime] = useState('مساءً بعد الساعة 5');
 
-  useEffect(() => {
-    let isMounted = true;
+  const loadTenantData = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      setUnauthorized(false);
 
-    const loadTenantData = async () => {
-      try {
-        setLoading(true);
-        setUnauthorized(false);
-
-        const meRes = await fetch('/api/auth/me');
-        if (!isMounted) return;
-
-        if (meRes.ok) {
-          const meData = await meRes.json();
-          const user = meData.user;
-          const isTenantOrAdmin = user?.roles?.includes('TENANT') || user?.roles?.includes('ADMIN');
-          if (!isTenantOrAdmin) {
-            if (isMounted) {
-              setUnauthorized(true);
-              setLoading(false);
-            }
-            return;
-          }
-        }
-
-        const [conRes, payRes, mRes] = await Promise.all([
-          fetch('/api/contracts'),
-          fetch('/api/payments'),
-          fetch('/api/maintenance'),
-        ]);
-
-        if (!isMounted) return;
-
-        if (conRes.ok && payRes.ok && mRes.ok) {
-          const conData = await conRes.json();
-          const payData = await payRes.json();
-          const mData = await mRes.json();
-
-          const myContract = conData.contracts?.[0] || null;
-          const myPayments = payData.payments || [];
-          const myTickets = mData.tickets || [];
-
-          if (isMounted) {
-            setData({ contract: myContract, payments: myPayments, tickets: myTickets });
-          }
-        }
-      } catch (err) {
-        console.error('Error loading tenant portal data:', err);
-      } finally {
-        if (isMounted) {
+      const meRes = await fetch('/api/auth/me');
+      if (meRes.ok) {
+        const meData = await meRes.json();
+        const user = meData.user;
+        const isTenantOrAdmin = user?.roles?.includes('TENANT') || user?.roles?.includes('ADMIN');
+        if (!isTenantOrAdmin) {
+          setUnauthorized(true);
           setLoading(false);
+          return;
         }
       }
-    };
 
-    loadTenantData();
+      const [conRes, payRes, mRes] = await Promise.all([
+        fetch('/api/contracts'),
+        fetch('/api/payments'),
+        fetch('/api/maintenance'),
+      ]);
 
-    return () => {
-      isMounted = false;
-    };
+      if (conRes.ok && payRes.ok && mRes.ok) {
+        const conData = await conRes.json();
+        const payData = await payRes.json();
+        const mData = await mRes.json();
+
+        const myContract = conData.contracts?.[0] || null;
+        const myPayments = payData.payments || [];
+        const myTickets = mData.tickets || [];
+
+        setData({ contract: myContract, payments: myPayments, tickets: myTickets });
+      }
+    } catch (err) {
+      console.error('Error loading tenant portal data:', err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadTenantData();
+  }, [loadTenantData]);
 
   const handleCreateTicket = async (e: React.FormEvent) => {
     e.preventDefault();
