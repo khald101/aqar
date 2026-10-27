@@ -93,37 +93,32 @@ export function Header({ onToggleSidebar, currentUser }: HeaderProps) {
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center text-white font-black text-sm sm:hidden shadow-xs">
-            ع
-          </div>
-          <div>
-            <h1 className="text-sm sm:text-base font-bold text-slate-900 leading-tight">
-              نظام عِمارة <span className="hidden sm:inline">لإدارة العقارات والأملاك</span>
-            </h1>
-            <p className="text-[11px] sm:text-xs text-slate-500 hidden xs:block">
-              البوابة الإدارية المركزية
-            </p>
-          </div>
+        <div className="hidden sm:block">
+          <h1 className="text-base font-bold text-slate-900 leading-tight">
+            نظام عِمارة لإدارة العقارات والأملاك
+          </h1>
+          <p className="text-xs text-slate-500">
+            البوابة الإدارية المركزية
+          </p>
         </div>
       </div>
 
       {/* Right side (in RTL: Left side): Persona switch, Role badge, User, Logout */}
-      <div className="flex items-center gap-1.5 sm:gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         {/* Quick Role Switcher Dropdown for Testing */}
         <div className="relative group">
           <button
             type="button"
-            className="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors"
             title="اختبار أدوار وصلاحيات النظام المختلفة"
           >
-            <UserCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-            <span className="hidden md:inline">تبديل المستخدم</span>
-            {isSwitchingRole && <RefreshCw className="w-3 h-3 animate-spin text-teal-600 shrink-0" />}
+            <UserCheck className="w-3.5 h-3.5 text-teal-600" />
+            <span className="hidden md:inline">تبديل المستخدم للاختبار</span>
+            {isSwitchingRole && <RefreshCw className="w-3 h-3 animate-spin text-teal-600" />}
           </button>
 
           {/* Persona Menu on Hover/Click */}
-          <div className="absolute left-0 mt-1 w-64 max-w-[calc(100vw-24px)] bg-white rounded-2xl shadow-xl border border-slate-200 p-2 hidden group-hover:block z-50 animate-fade-in">
+          <div className="absolute left-0 mt-1 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 hidden group-hover:block z-50 animate-fade-in">
             <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
               اختر دورًا لاختبار الصلاحيات الحقيقية:
             </div>

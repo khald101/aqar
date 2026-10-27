@@ -495,16 +495,17 @@ export default function PaymentsPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">طريقة السداد المعتمدة *</label>
-                <div className="flex items-center justify-between px-3.5 py-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-900 font-bold text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                    <span>بطاقة مدى البنكية (Mada)</span>
-                  </div>
-                  <span className="text-[11px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
-                    حصرياً
-                  </span>
-                </div>
+                <label className="block font-bold text-slate-700 mb-1">طريقة السداد *</label>
+                <select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-600 font-bold"
+                >
+                  <option value="MADA">بطاقة مدى (Mada)</option>
+                  <option value="BANK_TRANSFER">تحويل مصرفي مباشر</option>
+                  <option value="CHEQUE">شيك مصرفي معتمد</option>
+                  <option value="CASH">نقداً</option>
+                </select>
               </div>
             </div>
 
