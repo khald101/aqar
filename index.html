@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عمارة | المنظومة المتكاملة لإدارة الأملاك والعقارات الذكية</title>
+  <meta name="description" content="منظومة عمارة السحابية لإدارة الأملاك، العقود، المحاسبة، وبلاغات الصيانة مع دعم كامل لنظام الصلاحيات المتطور وبوابات الملاك والمستأجرين.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="public/next.svg" type="image/svg+xml">
+
+  <!-- Google Fonts: Cairo & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-light: #10b981;
+      --primary-50: #ecfdf5;
+      --primary-100: #d1fae5;
+      
+      --secondary: #0f172a;
+      --secondary-surface: #1e293b;
+      --secondary-card: #334155;
+      
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-sub: #94a3b8;
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Top Announcement / Repo Bar */
+    .top-bar {
+      background: linear-gradient(90deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      color: #ffffff;
+      padding: 8px 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .top-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .top-bar-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-bar-link {
+      color: #d1fae5;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+    .top-bar-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Header */
+    .main-header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 74px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: var(--shadow-glow);
+    }
+    .brand-info h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--secondary);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .brand-info p {
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+    }
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: var(--bg);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .btn-github {
+      background: #0f172a;
+      color: #ffffff;
+    }
+    .btn-github:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    /* Live RBAC Persona Switcher */
+    .persona-bar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.02);
+    }
+    .persona-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .persona-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    .persona-badge-indicator {
+      background: var(--primary-50);
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      border: 1px solid var(--primary-100);
+    }
+    .persona-chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .persona-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .persona-chip:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: var(--text-main);
+    }
+    .persona-chip.active {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      color: #ffffff;
+      border-color: #047857;
+      box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
+    }
+    .persona-chip.active i {
+      color: #34d399;
+    }
+
+    /* Main Layout */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      margin: 24px 0 60px;
+    }
+    @media (max-width: 1024px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sidebar */
+    .sidebar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 100px;
+    }
+    .sidebar-user {
+      padding: 14px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar-user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .sidebar-user-info h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    .sidebar-user-info span {
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 700;
+      display: block;
+    }
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .menu-item:hover {
+      background: #f1f5f9;
+      color: var(--secondary);
+    }
+    .menu-item.active {
+      background: var(--primary-50);
+      color: var(--primary-dark);
+      border-right: 4px solid var(--primary);
+    }
+    .menu-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .menu-item i {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+    .menu-badge {
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: #e2e8f0;
+      color: #475569;
+      font-weight: 800;
+    }
+    .menu-item.active .menu-badge {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
+    /* Hero / Scope Banner */
+    .scope-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .scope-banner::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .scope-text h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scope-text p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      max-width: 600px;
+    }
+    .scope-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+    .kpi-info span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .kpi-info h4 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--secondary);
+      line-height: 1.1;
+    }
+    .kpi-change {
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .kpi-change.up { color: var(--success); }
+    .kpi-change.warn { color: var(--warning); }
+    .kpi-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+    }
+    .kpi-icon.green { background: #d1fae5; color: #059669; }
+    .kpi-icon.blue { background: #dbeafe; color: #2563eb; }
+    .kpi-icon.amber { background: #fef3c7; color: #d97706; }
+    .kpi-icon.purple { background: #ede9fe; color: #7c3aed; }
+
+    /* Sections / Card */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 0.88rem;
+    }
+    th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #e0f2fe; color: #075985; }
+    .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+    /* Interactive Filters */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .filter-tab {
+      padding: 6px 14px;
+      background: #f1f5f9;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .filter-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    /* AI Simulator Sliders */
+    .ai-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .slider-item {
+      background: #ffffff;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid #bbf7d0;
+    }
+    .slider-item-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .slider-input {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-box {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      padding: 24px;
+      box-shadow: var(--shadow-xl);
+      animation: modalIn 0.25s ease-out;
+    }
+    @keyframes modalIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+    }
+
+    /* Footer */
+    .main-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 40px 0 20px;
+      border-top: 1px solid #1e293b;
+      margin-top: 60px;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .footer-brand h4 {
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+    .footer-bottom {
+      padding-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Repo & Deployment Bar -->
+  <aside class="top-bar">
+    <div class="container top-bar-inner">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-circle-check" style="color: #34d399;"></i>
+        <span>نظام عمارة لإدارة الأملاك والعقارات الذكية — النسخة السحابية المحدثة بالكامل</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="https://github.com/khald101/aqar" target="_blank" class="top-bar-link">
+          <i class="fa-brands fa-github"></i> مستودع المشروع على GitHub
+        </a>
+        <a href="#quickstart" onclick="AmarahApp.showQuickStart()" class="top-bar-link">
+          <i class="fa-solid fa-terminal"></i> طريقة التشغيل المحلي (Next.js)
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-city"></i>
+        </div>
+        <div class="brand-info">
+          <h1>عمارة | AMARAH</h1>
+          <p>المنظومة العقارية الذكية المتكاملة</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
+          <i class="fa-solid fa-plus"></i>
+          <span>بلاغ صيانة جديد</span>
+        </button>
+        <a href="https://github.com/khald101/aqar" target="_blank" class="btn btn-github">
+          <i class="fa-brands fa-github"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Persona Switcher Bar (Live RBAC Demo) -->
+  <section class="persona-bar">
+    <div class="container">
+      <div class="persona-bar-header">
+        <div class="persona-title">
+          <i class="fa-solid fa-users-gear" style="color:var(--primary);"></i>
+          <span>محاكي الصلاحيات والأدوار المباشر (RBAC Matrix):</span>
+          <span class="persona-badge-indicator" id="currentRoleTitle">المدير العام (ADMIN)</span>
+        </div>
+        <span style="font-size:0.8rem; color:var(--text-muted);">
+          اضغط على أي دور لمعاينة الشاشات والصلاحيات المقيدة له فوريًا
+        </span>
+      </div>
+
+      <div class="persona-chips" id="personaChips">
+        <button class="persona-chip active" onclick="AmarahApp.switchRole('ADMIN')">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>👑 المدير العام (ADMIN)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('PROPERTY_MANAGER')">
+          <i class="fa-solid fa-building-user"></i>
+          <span>🏢 مدير الأملاك (MANAGER)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('ACCOUNTANT')">
+          <i class="fa-solid fa-calculator"></i>
+          <span>💰 المحاسب المالي (ACCOUNTANT)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('MAINTENANCE_SUPERVISOR')">
+          <i class="fa-solid fa-toolbox"></i>
+          <span>🛠️ مشرف الصيانة (SUPERVISOR)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('TECHNICIAN')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span>🔧 الفني المختص (TECHNICIAN)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('OWNER')">
+          <i class="fa-solid fa-key"></i>
+          <span>📑 المالك العقاري (OWNER)</span>
+        </button>
+        <button class="persona-chip" onclick="AmarahApp.switchRole('TENANT')">
+          <i class="fa-solid fa-house-chimney-user"></i>
+          <span>🔑 المستأجر (TENANT)</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Body Layout -->
+  <main class="container app-layout">
+    <!-- Sidebar Navigation (Permission Filtered) -->
+    <aside>
+      <div class="sidebar-card">
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar" id="sidebarAvatar">ع</div>
+          <div class="sidebar-user-info">
+            <h3 id="sidebarUserName">عبدالعزيز بن فهد</h3>
+            <span id="sidebarUserRole">المدير العام للنظام</span>
+          </div>
+        </div>
+
+        <ul class="sidebar-menu" id="sidebarMenu">
+          <!-- Dynamic Items Injected by JS -->
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Content Workspace -->
+    <section class="content-area">
+      <!-- Role Scope Banner -->
+      <div class="scope-banner" id="scopeBanner">
+        <div class="scope-text">
+          <h2 id="bannerRoleTitle">مرحبًا بك في لوحة تحكم المدير العام</h2>
+          <p id="bannerRoleDesc">لديك صلاحيات كاملة لإدارة جميع العقارات، الوحدات، العقود، العمليات المالية، وسجلات التدقيق.</p>
+        </div>
+        <div class="scope-actions">
+          <button class="btn btn-outline" style="color:#ffffff; border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.1);" onclick="AmarahApp.showRolePermissions()">
+            <i class="fa-solid fa-lock"></i>
+            <span>عرض الصلاحيات النشطة</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics (Live & Dynamic) -->
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span>نسبة الإشغال العام</span>
+            <h4 id="statOccupancy">94.2%</h4>
+            <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> +2.4% عن الشهر السابق</div>
+          </div>
+          <div class="kpi-icon green"><i class="fa-solid fa-building-circle-check"></i></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span>إجمالي الإيرادات المحصلة</span>
+            <h4 id="statRevenue">1,420,000 <small style="font-size:0.9rem;">ر.س</small></h4>
+            <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> +8.1% نمو الإيراد</div>
+          </div>
+          <div class="kpi-icon blue"><i class="fa-solid fa-sack-dollar"></i></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span>العقود النشطة والموثقة</span>
+            <h4 id="statContracts">79 عقداً</h4>
+            <div class="kpi-change up"><i class="fa-solid fa-check"></i> موثقة عبر إيجار</div>
+          </div>
+          <div class="kpi-icon purple"><i class="fa-solid fa-file-contract"></i></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <span>تذاكر الصيانة الجارية</span>
+            <h4 id="statTickets">6 تذاكر</h4>
+            <div class="kpi-change warn"><i class="fa-solid fa-clock"></i> 2 منها طارئة</div>
+          </div>
+          <div class="kpi-icon amber"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        </div>
+      </div>
+
+      <!-- Main Section: Dynamic Workspace Display -->
+      <div id="dynamicWorkspace">
+        <!-- Injected dynamically based on active tab -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: New Ticket -->
+  <div class="modal-backdrop" id="ticketModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">رفع بلاغ صيانة جديد</h3>
+        <button class="modal-close" onclick="AmarahApp.closeNewTicketModal()">&times;</button>
+      </div>
+      <form onsubmit="AmarahApp.handleTicketSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">العقار والوحدة</label>
+          <select class="form-control" id="modalUnitSelect" required>
+            <option value="برج النخبة - وحدة 101">برج النخبة السكني - شقة 101</option>
+            <option value="مجمع الواحة - مكتب 304">مجمع الواحة التجاري - مكتب 304</option>
+            <option value="أبراج العلياء - فيلا 12">أبراج العلياء - فيلا 12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">تصنيف الصيانة</label>
+          <select class="form-control" id="modalCategory" required>
+            <option value="سباكة">سباكة (Plumbing)</option>
+            <option value="كهرباء">كهرباء (Electrical)</option>
+            <option value="تكييف">تكييف وتبريد (HVAC)</option>
+            <option value="مصاعد">مصاعد وأبواب أوتوماتيكية</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">درجة الأهمية</label>
+          <select class="form-control" id="modalPriority" required>
+            <option value="طارئة">طارئة (Urgent)</option>
+            <option value="عالية">عالية (High)</option>
+            <option value="عادية">عادية (Normal)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">عنوان البلاغ</label>
+          <input type="text" class="form-control" id="modalTitle" placeholder="مثال: تسريب مياه في دورة المياه الرئيسية" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">وصف تفصيلي</label>
+          <textarea class="form-control" id="modalDesc" rows="3" placeholder="يرجى كتابة تفاصيل البلاغ والأوقات المناسبة للزيارة..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">
+          <i class="fa-solid fa-paper-plane"></i> إرسال البلاغ فوراً
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h4>عمارة | AMARAH REAL ESTATE ERP</h4>
+          <p>الحل البرمجي السحابي المتقدم لإدارة الأملاك، الصيانة، المحاسبة، والبوابات التفاعلية</p>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <a href="https://github.com/khald101/aqar" target="_blank" class="btn btn-outline" style="color:#ffffff; border-color:#334155;">
+            <i class="fa-brands fa-github"></i> كود المشروع على GitHub
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        تم بناء وتطوير المشروع باستخدام Next.js 15, TypeScript, Prisma ORM, و SQLite مع تطبيق نظام صلاحيات RBAC دقيق.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Mock Data -->
+  <script>
+    const AmarahApp = (function() {
+      // App State
+      let currentRole = 'ADMIN';
+      let activeTab = 'dashboard';
+
+      // Persona Definitions & Permissions Matrix
+      const personas = {
+        ADMIN: {
+          name: 'عبدالعزيز بن فهد',
+          roleTitle: 'المدير العام (ADMIN)',
+          desc: 'صلاحيات كاملة للتحكم في المنظومة، العقارات، العقود، المحاسبة المالية، الصيانة، وإدارة أدوار المستخدمين.',
+          avatar: '👑',
+          menu: [
+            { id: 'dashboard', label: 'لوحة التحكم المركزية', icon: 'fa-gauge-high' },
+            { id: 'properties', label: 'العقارات والوحدات', icon: 'fa-building', badge: '12 عقار' },
+            { id: 'contracts', label: 'العقود والمستأجرين', icon: 'fa-file-signature', badge: '79 عقد' },
+            { id: 'maintenance', label: 'إدارة الصيانة والتشغيل', icon: 'fa-wrench', badge: '6 بلاغات' },
+            { id: 'accounting', label: 'المحاسبة والمالية', icon: 'fa-file-invoice-dollar' },
+            { id: 'ai-advisor', label: 'المستشار الذكي (AI)', icon: 'fa-wand-magic-sparkles' },
+            { id: 'audit-logs', label: 'سجلات التدقيق والأمان', icon: 'fa-clipboard-check' },
+          ]
+        },
+        PROPERTY_MANAGER: {
+          name: 'م. تركي القحطاني',
+          roleTitle: 'مدير الأملاك (PROPERTY_MANAGER)',
+          desc: 'إدارة العقارات والوحدات السكنية والتجارية، توثيق عقود الإيجار، وتسكين المستأجرين.',
+          avatar: '🏢',
+          menu: [
+            { id: 'dashboard', label: 'لوحة التحكم', icon: 'fa-gauge-high' },
+            { id: 'properties', label: 'العقارات والوحدات', icon: 'fa-building', badge: '12 عقار' },
+            { id: 'contracts', label: 'العقود والتأجير', icon: 'fa-file-signature', badge: '79 عقد' },
+            { id: 'maintenance', label: 'بلاغات الصيانة', icon: 'fa-wrench' }
+          ]
+        },
+        ACCOUNTANT: {
+          name: 'أ. سامي المنصور',
+          roleTitle: 'المحاسب المالي (ACCOUNTANT)',
+          desc: 'تسجيل المقبوضات والمصروفات، قيود اليومية، وتسويات الملاك وصرف العوائد.',
+          avatar: '💰',
+          menu: [
+            { id: 'dashboard', label: 'لوحة التحكم المالية', icon: 'fa-gauge-high' },
+            { id: 'accounting', label: 'المحاسبة والتسويات', icon: 'fa-file-invoice-dollar', badge: 'سندات' },
+            { id: 'contracts', label: 'متابعة الدفعات والعقود', icon: 'fa-file-signature' }
+          ]
+        },
+        MAINTENANCE_SUPERVISOR: {
+          name: 'م. فهد الدوسري',
+          roleTitle: 'مشرف الصيانة (SUPERVISOR)',
+          desc: 'استقبال بلاغات الصيانة الطارئة والدورية، وتكليف الفنيين ومتابعة الإنجاز والاعتماد.',
+          avatar: '🛠️',
+          menu: [
+            { id: 'dashboard', label: 'لوحة الصيانة', icon: 'fa-gauge-high' },
+            { id: 'maintenance', label: 'بلاغات وتذاكر الصيانة', icon: 'fa-wrench', badge: '6 جارية' },
+            { id: 'properties', label: 'وحدات تحت الصيانة', icon: 'fa-building' }
+          ]
+        },
+        TECHNICIAN: {
+          name: 'عصام كمال',
+          roleTitle: 'الفني المختص (TECHNICIAN)',
+          desc: 'تنفيذ مهام الصيانة الميدانية الموكلة، وتحديث حالة البلاغات إلى قيد التنفيذ أو مكتمل.',
+          avatar: '🔧',
+          menu: [
+            { id: 'maintenance', label: 'مهامي الميدانية الموكلة', icon: 'fa-clipboard-list', badge: '3 مهام' }
+          ]
+        },
+        OWNER: {
+          name: 'الشيخ خالد العلياني',
+          roleTitle: 'المالك العقاري (OWNER)',
+          desc: 'بوابة المالك: الاطلاع على أداء العقارات المملوكة، نسب الإشغال، وصافي التحويلات الشهرية.',
+          avatar: '📑',
+          menu: [
+            { id: 'owner-portal', label: 'بوابة المالك العقاري', icon: 'fa-landmark' }
+          ]
+        },
+        TENANT: {
+          name: 'سلطان بن عبدالله',
+          roleTitle: 'المستأجر (TENANT)',
+          desc: 'بوابة المستأجر: تفاصيل عقد الإيجار الحالي، جدول سداد الدفعات، ورفع بلاغات الصيانة.',
+          avatar: '🔑',
+          menu: [
+            { id: 'tenant-portal', label: 'بوابة المستأجر', icon: 'fa-house-chimney-user' }
+          ]
+        }
+      };
+
+      // Mock Real Estate Data
+      const propertiesData = [
+        { id: 1, name: 'برج النخبة السكني', city: 'الرياض - حي الياسمين', units: 36, occupied: 34, revenue: '680,000 ر.س', status: 'ممتاز' },
+        { id: 2, name: 'مجمع الواحة التجاري', city: 'جدة - طريق الملك', units: 24, occupied: 22, revenue: '450,000 ر.س', status: 'تشغيل كامل' },
+        { id: 3, name: 'أبراج العلياء الفاخرة', city: 'الخبر - الكورنيش', units: 16, occupied: 15, revenue: '210,000 ر.س', status: 'ممتاز' },
+        { id: 4, name: 'عمائر الهدى السكنية', city: 'مكة المكرمة - العزيزية', units: 8, occupied: 8, revenue: '80,000 ر.س', status: 'مؤجر 100%' }
+      ];
+
+      const ticketsData = [
+        { id: 'TKT-101', unit: 'شقة 101 - برج النخبة', category: 'سباكة', title: 'تسريب مياه في خط التغذية', priority: 'طارئة', status: 'قيد التنفيذ', tech: 'عصام كمال' },
+        { id: 'TKT-102', unit: 'مكتب 204 - مجمع الواحة', category: 'تكييف', title: 'عطل في وحدة التبريد المركزية', priority: 'عالية', status: 'جديد', tech: 'قيد التعيين' },
+        { id: 'TKT-103', unit: 'فيلا 12 - أبراج العلياء', category: 'كهرباء', title: 'انقطاع التيار في القاطع الفرعي', priority: 'عادية', status: 'مكتمل', tech: 'سالم النجار' }
+      ];
+
+      // Render Functions
+      function renderSidebar() {
+        const persona = personas[currentRole];
+        document.getElementById('sidebarAvatar').textContent = persona.avatar;
+        document.getElementById('sidebarUserName').textContent = persona.name;
+        document.getElementById('sidebarUserRole').textContent = persona.roleTitle;
+
+        const menuList = document.getElementById('sidebarMenu');
+        menuList.innerHTML = '';
+
+        persona.menu.forEach(item => {
+          const li = document.createElement('li');
+          li.className = `menu-item ${activeTab === item.id ? 'active' : ''}`;
+          li.onclick = () => switchTab(item.id);
+          li.innerHTML = `
+            <div class="menu-item-left">
+              <i class="fa-solid ${item.icon}"></i>
+              <span>${item.label}</span>
+            </div>
+            ${item.badge ? `<span class="menu-badge">${item.badge}</span>` : ''}
+          `;
+          menuList.appendChild(li);
+        });
+      }
+
+      function renderBanner() {
+        const persona = personas[currentRole];
+        document.getElementById('currentRoleTitle').textContent = persona.roleTitle;
+        document.getElementById('bannerRoleTitle').textContent = `لوحة تشغيل: ${persona.roleTitle}`;
+        document.getElementById('bannerRoleDesc').textContent = persona.desc;
+      }
+
+      function renderWorkspace() {
+        const container = document.getElementById('dynamicWorkspace');
+
+        if (activeTab === 'dashboard') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-building" style="color:var(--primary);"></i> أداء العقارات الاستثمارية</h3>
+                <div class="section-actions">
+                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('all')">الكل</button>
+                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('الرياض')">الرياض</button>
+                  <button class="btn btn-outline" onclick="AmarahApp.filterProperties('جدة')">جدة</button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>اسم العقار</th>
+                      <th>المدينة والموقع</th>
+                      <th>إجمالي الوحدات</th>
+                      <th>نسبة الإشغال</th>
+                      <th>الإيراد السنوي</th>
+                      <th>الحالة التشغيلية</th>
+                    </tr>
+                  </thead>
+                  <tbody id="propertiesTableBody">
+                    ${propertiesData.map(p => `
+                      <tr>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.city}</td>
+                        <td>${p.units} وحدة</td>
+                        <td><span class="status-badge badge-success">${Math.round((p.occupied/p.units)*100)}%</span></td>
+                        <td><strong>${p.revenue}</strong></td>
+                        <td><span class="status-badge badge-info">${p.status}</span></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Maintenance Kanban Preview -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-wrench" style="color:var(--warning);"></i> أحدث بلاغات الصيانة</h3>
+                <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
+                  <i class="fa-solid fa-plus"></i> بلاغ جديد
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>رقم التذكرة</th>
+                      <th>الوحدة السكنية</th>
+                      <th>التصنيف</th>
+                      <th>عنوان المشكلة</th>
+                      <th>الأولوية</th>
+                      <th>الفني المسؤول</th>
+                      <th>الحالة</th>
+                      <th>إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${ticketsData.map(t => `
+                      <tr>
+                        <td><code>${t.id}</code></td>
+                        <td>${t.unit}</td>
+                        <td>${t.category}</td>
+                        <td>${t.title}</td>
+                        <td>
+                          <span class="status-badge ${t.priority === 'طارئة' ? 'badge-danger' : t.priority === 'عالية' ? 'badge-warning' : 'badge-info'}">
+                            ${t.priority}
+                          </span>
+                        </td>
+                        <td>${t.tech}</td>
+                        <td>
+                          <span class="status-badge ${t.status === 'مكتمل' ? 'badge-success' : t.status === 'قيد التنفيذ' ? 'badge-warning' : 'badge-purple'}">
+                            ${t.status}
+                          </span>
+                        </td>
+                        <td>
+                          <button class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
+                            تحديث الحالة
+                          </button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'maintenance') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-toolbox" style="color:var(--primary);"></i> منظومة إدارة وبلاغات الصيانة</h3>
+                <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
+                  <i class="fa-solid fa-plus"></i> إنشاء بلاغ جديد
+                </button>
+              </div>
+              <p style="color:var(--text-muted); margin-bottom:16px;">
+                متابعة دورة حياة البلاغ من الإنشاء إلى التكليف الميداني حتى الإغلاق والاعتماد الفني.
+              </p>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>رقم التذكرة</th>
+                      <th>الوحدة</th>
+                      <th>التصنيف</th>
+                      <th>العنوان</th>
+                      <th>درجة الأهمية</th>
+                      <th>الفني</th>
+                      <th>الحالة الحالية</th>
+                      <th>التحكم</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${ticketsData.map(t => `
+                      <tr>
+                        <td><strong>${t.id}</strong></td>
+                        <td>${t.unit}</td>
+                        <td>${t.category}</td>
+                        <td>${t.title}</td>
+                        <td><span class="status-badge ${t.priority==='طارئة'?'badge-danger':'badge-warning'}">${t.priority}</span></td>
+                        <td>${t.tech}</td>
+                        <td><span class="status-badge ${t.status==='مكتمل'?'badge-success':'badge-warning'}">${t.status}</span></td>
+                        <td>
+                          <button class="btn btn-primary" style="padding:4px 10px; font-size:0.78rem;" onclick="AmarahApp.toggleTicketStatus('${t.id}')">
+                            ${t.status === 'مكتمل' ? 'إعادة فتح' : 'إكمال البلاغ'}
+                          </button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'owner-portal') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-landmark" style="color:var(--primary);"></i> بوابة المالك العقاري</h3>
+                <span class="status-badge badge-success">الحساب مفعل وموثق</span>
+              </div>
+              <div class="kpi-grid" style="margin-bottom:20px;">
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>صافي الأرباح المحولة</span><h4>384,500 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon green"><i class="fa-solid fa-wallet"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>العقارات المملوكة</span><h4>3 أبراج</h4></div>
+                  <div class="kpi-icon blue"><i class="fa-solid fa-building"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>نسبة الإشغال الإجمالية</span><h4>97%</h4></div>
+                  <div class="kpi-icon purple"><i class="fa-solid fa-percent"></i></div>
+                </div>
+              </div>
+              <p style="color:var(--text-muted); font-size:0.9rem;">
+                تم تحويل تسوية الربع الثالث بنجاح إلى الحساب البنكي الآيبان (SA44...9012).
+              </p>
+            </div>
+          `;
+        } else if (activeTab === 'tenant-portal') {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-house-chimney-user" style="color:var(--primary);"></i> بوابة المستأجر الشخصية</h3>
+                <span class="status-badge badge-success">عقد ساري المفعول</span>
+              </div>
+              <div class="kpi-grid" style="margin-bottom:20px;">
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>الوحدة المستأجرة</span><h4>شقة 101</h4></div>
+                  <div class="kpi-icon green"><i class="fa-solid fa-door-open"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>الدفعة القادمة المستحقة</span><h4>18,000 <small>ر.س</small></h4></div>
+                  <div class="kpi-icon amber"><i class="fa-solid fa-calendar-check"></i></div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-info"><span>تاريخ نهاية العقد</span><h4>1448/04/15</h4></div>
+                  <div class="kpi-icon blue"><i class="fa-solid fa-clock"></i></div>
+                </div>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
+                  <i class="fa-solid fa-wrench"></i> طلب صيانة للوحدة
+                </button>
+                <button class="btn btn-outline" onclick="alert('جاري الانتقال إلى بوابة الدفع السريع عبر سداد/مدى')">
+                  <i class="fa-solid fa-credit-card"></i> سداد الدفعة إلكترونياً
+                </button>
+              </div>
+            </div>
+          `;
+        } else if (activeTab === 'ai-advisor') {
+          container.innerHTML = `
+            <div class="ai-card">
+              <h3 style="font-size:1.2rem; font-weight:800; color:var(--primary-dark); margin-bottom:6px;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> المستشار العقاري الذكي ومحاكي العوائد (AI Engine)
+              </h3>
+              <p style="color:#166534; font-size:0.9rem;">
+                يقوم النموذج التنبئي بتحليل أسعار السوق وحساب العائد الاستثماري المتوقع بناءً على نسبة الإشغال وسعر الإيجار المقترح.
+              </p>
+              
+              <div class="slider-group">
+                <div class="slider-item">
+                  <div class="slider-item-header">
+                    <span>نسبة الإشغال المتوقعة:</span>
+                    <strong id="aiOccupancyVal" style="color:var(--primary);">94%</strong>
+                  </div>
+                  <input type="range" class="slider-input" min="50" max="100" value="94" oninput="AmarahApp.updateAiSim(this.value, null)">
+                </div>
+
+                <div class="slider-item">
+                  <div class="slider-item-header">
+                    <span>متوسط الإيجار السنوي للوحدة:</span>
+                    <strong id="aiRentVal" style="color:var(--primary);">45,000 ر.س</strong>
+                  </div>
+                  <input type="range" class="slider-input" min="20000" max="90000" step="5000" value="45000" oninput="AmarahApp.updateAiSim(null, this.value)">
+                </div>
+              </div>
+
+              <div style="background:#ffffff; border-radius:12px; padding:18px; margin-top:20px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+                <div>
+                  <span style="font-size:0.85rem; color:#166534; font-weight:700;">العائد السنوي التقديري الصافي:</span>
+                  <h3 id="aiCalculatedYield" style="font-size:1.6rem; font-weight:900; color:#065f46;">3,564,000 ر.س / سنوياً</h3>
+                </div>
+                <span class="status-badge badge-success" style="font-size:0.85rem; padding:6px 14px;">عائد استثماري ممتاز (8.9%)</span>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> ${activeTab}</h3>
+              </div>
+              <p style="color:var(--text-muted);">
+                شاشة تفاعلية مخصصة للدور الحالي. جميع العمليات متزامنة وتتبع نظام الصلاحيات RBAC.
+              </p>
+            </div>
+          `;
+        }
+      }
+
+      function switchRole(roleKey) {
+        if (!personas[roleKey]) return;
+        currentRole = roleKey;
+
+        // Update active chip
+        document.querySelectorAll('.persona-chip').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        const activeChip = Array.from(document.querySelectorAll('.persona-chip')).find(b => b.textContent.includes(roleKey));
+        if (activeChip) activeChip.classList.add('active');
+
+        // Set default tab for role
+        activeTab = personas[roleKey].menu[0].id;
+
+        renderSidebar();
+        renderBanner();
+        renderWorkspace();
+      }
+
+      function switchTab(tabId) {
+        activeTab = tabId;
+        renderSidebar();
+        renderWorkspace();
+      }
+
+      function openNewTicketModal() {
+        document.getElementById('ticketModal').classList.add('active');
+      }
+
+      function closeNewTicketModal() {
+        document.getElementById('ticketModal').classList.remove('active');
+      }
+
+      function handleTicketSubmit(e) {
+        e.preventDefault();
+        const unit = document.getElementById('modalUnitSelect').value;
+        const category = document.getElementById('modalCategory').value;
+        const priority = document.getElementById('modalPriority').value;
+        const title = document.getElementById('modalTitle').value;
+
+        const newId = `TKT-${Math.floor(100 + Math.random() * 900)}`;
+        ticketsData.unshift({
+          id: newId,
+          unit: unit,
+          category: category,
+          title: title,
+          priority: priority,
+          status: 'قيد التنفيذ',
+          tech: 'عصام كمال'
+        });
+
+        closeNewTicketModal();
+        e.target.reset();
+        renderWorkspace();
+        alert(`تم تسجيل البلاغ بنجاح برقم: ${newId} وتكليف الفني الميداني.`);
+      }
+
+      function toggleTicketStatus(ticketId) {
+        const ticket = ticketsData.find(t => t.id === ticketId);
+        if (ticket) {
+          ticket.status = ticket.status === 'مكتمل' ? 'قيد التنفيذ' : 'مكتمل';
+          renderWorkspace();
+        }
+      }
+
+      let simOcc = 94;
+      let simRent = 45000;
+      function updateAiSim(occ, rent) {
+        if (occ !== null) simOcc = parseInt(occ);
+        if (rent !== null) simRent = parseInt(rent);
+
+        const occEl = document.getElementById('aiOccupancyVal');
+        const rentEl = document.getElementById('aiRentVal');
+        const calcEl = document.getElementById('aiCalculatedYield');
+
+        if (occEl) occEl.textContent = `${simOcc}%`;
+        if (rentEl) rentEl.textContent = `${simRent.toLocaleString()} ر.س`;
+
+        const totalUnits = 84;
+        const occupiedCount = Math.round(totalUnits * (simOcc / 100));
+        const totalYield = occupiedCount * simRent;
+        if (calcEl) calcEl.textContent = `${totalYield.toLocaleString()} ر.س / سنوياً`;
+      }
+
+      function showRolePermissions() {
+        alert(`صلاحيات الدور النشط [${currentRole}]:\n- إدارة العقارات: ${currentRole==='ADMIN'||currentRole==='PROPERTY_MANAGER'?'كاملة':'مقيدة'}\n- المحاسبة والمالية: ${currentRole==='ADMIN'||currentRole==='ACCOUNTANT'?'كاملة':'مقيدة'}\n- إدارة الصيانة: ${currentRole==='ADMIN'||currentRole==='MAINTENANCE_SUPERVISOR'||currentRole==='TECHNICIAN'?'متاحة':'مقيدة'}\n- بوابة المالك: ${currentRole==='OWNER'||currentRole==='ADMIN'?'متاحة':'مقيدة'}\n- بوابة المستأجر: ${currentRole==='TENANT'||currentRole==='ADMIN'?'متاحة':'مقيدة'}`);
+      }
+
+      function showQuickStart() {
+        alert("لتشغيل المنظومة كاملة بـ Next.js و Prisma محلياً:\n1. git clone https://github.com/khald101/aqar.git\n2. cd aqar\n3. npm install\n4. npx prisma db seed\n5. npm run dev\nثم افتح http://localhost:3000");
+      }
+
+      // Initialize
+      function init() {
+        renderSidebar();
+        renderBanner();
+        renderWorkspace();
+      }
+
+      return {
+        init,
+        switchRole,
+        switchTab,
+        openNewTicketModal,
+        closeNewTicketModal,
+        handleTicketSubmit,
+        toggleTicketStatus,
+        updateAiSim,
+        showRolePermissions,
+        showQuickStart
+      };
+    })();
+
+    // Run on DOM Ready
+    document.addEventListener('DOMContentLoaded', AmarahApp.init);
+  </script>
+</body>
+</html>
