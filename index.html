@@ -947,8 +947,164 @@
     }
     .form-control:focus {
       outline: none;
+    /* ===================================================
+       EXCLUSIVE SAUDI MADA PAYMENT GATEWAY STYLES
+       =================================================== */
+    .mada-badge-official {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1.5px solid #a7f3d0;
+      border-radius: var(--radius-full);
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .mada-card-container {
+      perspective: 1000px;
+      margin: 12px 0 16px;
+    }
+    .mada-card {
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      aspect-ratio: 1.586 / 1;
+      background: linear-gradient(135deg, #059669 0%, #047857 50%, #064e3b 100%);
+      border-radius: 16px;
+      padding: clamp(14px, 3vw, 20px);
+      color: #ffffff;
+      box-shadow: 0 12px 24px -6px rgba(4, 120, 87, 0.45);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mada-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mada-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mada-emv-chip {
+      width: 36px;
+      height: 26px;
+      background: linear-gradient(135deg, #fcd34d 0%, #b45309 100%);
+      border-radius: 5px;
+      border: 1px solid #78350f;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);
+    }
+    .mada-logo-box {
+      background: #ffffff;
+      padding: 3px 10px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .mada-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #047857;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .mada-logo-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #0284c7;
+    }
+    .mada-card-number {
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1.1rem, 3.5vw, 1.32rem);
+      letter-spacing: 2.5px;
+      font-weight: 700;
+      text-align: center;
+      margin: 8px 0;
+      direction: ltr;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      color: #ffffff;
+    }
+    .mada-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 0.72rem;
+    }
+    .mada-card-holder {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mada-card-expiry {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      direction: ltr;
+    }
+    .mada-exclusive-box {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #065f46;
+    }
+    .otp-input-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px 0;
+      direction: ltr;
+    }
+    .otp-box {
+      width: 48px;
+      height: 52px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: monospace;
+      transition: all 0.2s;
+    }
+    .otp-box:focus {
       border-color: var(--primary);
+      outline: none;
       box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+    }
+    .receipt-box {
+      border: 2px dashed #bbf7d0;
+      background: #f0fdf4;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      text-align: right;
+      margin: 14px 0;
     }
 
     /* Mobile Sticky Bottom Navigation Bar */
@@ -1325,6 +1481,175 @@
           <i class="fa-solid fa-paper-plane"></i> إرسال البلاغ فوراً
         </button>
       </form>
+  </div>
+
+  <!-- Modal: Exclusive Saudi Mada Payment Gateway -->
+  <div class="modal-backdrop" id="madaPaymentModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <!-- Step 1: Card Details -->
+      <div id="madaStep1">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="mada-logo-box" style="padding: 2px 8px;">
+              <span class="mada-logo-text" style="font-size:1rem;">mada</span>
+              <span class="mada-logo-dot" style="width:6px; height:6px;"></span>
+            </div>
+            <h3 class="modal-title" style="font-size:1.05rem;">بوابة الدفع الإلكتروني (مدى)</h3>
+          </div>
+          <button class="modal-close" onclick="AmarahApp.closeMadaModal()">&times;</button>
+        </div>
+
+        <div class="mada-exclusive-box">
+          <i class="fa-solid fa-shield-halved" style="font-size:1.15rem; color:#059669; flex-shrink:0;"></i>
+          <div>
+            <div>طريقة الدفع الحصرية المعتمدة: <strong>بطاقة مدى البنكية (Mada)</strong></div>
+            <small style="color:#047857; display:block;">شبكة المدفوعات الوطنية السعودية المصرفية 🇸🇦</small>
+          </div>
+        </div>
+
+        <!-- Realistic Interactive Mada Card Graphic -->
+        <div class="mada-card-container">
+          <div class="mada-card">
+            <div class="mada-card-top">
+              <div class="mada-emv-chip"></div>
+              <div class="mada-logo-box">
+                <span class="mada-logo-text">mada</span>
+                <span class="mada-logo-dot"></span>
+              </div>
+            </div>
+            <div class="mada-card-number" id="cardPreviewNumber">5888 4500 1234 5678</div>
+            <div class="mada-card-bottom">
+              <div>
+                <span style="font-size:0.62rem; color:#a7f3d0; display:block;">حامل البطاقة / CARDHOLDER</span>
+                <span class="mada-card-holder" id="cardPreviewName">سلطان بن عبدالله</span>
+              </div>
+              <div style="text-align:left;">
+                <span style="font-size:0.62rem; color:#a7f3d0; display:block;">ينتهي في / EXP</span>
+                <span class="mada-card-expiry" id="cardPreviewExpiry">08/28</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Fields -->
+        <form onsubmit="AmarahApp.handleMadaPaymentSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">المبلغ المستحق للدفع</label>
+            <input type="text" class="form-control" value="18,000 ر.س (دفعة الإيجار الحالية)" readonly style="background:#f8fafc; font-weight:800; color:var(--primary-dark);">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">رقم بطاقة مدى البنكية (16 رقماً) *</label>
+            <input type="text" class="form-control" id="madaCardNumber" placeholder="5888 4500 1234 5678" maxlength="19" required oninput="AmarahApp.updateMadaCardNumber(this.value)" style="direction:ltr; text-align:right; font-family:monospace; font-weight:700;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">اسم حامل البطاقة (بالإنجليزية) *</label>
+            <input type="text" class="form-control" id="madaCardName" placeholder="SULTAN A ALOTAIBI" required oninput="AmarahApp.updateMadaCardName(this.value)">
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label class="form-label">تاريخ الانتهاء *</label>
+              <input type="text" class="form-control" id="madaCardExpiry" placeholder="08/28" maxlength="5" required oninput="AmarahApp.updateMadaCardExpiry(this.value)" style="direction:ltr; text-align:center; font-family:monospace;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">رمز الأمان (CVV) *</label>
+              <input type="password" class="form-control" id="madaCardCvv" placeholder="•••" maxlength="3" required style="direction:ltr; text-align:center; font-family:monospace;">
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:6px; margin: 8px 0 14px;">
+            <i class="fa-solid fa-lock" style="color:var(--primary);"></i>
+            <span>عملية دفع مشفرة وآمنة متوافقة مع البنك المركزي السعودي (SAMA).</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:0.92rem; background: linear-gradient(135deg, #047857 0%, #064e3b 100%);">
+            <i class="fa-solid fa-credit-card"></i> دفع 18,000 ر.س بواسطة بطاقة مدى
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: 3D Secure / OTP SMS Screen -->
+      <div id="madaStep2" style="display:none; text-align:center;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="mada-logo-box" style="padding: 2px 8px;">
+              <span class="mada-logo-text" style="font-size:1rem;">mada</span>
+              <span class="mada-logo-dot" style="width:6px; height:6px;"></span>
+            </div>
+            <h3 class="modal-title" style="font-size:1rem;">التحقق الأمني (3D Secure)</h3>
+          </div>
+          <button class="modal-close" onclick="AmarahApp.closeMadaModal()">&times;</button>
+        </div>
+
+        <div style="margin: 16px 0;">
+          <div style="width:52px; height:52px; background:#dcfce7; color:#15803d; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:10px;">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <h4 style="font-size:1rem; font-weight:800; color:var(--secondary); margin-bottom:4px;">رمز التحقق لمرة واحدة (OTP)</h4>
+          <p style="font-size:0.8rem; color:var(--text-muted); max-width:320px; margin:0 auto;">
+            تم إرسال رمز الأمان المكون من 4 أرقام عبر رسالة SMS إلى هاتفك المسجل لدى البنك: <strong>050****432</strong>
+          </p>
+        </div>
+
+        <form onsubmit="AmarahApp.handleMadaOtpSubmit(event)">
+          <div class="otp-input-group">
+            <input type="text" class="otp-box" maxlength="1" value="4" readonly>
+            <input type="text" class="otp-box" maxlength="1" value="8" readonly>
+            <input type="text" class="otp-box" maxlength="1" value="2" readonly>
+            <input type="text" class="otp-box" maxlength="1" value="1" readonly>
+          </div>
+          <p style="font-size:0.74rem; color:#059669; font-weight:700; margin-bottom:16px;">
+            <i class="fa-solid fa-clock"></i> ينتهي الرمز خلال 01:45 دقيقة (تم إدخال الرمز للتجربة)
+          </p>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:0.92rem; background: linear-gradient(135deg, #047857 0%, #064e3b 100%);">
+            <i class="fa-solid fa-shield-check"></i> تأكيد السداد والخصم من بطاقة مدى
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 3: Verified Mada Receipt -->
+      <div id="madaStep3" style="display:none; text-align:center;">
+        <div style="width:58px; height:58px; background:#dcfce7; color:#16a34a; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:1.8rem; margin:8px 0 10px; box-shadow:0 0 20px rgba(22, 163, 74, 0.2);">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 style="font-size:1.2rem; font-weight:900; color:#065f46; margin-bottom:4px;">تم سداد الدفعة بنجاح عبر مدى!</h3>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">تم خصم المبلغ بنجاح وتوليد سند القبض الإلكتروني وتوثيقه.</p>
+
+        <div class="receipt-box text-right" style="font-size:0.82rem; line-height:1.8;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #bbf7d0; padding-bottom:6px; margin-bottom:6px;">
+            <span>طريقة الدفع:</span>
+            <strong>بطاقة مدى (Mada) •••• 5888</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #bbf7d0; padding-bottom:6px; margin-bottom:6px;">
+            <span>المبلغ المسدد:</span>
+            <strong style="color:#059669; font-size:0.95rem;">18,000 ر.س</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #bbf7d0; padding-bottom:6px; margin-bottom:6px;">
+            <span>رقم تفويض مدى:</span>
+            <strong style="font-family:monospace;" id="receiptAuthCode">MADA-AUTH-942817</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #bbf7d0; padding-bottom:6px; margin-bottom:6px;">
+            <span>رقم سند القبض:</span>
+            <strong style="font-family:monospace;" id="receiptNumberVal">REC-2026-7892</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>حالة السداد:</span>
+            <span class="status-badge badge-success"><i class="fa-solid fa-check"></i> مسدد بالكامل وموثق</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:14px;">
+          <button class="btn btn-outline" style="flex:1;" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> طباعة السند
+          </button>
+          <button class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #047857 0%, #064e3b 100%);" onclick="AmarahApp.closeMadaModal()">
+            <i class="fa-solid fa-check"></i> إغلاق والعودة للبوابة
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1358,6 +1683,11 @@
       let currentRole = 'ADMIN';
       let activeTab = 'dashboard';
       let currentCityFilter = 'all';
+
+      // Mada Payment State
+      let tenantRentPaid = false;
+      let lastMadaAuth = 'MADA-AUTH-942817';
+      let lastMadaReceipt = 'REC-2026-7892';
 
       // 7 Personas & Real Estate RBAC Matrix
       const personas = {
@@ -1871,16 +2201,35 @@
             <div class="section-card">
               <div class="section-header">
                 <h3 class="section-title"><i class="fa-solid fa-house-chimney-user" style="color:var(--primary);"></i> بوابة المستأجر الشخصية</h3>
-                <span class="status-badge badge-success">عقد ساري</span>
+                <span class="status-badge badge-success">عقد ساري وموثق</span>
               </div>
+
+              <!-- Exclusive Mada Banner -->
+              <div class="mada-exclusive-box" style="margin-bottom:16px;">
+                <div class="mada-logo-box" style="padding: 2px 8px; flex-shrink:0;">
+                  <span class="mada-logo-text" style="font-size:0.95rem;">mada</span>
+                  <span class="mada-logo-dot" style="width:6px; height:6px;"></span>
+                </div>
+                <div>
+                  <span style="font-size:0.82rem; font-weight:800; color:#065f46; display:block;">
+                    طريقة الدفع الحصرية المعتمدة: بطاقة مدى البنكية (Mada)
+                  </span>
+                  <small style="color:#047857;">يتم السداد إلكترونياً وحصرياً ببطاقات مدى الصادرة من جميع البنوك السعودية 🇸🇦</small>
+                </div>
+              </div>
+
               <div class="kpi-grid" style="margin-bottom:16px;">
                 <div class="kpi-card">
                   <div class="kpi-info"><span>الوحدة المستأجرة</span><h4>شقة 101</h4></div>
                   <div class="kpi-icon green"><i class="fa-solid fa-door-open"></i></div>
                 </div>
                 <div class="kpi-card">
-                  <div class="kpi-info"><span>الدفعة القادمة</span><h4>18,000 <small>ر.س</small></h4></div>
-                  <div class="kpi-icon amber"><i class="fa-solid fa-calendar-check"></i></div>
+                  <div class="kpi-info">
+                    <span>الدفعة القادمة المستحقة</span>
+                    <h4>${tenantRentPaid ? '<span style="color:#059669;">0 <small style="font-size:0.85rem;">ر.س</small></span>' : '18,000 <small style="font-size:0.85rem;">ر.س</small>'}</h4>
+                    ${tenantRentPaid ? '<span class="status-badge badge-success"><i class="fa-solid fa-check"></i> مسددة بالكامل عبر مدى</span>' : '<span class="status-badge badge-warning">مستحقة السداد</span>'}
+                  </div>
+                  <div class="kpi-icon ${tenantRentPaid ? 'green' : 'amber'}"><i class="fa-solid ${tenantRentPaid ? 'fa-circle-check' : 'fa-calendar-check'}"></i></div>
                 </div>
                 <div class="kpi-card">
                   <div class="kpi-info"><span>تاريخ الاستحقاق</span><h4>1448/04/15</h4></div>
@@ -1889,11 +2238,17 @@
               </div>
               <div style="display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="btn btn-primary" onclick="AmarahApp.openNewTicketModal()">
-                  <i class="fa-solid fa-wrench"></i> طلب صيانة
+                  <i class="fa-solid fa-wrench"></i> طلب صيانة للوحدة
                 </button>
-                <button class="btn btn-outline" onclick="alert('جاري الانتقال لبوابة الدفع الإلكتروني عبر سداد ومدى')">
-                  <i class="fa-solid fa-credit-card"></i> سداد الإيجار
-                </button>
+                ${tenantRentPaid ? `
+                  <button class="btn btn-outline" style="border-color:#059669; color:#059669; font-weight:800;" onclick="AmarahApp.showMadaReceiptDirect()">
+                    <i class="fa-solid fa-receipt"></i> عرض إيصال سداد مدى المعتمد
+                  </button>
+                ` : `
+                  <button class="btn btn-primary" style="background:linear-gradient(135deg, #047857 0%, #064e3b 100%);" onclick="AmarahApp.openMadaModal()">
+                    <i class="fa-solid fa-credit-card"></i> سداد الإيجار عبر مدى (Mada)
+                  </button>
+                `}
               </div>
             </div>
           `;
@@ -2074,6 +2429,95 @@
         alert("منظومة عِمارة لإدارة العقارات والأملاك الذكية\nتم بناء وتطوير النظام باستخدام أحدث تقنيات الويب المتجاوبة بالكامل على جميع الأجهزة والجوالات والشاشات الذكية دون استثناء.");
       }
 
+      // Exclusive Saudi Mada Payment Functions
+      function openMadaModal() {
+        document.getElementById('madaStep1').style.display = 'block';
+        document.getElementById('madaStep2').style.display = 'none';
+        document.getElementById('madaStep3').style.display = 'none';
+        document.getElementById('madaPaymentModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMadaModal() {
+        document.getElementById('madaPaymentModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function updateMadaCardNumber(val) {
+        const cleaned = val.replace(/\D/g, '').slice(0, 16);
+        const formatted = cleaned.match(/.{1,4}/g)?.join(' ') || '';
+        document.getElementById('madaCardNumber').value = formatted;
+        document.getElementById('cardPreviewNumber').textContent = formatted || '5888 4500 1234 5678';
+      }
+
+      function updateMadaCardName(val) {
+        document.getElementById('cardPreviewName').textContent = val.toUpperCase() || 'سلطان بن عبدالله';
+      }
+
+      function updateMadaCardExpiry(val) {
+        let cleaned = val.replace(/\D/g, '').slice(0, 4);
+        if (cleaned.length >= 2) {
+          cleaned = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
+        }
+        document.getElementById('madaCardExpiry').value = cleaned;
+        document.getElementById('cardPreviewExpiry').textContent = cleaned || '08/28';
+      }
+
+      function handleMadaPaymentSubmit(e) {
+        e.preventDefault();
+        const cardNum = document.getElementById('madaCardNumber').value.replace(/\s/g, '');
+        if (cardNum.length < 16) {
+          alert('يرجى إدخال رقم بطاقة مدى كامل ومكون من 16 رقماً.');
+          return;
+        }
+
+        // Switch to OTP Verification (Step 2)
+        document.getElementById('madaStep1').style.display = 'none';
+        document.getElementById('madaStep2').style.display = 'block';
+      }
+
+      function handleMadaOtpSubmit(e) {
+        e.preventDefault();
+        tenantRentPaid = true;
+        lastMadaAuth = `MADA-AUTH-${Math.floor(100000 + Math.random() * 900000)}`;
+        lastMadaReceipt = `REC-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        document.getElementById('receiptAuthCode').textContent = lastMadaAuth;
+        document.getElementById('receiptNumberVal').textContent = lastMadaReceipt;
+
+        // Add to journal and audit entries
+        journalData.unshift({
+          id: `JRN-${Math.floor(500 + Math.random() * 500)}`,
+          desc: 'سداد دفعة إيجار المستأجر سلطان بن عبدالله عبر بطاقة مدى',
+          debit: '18,000 ر.س (حساب مدى البنكي)',
+          credit: '18,000 ر.س (إيرادات إيجارات)',
+          balanced: true
+        });
+
+        auditData.unshift({
+          time: 'الآن',
+          user: 'سلطان بن عبدالله (TENANT)',
+          action: `سداد إلكتروني لدفعة إيجار بمبلغ 18,000 ر.س عبر بطاقة مدى بنجاح (تفويض: ${lastMadaAuth})`,
+          ip: '192.168.1.105',
+          status: 'موثق ومشفر'
+        });
+
+        document.getElementById('madaStep2').style.display = 'none';
+        document.getElementById('madaStep3').style.display = 'block';
+
+        renderWorkspace();
+      }
+
+      function showMadaReceiptDirect() {
+        document.getElementById('madaStep1').style.display = 'none';
+        document.getElementById('madaStep2').style.display = 'none';
+        document.getElementById('madaStep3').style.display = 'block';
+        document.getElementById('receiptAuthCode').textContent = lastMadaAuth;
+        document.getElementById('receiptNumberVal').textContent = lastMadaReceipt;
+        document.getElementById('madaPaymentModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
       // Initialize
       function init() {
         renderSidebar();
@@ -2101,7 +2545,15 @@
         showRolePermissions,
         showQuickStart,
         toggleMobileSidebar,
-        closeMobileSidebar
+        closeMobileSidebar,
+        openMadaModal,
+        closeMadaModal,
+        updateMadaCardNumber,
+        updateMadaCardName,
+        updateMadaCardExpiry,
+        handleMadaPaymentSubmit,
+        handleMadaOtpSubmit,
+        showMadaReceiptDirect
       };
     })();
 
