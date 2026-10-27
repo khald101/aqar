@@ -33,8 +33,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+    }
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 5px;
@@ -91,7 +102,7 @@
     <div id="mobileBackdrop" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-xs lg:hidden transition-opacity hidden" onclick="AmarahApp.closeSidebar()"></div>
 
     <!-- Right Sidebar (Mirrors Sidebar.tsx) -->
-    <aside id="mainSidebar" class="fixed inset-y-0 right-0 z-45 w-72 bg-slate-900 text-slate-100 flex flex-col border-l border-slate-800 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 translate-x-full">
+    <aside id="mainSidebar" class="fixed inset-y-0 right-0 z-45 w-72 max-w-[85vw] bg-slate-900 text-slate-100 flex flex-col border-l border-slate-800 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 translate-x-full">
       <!-- Brand Header -->
       <div class="h-16 px-6 flex items-center justify-between border-b border-slate-800/80 shrink-0">
         <a href="javascript:void(0)" onclick="AmarahApp.switchTab('dashboard')" class="flex items-center gap-3">
@@ -135,31 +146,32 @@
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
       <!-- Top Header (Mirrors Header.tsx) -->
-      <header class="h-16 bg-white border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+      <header class="h-16 bg-white border-b border-slate-200/80 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
         <!-- Left side (in RTL: Right side): Toggle button & Title -->
-        <div class="flex items-center gap-3">
-          <button onclick="AmarahApp.toggleSidebar()" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden transition-colors" aria-label="تبديل القائمة الجانبية">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+          <button onclick="AmarahApp.toggleSidebar()" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden transition-colors shrink-0" aria-label="تبديل القائمة الجانبية">
             <i class="fa-solid fa-bars text-lg"></i>
           </button>
 
-          <div class="hidden sm:block">
-            <h1 class="text-base font-bold text-slate-900 leading-tight">
-              نظام عِمارة لإدارة العقارات والأملاك
+          <div class="min-w-0">
+            <h1 class="text-sm sm:text-base font-bold text-slate-900 leading-tight truncate">
+              نظام عِمارة <span class="hidden sm:inline">لإدارة العقارات والأملاك</span>
             </h1>
-            <p class="text-xs text-slate-500">
-              البوابة الإدارية المركزية المتكاملة
+            <p class="text-[10px] sm:text-xs text-slate-500 truncate hidden min-[360px]:block">
+              البوابة الإدارية المركزية
             </p>
           </div>
         </div>
 
         <!-- Right side (in RTL: Left side): Persona switch, Role badge, User, Logout -->
-        <div class="flex items-center gap-2 sm:gap-4">
+        <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <!-- Quick Role Switcher Dropdown for Testing -->
           <div class="relative">
-            <button type="button" onclick="AmarahApp.togglePersonaDropdown()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors" title="اختبار أدوار وصلاحيات النظام المختلفة">
-              <i class="fa-solid fa-user-check text-teal-600"></i>
-              <span class="hidden md:inline">تبديل المستخدم للاختبار</span>
-              <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+            <button type="button" onclick="AmarahApp.togglePersonaDropdown()" class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors" title="اختبار أدوار وصلاحيات النظام المختلفة">
+              <i class="fa-solid fa-user-check text-teal-600 shrink-0"></i>
+              <span class="hidden sm:inline text-xs font-bold">تبديل الدور</span>
+              <span class="inline sm:hidden text-[10px] font-bold" id="mobileRoleLabel">مدير</span>
+              <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
             </button>
 
             <!-- Persona Menu -->
@@ -202,7 +214,7 @@
       </header>
 
       <!-- Main Scrollable Content Container -->
-      <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 custom-scrollbar">
+      <main class="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-8 custom-scrollbar">
         <div class="max-w-7xl mx-auto w-full" id="mainViewContainer">
           <!-- Dynamically populated based on active tab -->
         </div>
@@ -212,7 +224,7 @@
 
   <!-- Modal: Exclusive Saudi Mada Payment Gateway -->
   <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="madaPaymentModal" onclick="if(event.target === this) AmarahApp.closeMadaModal()">
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-5 sm:p-7 custom-scrollbar animate-scale-up">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-4 sm:p-7 custom-scrollbar animate-scale-up">
       <!-- Step 1: Card Details -->
       <div id="madaStep1">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -366,7 +378,7 @@
 
   <!-- Modal: New Ticket -->
   <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="ticketModal" onclick="if(event.target === this) AmarahApp.closeNewTicketModal()">
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-5 sm:p-7 custom-scrollbar animate-scale-up">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-4 sm:p-7 custom-scrollbar animate-scale-up">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
         <h3 class="text-base font-bold text-slate-900">رفع بلاغ صيانة جديد</h3>
         <button class="p-1 rounded-lg text-slate-400 hover:text-slate-700" onclick="AmarahApp.closeNewTicketModal()">&times;</button>
@@ -381,7 +393,7 @@
             <option value="عمائر الهدى - شقة 4">عمائر الهدى - شقة 4</option>
           </select>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">تصنيف الصيانة *</label>
             <select class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600" id="modalCategory" required>
@@ -418,7 +430,7 @@
 
   <!-- Modal: Add New Property -->
   <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="propertyModal" onclick="if(event.target === this) AmarahApp.closePropertyModal()">
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-5 sm:p-7 custom-scrollbar animate-scale-up">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-4 sm:p-7 custom-scrollbar animate-scale-up">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center text-base font-bold">
@@ -438,7 +450,7 @@
           <input type="text" id="newPropName" placeholder="مثال: برج الياسمين السكني" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600" required>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">رمز العقار الفريد *</label>
             <input type="text" id="newPropCode" placeholder="PROP-104" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono uppercase" required>
@@ -455,7 +467,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">المدينة *</label>
             <select id="newPropCity" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600" required>
@@ -473,7 +485,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">رقم الصك الإلكتروني</label>
             <input type="text" id="newPropDeed" placeholder="3109842910" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono">
@@ -504,7 +516,7 @@
 
   <!-- Modal: Add New Contract -->
   <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="contractModal" onclick="if(event.target === this) AmarahApp.closeContractModal()">
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-5 sm:p-7 custom-scrollbar animate-scale-up">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-4 sm:p-7 custom-scrollbar animate-scale-up">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center text-base font-bold">
@@ -519,7 +531,7 @@
       </div>
 
       <form onsubmit="AmarahApp.handleContractSubmit(event)" class="space-y-3.5">
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">رقم العقد المعتمد *</label>
             <input type="text" id="newContractNum" placeholder="CNT-2026-104" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono" required>
@@ -547,7 +559,7 @@
           </select>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">قيمة الإيجار السنوي (ر.س) *</label>
             <input type="number" id="newContractRent" min="1000" step="500" value="45000" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-bold" required>
@@ -558,7 +570,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">دورة السداد *</label>
             <select id="newContractCycle" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-semibold" required>
@@ -577,7 +589,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">تاريخ بداية العقد *</label>
             <input type="date" id="newContractStart" value="2026-03-01" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono" required>

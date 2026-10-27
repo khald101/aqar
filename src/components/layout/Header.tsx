@@ -84,36 +84,37 @@ export function Header({ onToggleSidebar, currentUser }: HeaderProps) {
   return (
     <header className="h-16 bg-white border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
       {/* Left side (in RTL: Right side): Toggle button & Title */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button
           onClick={onToggleSidebar}
-          className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden transition-colors"
+          className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden transition-colors shrink-0"
           aria-label="تبديل القائمة الجانبية"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="hidden sm:block">
-          <h1 className="text-base font-bold text-slate-900 leading-tight">
-            نظام عِمارة لإدارة العقارات والأملاك
+        <div className="min-w-0">
+          <h1 className="text-sm sm:text-base font-bold text-slate-900 leading-tight truncate">
+            نظام عِمارة <span className="hidden sm:inline">لإدارة العقارات والأملاك</span>
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[10px] sm:text-xs text-slate-500 truncate hidden min-[360px]:block">
             البوابة الإدارية المركزية
           </p>
         </div>
       </div>
 
       {/* Right side (in RTL: Left side): Persona switch, Role badge, User, Logout */}
-      <div className="flex items-center gap-2 sm:gap-4">
+      <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
         {/* Quick Role Switcher Dropdown for Testing */}
         <div className="relative group">
           <button
             type="button"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors"
             title="اختبار أدوار وصلاحيات النظام المختلفة"
           >
-            <UserCheck className="w-3.5 h-3.5 text-teal-600" />
-            <span className="hidden md:inline">تبديل المستخدم للاختبار</span>
+            <UserCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+            <span className="hidden sm:inline">تبديل المستخدم للاختبار</span>
+            <span className="inline sm:hidden text-[10px] font-bold">الدور</span>
             {isSwitchingRole && <RefreshCw className="w-3 h-3 animate-spin text-teal-600" />}
           </button>
 

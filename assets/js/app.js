@@ -393,7 +393,7 @@ const AmarahApp = (function () {
         </div>
 
         <!-- KPI Stats Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div class="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-bold text-slate-500">إجمالي الأصول</span>
@@ -438,7 +438,7 @@ const AmarahApp = (function () {
           <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
             <i class="fa-solid fa-bolt text-amber-500"></i> اختصارات الوصول السريع للأقسام
           </h3>
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div class="grid grid-cols-2 min-[480px]:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
             <button onclick="AmarahApp.switchTab('properties')" class="p-4 rounded-2xl bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-300 text-center transition-all group">
               <i class="fa-solid fa-building text-teal-600 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
               <span class="block text-xs font-bold text-slate-800">العقارات</span>
@@ -475,21 +475,21 @@ const AmarahApp = (function () {
             <button onclick="AmarahApp.switchTab('audit-logs')" class="text-xs text-teal-600 hover:text-teal-800 font-bold">عرض السجل الكامل &larr;</button>
           </div>
           <div class="space-y-3">
-            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
               <div class="flex items-center gap-3">
                 <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">سداد مدى</span>
                 <span class="font-bold text-slate-800">سداد دفعة إيجارية لعقد #CNT-2026-101 بقيمة 18,000 ر.س</span>
               </div>
               <span class="text-slate-400 font-medium">قبل 12 دقيقة</span>
             </div>
-            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
               <div class="flex items-center gap-3">
                 <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px]">عقد جديد</span>
                 <span class="font-bold text-slate-800">توثيق عقد إيجار شقة 304 في مجمع الواحة</span>
               </div>
               <span class="text-slate-400 font-medium">قبل ساعتين</span>
             </div>
-            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
               <div class="flex items-center gap-3">
                 <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px]">صيانة</span>
                 <span class="font-bold text-slate-800">إغلاق بلاغ صيانة تكييف #TKT-412 بنجاح</span>
@@ -508,7 +508,7 @@ const AmarahApp = (function () {
 
     return `
       <div class="space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-lg font-bold text-slate-900">إدارة العقارات والأصول الاستثمارية</h2>
             <p class="text-xs text-slate-500">استعراض الأبراج، المجمعات التجارية، والوحدات السكنية والمكتبية</p>
@@ -606,7 +606,7 @@ const AmarahApp = (function () {
 
     return `
       <div class="space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-lg font-bold text-slate-900">سجل عقود الإيجار المعتمدة</h2>
             <p class="text-xs text-slate-500">توثيق العقود، تواريخ البداية والنهاية، والالتزامات المالية</p>
@@ -618,7 +618,8 @@ const AmarahApp = (function () {
           ` : ''}
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
+          <div class="text-[11px] text-slate-400 sm:hidden mb-2.5 flex items-center gap-1.5"><i class="fa-solid fa-arrows-left-right text-teal-600"></i> اسحب الجدول أفقياً للاطلاع على كامل بيانات العقود</div>
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -702,7 +703,7 @@ const AmarahApp = (function () {
   function getPaymentsView() {
     return `
       <div class="space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-lg font-bold text-slate-900">سندات القبض والتحصيلات المالية</h2>
             <p class="text-xs text-slate-500">نظام التحصيل الإلكتروني المعتمد حصرياً عبر شبكة مدى البنكية 🇸🇦</p>
@@ -712,7 +713,7 @@ const AmarahApp = (function () {
           </button>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -755,7 +756,7 @@ const AmarahApp = (function () {
   function getAccountingView() {
     return `
       <div class="space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-lg font-bold text-slate-900">المحاسبة المالية والقيود المزدوجة</h2>
             <p class="text-xs text-slate-500">دليل الحسابات الشجري، قيود اليومية، وسندات الصرف وتسويات الملاك</p>
@@ -765,7 +766,7 @@ const AmarahApp = (function () {
           </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
             <span class="text-xs text-slate-500 font-bold block mb-1">إجمالي الإيرادات المحصلة</span>
             <div class="text-xl font-black text-emerald-700">1,420,000 ر.س</div>
@@ -780,7 +781,7 @@ const AmarahApp = (function () {
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <h3 class="text-xs font-bold text-slate-700 mb-3">أحدث قيود اليومية المحاسبية المزدوجة (Journal Entries)</h3>
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
@@ -821,7 +822,7 @@ const AmarahApp = (function () {
   function getMaintenanceView() {
     return `
       <div class="space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-lg font-bold text-slate-900">الصيانة وأوامر العمل الميدانية</h2>
             <p class="text-xs text-slate-500">متابعة البلاغات، تكليف الفنيين، وتوثيق تقارير الإنجاز</p>
@@ -831,7 +832,7 @@ const AmarahApp = (function () {
           </button>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -879,7 +880,7 @@ const AmarahApp = (function () {
           <p class="text-xs text-slate-500">بيانات الملكية، حصص الأرباح، والتسويات المالية الدورية</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
           <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs">
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 font-black flex items-center justify-center">م</div>
@@ -938,7 +939,7 @@ const AmarahApp = (function () {
           <p class="text-xs text-slate-500">ملفات المستأجرين، بيانات التواصل، وتاريخ الالتزام المالي</p>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -978,7 +979,7 @@ const AmarahApp = (function () {
   function getAiAdvisorView() {
     return `
       <div class="space-y-6">
-        <div class="bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
+        <div class="bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-lg">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 mb-3">
             <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> خوارزمية الذكاء الاصطناعي العقاري (AI)
           </span>
@@ -988,7 +989,7 @@ const AmarahApp = (function () {
           </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs space-y-5">
             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-sliders text-purple-600"></i> معايير المحاكاة التفاعلية
@@ -1050,7 +1051,7 @@ const AmarahApp = (function () {
   function getTenantPortalView() {
     return `
       <div class="space-y-6">
-        <div class="bg-gradient-to-r from-teal-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
+        <div class="bg-gradient-to-r from-teal-900 to-slate-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-lg">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30 mb-3">
             <i class="fa-solid fa-key text-amber-300"></i> بوابة المستأجر الذاتية الموحدة
           </span>
@@ -1081,12 +1082,12 @@ const AmarahApp = (function () {
         </div>
 
         <!-- Quick Action Buttons for Tenant -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs flex flex-wrap gap-3 items-center justify-between">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-4 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 class="text-sm font-bold text-slate-900">الخدمات السريعة للمستأجر</h3>
             <p class="text-xs text-slate-500">سداد الإيجار بالبطاقة البنكية أو رفع بلاغ صيانة للفني المختص</p>
           </div>
-          <div class="flex gap-3 flex-wrap">
+          <div class="flex flex-col min-[420px]:flex-row gap-2.5 w-full sm:w-auto">
             <button onclick="AmarahApp.openNewTicketModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center gap-2">
               <i class="fa-solid fa-wrench text-teal-600"></i> طلب صيانة للوحدة
             </button>
@@ -1109,7 +1110,7 @@ const AmarahApp = (function () {
   function getOwnerPortalView() {
     return `
       <div class="space-y-6">
-        <div class="bg-gradient-to-r from-slate-900 to-teal-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
+        <div class="bg-gradient-to-r from-slate-900 to-teal-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-lg">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30 mb-3">
             <i class="fa-solid fa-city text-amber-300"></i> بوابة المالك والمستثمر العقاري
           </span>
@@ -1137,7 +1138,7 @@ const AmarahApp = (function () {
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs flex items-center justify-between flex-wrap gap-3">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-4 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 class="text-sm font-bold text-slate-900">إضافة أصل عقاري جديد للمحفظة</h3>
             <p class="text-xs text-slate-500">تسجيل برج أو مبنى جديد لحسابه الاستثماري</p>
@@ -1159,7 +1160,7 @@ const AmarahApp = (function () {
           <p class="text-xs text-slate-500">حسابات الدخول، تعيين الأدوار، والتحكم بالوصول</p>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -1196,7 +1197,7 @@ const AmarahApp = (function () {
           <p class="text-xs text-slate-500">نظام التحكم في الوصول القائم على الأدوار (Role-Based Access Control)</p>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -1259,7 +1260,7 @@ const AmarahApp = (function () {
           <p class="text-xs text-slate-500">سجل إلكتروني غير قابل للتعديل يوثق جميع العمليات والدخول</p>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -1401,15 +1402,25 @@ const AmarahApp = (function () {
   function toggleSidebar() {
     const sb = document.getElementById('mainSidebar');
     const bd = document.getElementById('mobileBackdrop');
-    sb.classList.toggle('translate-x-full');
-    bd.classList.toggle('hidden');
+    if (!sb || !bd) return;
+    const isClosed = sb.classList.contains('translate-x-full');
+    if (isClosed) {
+      sb.classList.remove('translate-x-full');
+      bd.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    } else {
+      sb.classList.add('translate-x-full');
+      bd.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
   }
 
   function closeSidebar() {
     const sb = document.getElementById('mainSidebar');
     const bd = document.getElementById('mobileBackdrop');
-    sb.classList.add('translate-x-full');
-    bd.classList.add('hidden');
+    if (sb) sb.classList.add('translate-x-full');
+    if (bd) bd.classList.add('hidden');
+    document.body.style.overflow = '';
   }
 
   function showNotification(msg) {
@@ -1426,6 +1437,12 @@ const AmarahApp = (function () {
   function init() {
     renderSidebar();
     renderMainView();
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth >= 1024) {
+        closeSidebar();
+      }
+    });
 
     // Close persona menu on click outside
     document.addEventListener('click', function (e) {

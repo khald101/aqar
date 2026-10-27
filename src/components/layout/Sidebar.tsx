@@ -220,7 +220,7 @@ export function Sidebar({ isOpen, onClose, currentUser }: SidebarProps) {
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 right-0 z-45 w-72 bg-slate-900 text-slate-100 flex flex-col border-l border-slate-800 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 right-0 z-45 w-72 max-w-[85vw] bg-slate-900 text-slate-100 flex flex-col border-l border-slate-800 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
           isOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full'
         }`}
       >
