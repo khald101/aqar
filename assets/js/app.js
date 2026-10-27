@@ -60,6 +60,49 @@ const AmarahApp = (function () {
     }
   ];
 
+  // Dynamic Contracts Store
+  let contractsList = [
+    {
+      id: 'cnt-1',
+      contractNumber: 'CNT-2026-101',
+      tenant: 'عمر التميمي',
+      unit: 'برج النخبة - شقة 101',
+      rent: '36,000 ر.س',
+      rentNum: 36000,
+      paymentMethod: 'مدى (Mada)',
+      cycle: 'نصف سنوي (دفعتان)',
+      endDate: '1448/04/15',
+      status: 'ساري وموثق',
+      statusBadge: 'bg-emerald-100 text-emerald-800'
+    },
+    {
+      id: 'cnt-2',
+      contractNumber: 'CNT-2026-102',
+      tenant: 'سعود الحربي',
+      unit: 'مجمع الواحة - مكتب 304',
+      rent: '75,000 ر.س',
+      rentNum: 75000,
+      paymentMethod: 'مدى (Mada)',
+      cycle: 'ربع سنوي (4 دفعات)',
+      endDate: '1448/06/01',
+      status: 'ساري وموثق',
+      statusBadge: 'bg-emerald-100 text-emerald-800'
+    },
+    {
+      id: 'cnt-3',
+      contractNumber: 'CNT-2026-103',
+      tenant: 'مؤسسة الريان',
+      unit: 'أبراج العلياء - فيلا 12',
+      rent: '120,000 ر.س',
+      rentNum: 120000,
+      paymentMethod: 'مدى (Mada)',
+      cycle: 'سنوي (دفعة واحدة)',
+      endDate: '1448/08/20',
+      status: 'ساري وموثق',
+      statusBadge: 'bg-emerald-100 text-emerald-800'
+    }
+  ];
+
   // RBAC Permission Map
   const rolePermissions = {
     ADMIN: ['*'],
@@ -376,7 +419,7 @@ const AmarahApp = (function () {
               <span class="text-xs font-bold text-slate-500">العقود السارية</span>
               <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid fa-file-contract"></i></div>
             </div>
-            <div class="text-2xl font-black text-slate-900">44 <span class="text-xs font-semibold text-slate-400">عقداً موثقاً</span></div>
+            <div class="text-2xl font-black text-slate-900">${contractsList.length + 41} <span class="text-xs font-semibold text-slate-400">عقداً موثقاً</span></div>
             <div class="text-[11px] text-blue-700 font-semibold mt-1">عقود منصة إيجار المعتمدة</div>
           </div>
 
@@ -559,6 +602,8 @@ const AmarahApp = (function () {
 
   // 3. CONTRACTS VIEW
   function getContractsView() {
+    const canCreateContract = hasAccess('contracts:create') || currentUser.role === 'ADMIN' || currentUser.role === 'PROPERTY_MANAGER';
+
     return `
       <div class="space-y-6">
         <div class="flex items-center justify-between flex-wrap gap-3">
@@ -566,6 +611,11 @@ const AmarahApp = (function () {
             <h2 class="text-lg font-bold text-slate-900">سجل عقود الإيجار المعتمدة</h2>
             <p class="text-xs text-slate-500">توثيق العقود، تواريخ البداية والنهاية، والالتزامات المالية</p>
           </div>
+          ${canCreateContract ? `
+            <button onclick="AmarahApp.openContractModal()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md shadow-teal-900/10 flex items-center gap-2 transition-all cursor-pointer">
+              <i class="fa-solid fa-plus"></i> إضافة عقد إيجار جديد
+            </button>
+          ` : ''}
         </div>
 
         <div class="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs overflow-x-auto">
@@ -577,43 +627,75 @@ const AmarahApp = (function () {
                 <th class="pb-3 px-3">العقار / الوحدة</th>
                 <th class="pb-3 px-3">قيمة الإيجار السنوي</th>
                 <th class="pb-3 px-3">طريقة الدفع</th>
+                <th class="pb-3 px-3">دورة السداد</th>
                 <th class="pb-3 px-3">تاريخ الانتهاء</th>
                 <th class="pb-3 px-3">الحالة</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">CNT-2026-101</td>
-                <td class="py-3 px-3 font-bold text-slate-800">عمر التميمي</td>
-                <td class="py-3 px-3 text-slate-600">برج النخبة - شقة 101</td>
-                <td class="py-3 px-3 font-bold text-slate-900">36,000 ر.س</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px]">مدى (Mada)</span></td>
-                <td class="py-3 px-3 text-slate-500 font-mono">1448/04/15</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">ساري وموثق</span></td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">CNT-2026-102</td>
-                <td class="py-3 px-3 font-bold text-slate-800">سعود الحربي</td>
-                <td class="py-3 px-3 text-slate-600">مجمع الواحة - مكتب 304</td>
-                <td class="py-3 px-3 font-bold text-slate-900">75,000 ر.س</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px]">مدى (Mada)</span></td>
-                <td class="py-3 px-3 text-slate-500 font-mono">1448/06/01</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">ساري وموثق</span></td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">CNT-2026-103</td>
-                <td class="py-3 px-3 font-bold text-slate-800">مؤسسة الريان</td>
-                <td class="py-3 px-3 text-slate-600">أبراج العلياء - فيلا 12</td>
-                <td class="py-3 px-3 font-bold text-slate-900">120,000 ر.س</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px]">مدى (Mada)</span></td>
-                <td class="py-3 px-3 text-slate-500 font-mono">1448/08/20</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">ساري وموثق</span></td>
-              </tr>
+              ${contractsList.map(c => `
+                <tr class="hover:bg-slate-50/70 transition-colors">
+                  <td class="py-3 px-3 font-mono font-bold text-teal-700">${c.contractNumber}</td>
+                  <td class="py-3 px-3 font-bold text-slate-800">${c.tenant}</td>
+                  <td class="py-3 px-3 text-slate-600">${c.unit}</td>
+                  <td class="py-3 px-3 font-bold text-slate-900">${c.rent}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px]"><i class="fa-solid fa-credit-card ml-1 text-emerald-600"></i>${c.paymentMethod}</span></td>
+                  <td class="py-3 px-3 text-slate-600 font-medium">${c.cycle}</td>
+                  <td class="py-3 px-3 text-slate-500 font-mono">${c.endDate}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full ${c.statusBadge} font-bold text-[10px]">${c.status}</span></td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>
       </div>
     `;
+  }
+
+  // Contract Modal Logic (Open, Close, Submit)
+  function openContractModal() {
+    const nextNum = 'CNT-2026-' + (100 + contractsList.length + 1);
+    const numInput = document.getElementById('newContractNum');
+    if (numInput) numInput.value = nextNum;
+    const modal = document.getElementById('contractModal');
+    if (modal) modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeContractModal() {
+    const modal = document.getElementById('contractModal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function handleContractSubmit(e) {
+    e.preventDefault();
+    const contractNum = document.getElementById('newContractNum').value.trim() || ('CNT-2026-' + (100 + contractsList.length + 1));
+    const tenant = document.getElementById('newContractTenant').value.trim() || 'مستأجر جديد';
+    const unit = document.getElementById('newContractUnit').value.trim();
+    const rentVal = document.getElementById('newContractRent').value.trim();
+    const cycle = document.getElementById('newContractCycle').value;
+    const rentFormatted = Number(rentVal).toLocaleString('en-US') + ' ر.س';
+    const endDate = document.getElementById('newContractEnd').value || '1448/12/30';
+
+    const newContract = {
+      id: 'cnt-' + (contractsList.length + 1),
+      contractNumber: contractNum,
+      tenant: tenant,
+      unit: unit,
+      rent: rentFormatted,
+      rentNum: Number(rentVal) || 45000,
+      paymentMethod: 'مدى (Mada)',
+      cycle: cycle,
+      endDate: endDate,
+      status: 'ساري وموثق',
+      statusBadge: 'bg-emerald-100 text-emerald-800'
+    };
+
+    contractsList.unshift(newContract);
+    closeContractModal();
+    renderMainView();
+    alert(`تم توثيق وإنشاء عقد الإيجار "${contractNum}" بنجاح في النظام!`);
   }
 
   // 4. PAYMENTS VIEW
@@ -1376,6 +1458,9 @@ const AmarahApp = (function () {
     openPropertyModal,
     closePropertyModal,
     handlePropertySubmit,
+    openContractModal,
+    closeContractModal,
+    handleContractSubmit,
     updateAiSim,
     showNotification,
     resetData

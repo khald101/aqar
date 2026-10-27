@@ -123,7 +123,8 @@ export default function ContractsPage() {
           const perms: string[] = meData.user?.permissions || [];
           const roles: string[] = meData.user?.roles || [];
           const isAdmin = roles.includes('ADMIN');
-          setCanCreateContract(isAdmin || perms.includes('contracts:create'));
+          const isManager = roles.includes('PROPERTY_MANAGER');
+          setCanCreateContract(isAdmin || isManager || perms.includes('contracts:create'));
         }
       } catch (e) {
         console.error('Failed to check user permissions:', e);
