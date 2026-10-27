@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: amarah_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: amarah_user
+      POSTGRES_PASSWORD: amarah_secure_password_2026
+      POSTGRES_DB: amarah_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - amarah_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  amarah_postgres_data:

@@ -1,0 +1,580 @@
+// Prisma Schema for «عِمارة | A'marah» Comprehensive Real Estate & Property Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------------------
+// 1. USER & IDENTITY & ACCESS CONTROL (RBAC)
+// -------------------------------------------------------------
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  username     String?   @unique
+  fullName     String
+  phone        String?
+  nationalId   String?
+  passwordHash String
+  status       String    @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  avatarUrl    String?
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  userRoles            UserRole[]
+  auditLogs            AuditLog[]
+  notifications        Notification[]
+  maintenanceComments  MaintenanceComment[]
+  aiInsights           AiInsight[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  code        String   @unique // ADMIN, PROPERTY_MANAGER, ACCOUNTANT, MAINTENANCE_SUPERVISOR, TECHNICIAN, OWNER, TENANT
+  nameAr      String
+  nameEn      String
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String  @id @default(uuid())
+  code        String  @unique // e.g. "users:view", "properties:create", etc.
+  module      String  // USERS, ROLES, PROPERTIES, UNITS, CONTRACTS, FINANCIAL, MAINTENANCE, AUDIT, REPORTS, SETTINGS
+  nameAr      String
+  description String?
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  userId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+  assignedBy String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  userEmail String?
+  action    String   // LOGIN, LOGOUT, LOGIN_FAILED, CREATE, UPDATE, DELETE, VIEW, EXPORT, SYSTEM_INIT
+  entity    String   // User, Property, LeaseContract, Payment, etc.
+  entityId  String?
+  details   String?  // JSON formatted details
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, WARNING, SUCCESS, DANGER
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+// -------------------------------------------------------------
+// 2. PROPERTIES, BUILDINGS, UNITS & OWNERSHIP
+// -------------------------------------------------------------
+
+model Owner {
+  id         String   @id @default(uuid())
+  name       String
+  idNumber   String?
+  phone      String
+  email      String?
+  bankName   String?
+  iban       String?
+  status     String   @default("ACTIVE")
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  propertyOwnerships PropertyOwnership[]
+  ownerSettlements   OwnerSettlement[]
+
+  @@map("owners")
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  type        String   // RESIDENTIAL, COMMERCIAL, MIXED, LAND, WAREHOUSE
+  address     String
+  city        String
+  district    String?
+  deedNumber  String?
+  totalUnits  Int      @default(0)
+  status      String   @default("ACTIVE") // ACTIVE, INACTIVE, UNDER_MAINTENANCE
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  buildings                  Building[]
+  units                      Unit[]
+  ownerships                 PropertyOwnership[]
+  contracts                  LeaseContract[]
+  expenses                   Expense[]
+  maintenanceTickets         MaintenanceTicket[]
+  preventiveMaintenancePlans PreventiveMaintenancePlan[]
+
+  @@map("properties")
+}
+
+model Building {
+  id             String   @id @default(uuid())
+  propertyId     String
+  name           String
+  buildingNumber String?
+  floorsCount    Int      @default(1)
+  unitsCount     Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  units    Unit[]
+
+  @@map("buildings")
+}
+
+model PropertyOwnership {
+  id              String    @id @default(uuid())
+  propertyId      String
+  ownerId         String
+  sharePercentage Float     // e.g. 100.0 or 50.0
+  startDate       DateTime  @default(now())
+  endDate         DateTime?
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  owner    Owner    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, ownerId])
+  @@map("property_ownerships")
+}
+
+model Unit {
+  id               String   @id @default(uuid())
+  propertyId       String
+  buildingId       String?
+  unitNumber       String
+  floor            Int?
+  type             String   // APARTMENT, VILLA, OFFICE, SHOP, WAREHOUSE
+  areaSqM          Float?
+  rooms            Int?
+  bathrooms        Int?
+  yearlyRent       Float?
+  electricityMeter String?
+  waterMeter       String?
+  status           String   @default("VACANT") // VACANT, RENTED, RESERVED, MAINTENANCE, UNAVAILABLE
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  property           Property            @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  building           Building?           @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  contracts          LeaseContract[]
+  expenses           Expense[]
+  maintenanceTickets MaintenanceTicket[]
+
+  @@unique([propertyId, unitNumber])
+  @@map("units")
+}
+
+model Tenant {
+  id               String   @id @default(uuid())
+  fullName         String
+  idNumber         String   @unique
+  phone            String
+  email            String?
+  nationality      String?
+  emergencyContact String?
+  status           String   @default("ACTIVE")
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  contracts          LeaseContract[]
+  payments           Payment[]
+  maintenanceTickets MaintenanceTicket[]
+
+  @@map("tenants")
+}
+
+model Vendor {
+  id          String   @id @default(uuid())
+  name        String
+  serviceType String   // PLUMBING, ELECTRICAL, HVAC, CLEANING, SECURITY, ELEVATORS, GENERAL
+  crNumber    String?
+  phone       String
+  email       String?
+  bankName    String?
+  iban        String?
+  rating      Float?   @default(5.0)
+  status      String   @default("ACTIVE")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workOrders WorkOrder[]
+  expenses   Expense[]
+
+  @@map("vendors")
+}
+
+// -------------------------------------------------------------
+// 3. LEASE CONTRACTS, RENT SCHEDULES, PAYMENTS & RECEIPTS
+// -------------------------------------------------------------
+
+model LeaseContract {
+  id             String    @id @default(uuid())
+  contractNumber String    @unique // e.g. "CNT-2026-0001"
+  propertyId     String
+  unitId         String
+  tenantId       String
+  startDate      DateTime
+  endDate        DateTime
+  totalAmount    Float
+  rentAmount     Float
+  paymentCycle   String    // MONTHLY, QUARTERLY, SEMI_ANNUAL, ANNUAL
+  depositAmount  Float     @default(0)
+  status         String    @default("ACTIVE") // DRAFT, PENDING, ACTIVE, EXPIRED, RENEWED, TERMINATED
+  terms          String?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  property      Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  unit          Unit           @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  rentSchedules RentSchedule[]
+  payments      Payment[]
+
+  @@map("lease_contracts")
+}
+
+model RentSchedule {
+  id              String   @id @default(uuid())
+  contractId      String
+  installmentNo   Int      @default(1)
+  dueDate         DateTime
+  amount          Float
+  paidAmount      Float    @default(0)
+  remainingAmount Float
+  status          String   @default("PENDING") // PENDING, PARTIALLY_PAID, PAID, OVERDUE
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  contract    LeaseContract       @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  allocations PaymentAllocation[]
+
+  @@map("rent_schedules")
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  paymentNumber String   @unique // e.g. "PAY-2026-0001"
+  receiptNumber String   @unique // e.g. "REC-2026-0001"
+  contractId    String
+  tenantId      String
+  amount        Float
+  paymentMethod String   // BANK_TRANSFER, MADA, CASH, CHEQUE
+  referenceNo   String?
+  paymentDate   DateTime @default(now())
+  status        String   @default("CONFIRMED") // CONFIRMED, REVERSED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  contract    LeaseContract       @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  tenant      Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  allocations PaymentAllocation[]
+  receipt     Receipt?
+
+  @@map("payments")
+}
+
+model PaymentAllocation {
+  id             String   @id @default(uuid())
+  paymentId      String
+  rentScheduleId String
+  amount         Float
+  allocatedAt    DateTime @default(now())
+
+  payment      Payment      @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  rentSchedule RentSchedule @relation(fields: [rentScheduleId], references: [id], onDelete: Cascade)
+
+  @@map("payment_allocations")
+}
+
+model Receipt {
+  id            String   @id @default(uuid())
+  receiptNumber String   @unique
+  paymentId     String   @unique
+  amount        Float
+  issuedAt      DateTime @default(now())
+  pdfUrl        String?
+  notes         String?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@map("receipts")
+}
+
+// -------------------------------------------------------------
+// 4. ACCOUNTING, EXPENSES & OWNER SETTLEMENTS
+// -------------------------------------------------------------
+
+model Account {
+  id        String   @id @default(uuid())
+  code      String   @unique // e.g. "1010" Cash, "4010" Rental Revenue
+  nameAr    String
+  nameEn    String
+  type      String   // ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  journalLines JournalLine[]
+
+  @@map("accounts")
+}
+
+model JournalEntry {
+  id          String   @id @default(uuid())
+  entryNumber String   @unique // e.g. "JE-2026-0001"
+  entryDate   DateTime @default(now())
+  description String
+  totalDebit  Float
+  totalCredit Float
+  status      String   @default("POSTED") // DRAFT, POSTED, VOID
+  createdAt   DateTime @default(now())
+
+  lines JournalLine[]
+
+  @@map("journal_entries")
+}
+
+model JournalLine {
+  id             String @id @default(uuid())
+  journalEntryId String
+  accountId      String
+  description    String?
+  debit          Float  @default(0)
+  credit         Float  @default(0)
+
+  journalEntry JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  account      Account      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@map("journal_lines")
+}
+
+model Expense {
+  id            String   @id @default(uuid())
+  expenseNumber String   @unique // e.g. "EXP-2026-0001"
+  propertyId    String?
+  unitId        String?
+  vendorId      String?
+  category      String   // MAINTENANCE, UTILITIES, MANAGEMENT_FEE, INSURANCE, TAX, OTHER
+  amount        Float
+  taxAmount     Float    @default(0)
+  totalAmount   Float
+  expenseDate   DateTime @default(now())
+  status        String   @default("APPROVED") // PENDING, APPROVED, PAID
+  description   String
+  referenceNo   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  unit     Unit?     @relation(fields: [unitId], references: [id], onDelete: SetNull)
+  vendor   Vendor?   @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@map("expenses")
+}
+
+model OwnerSettlement {
+  id                 String    @id @default(uuid())
+  settlementNumber   String    @unique // e.g. "SET-2026-0001"
+  ownerId            String
+  periodStart        DateTime
+  periodEnd          DateTime
+  totalRevenues      Float
+  totalExpenses      Float
+  managementFeeRate  Float     @default(5.0) // 5%
+  managementFeeAmount Float
+  netPayable         Float
+  status             String    @default("PENDING") // PENDING, APPROVED, TRANSFERRED
+  paidDate           DateTime?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  owner Owner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@map("owner_settlements")
+}
+
+// -------------------------------------------------------------
+// 5. MAINTENANCE, WORK ORDERS & PREVENTIVE PLANS
+// -------------------------------------------------------------
+
+model MaintenanceTicket {
+  id            String   @id @default(uuid())
+  ticketNumber  String   @unique // e.g. "TKT-2026-0001"
+  propertyId    String
+  unitId        String?
+  tenantId      String?
+  category      String   // PLUMBING, ELECTRICAL, HVAC, CARPENTRY, APPLIANCE, GENERAL
+  priority      String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status        String   @default("NEW") // NEW, ASSIGNED, IN_PROGRESS, RESOLVED, CLOSED, CANCELLED
+  title         String
+  description   String
+  availableTime String?
+  rating        Int?     // 1 to 5 stars
+  feedback      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  property   Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  unit       Unit?                @relation(fields: [unitId], references: [id], onDelete: SetNull)
+  tenant     Tenant?              @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  workOrders WorkOrder[]
+  comments   MaintenanceComment[]
+
+  @@map("maintenance_tickets")
+}
+
+model WorkOrder {
+  id            String    @id @default(uuid())
+  orderNumber   String    @unique // e.g. "WO-2026-0001"
+  ticketId      String
+  vendorId      String?
+  technicianName String?
+  scheduledDate DateTime?
+  completedDate DateTime?
+  status        String    @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  estimatedCost Float?    @default(0)
+  actualCost    Float?    @default(0)
+  workReport    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  ticket MaintenanceTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  vendor Vendor?           @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@map("work_orders")
+}
+
+model MaintenanceComment {
+  id         String   @id @default(uuid())
+  ticketId   String
+  userId     String?
+  authorName String
+  authorRole String
+  comment    String
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  ticket MaintenanceTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user   User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("maintenance_comments")
+}
+
+model PreventiveMaintenancePlan {
+  id          String    @id @default(uuid())
+  title       String
+  propertyId  String
+  category    String    // ELEVATORS, FIRE_SAFETY, HVAC, GENERATOR, WATER_PUMPS
+  frequency   String    // MONTHLY, QUARTERLY, SEMI_ANNUAL, ANNUAL
+  lastRunDate DateTime?
+  nextDueDate DateTime
+  status      String    @default("ACTIVE") // ACTIVE, PAUSED
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("preventive_maintenance_plans")
+}
+
+// -------------------------------------------------------------
+// 6. AI INSIGHTS, SIMULATIONS & DECISION SUPPORT
+// -------------------------------------------------------------
+
+model AiInsight {
+  id           String   @id @default(uuid())
+  userId       String
+  query        String
+  category     String   // REVENUE_OPTIMIZATION, OCCUPANCY_FORECAST, MAINTENANCE_ANOMALY, TENANT_RETENTION
+  summary      String
+  findings     String   // Detailed text / recommendations
+  metricsData  String?  // JSON snapshot of real DB calculations
+  actionStatus String   @default("REVIEWED")
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ai_insights")
+}
