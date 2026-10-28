@@ -163,7 +163,7 @@ export default function AuditLogsPage() {
             </button>
           </form>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <Filter className="w-4 h-4 text-slate-400 shrink-0" />
             <select
               value={actionFilter}
@@ -171,7 +171,7 @@ export default function AuditLogsPage() {
                 setActionFilter(e.target.value);
                 setPage(1);
               }}
-              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-sky-600"
+              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-sky-600 flex-1 sm:flex-none"
             >
               <option value="">جميع أنواع الحركات</option>
               <option value="LOGIN">تسجيل دخول</option>
@@ -316,7 +316,7 @@ export default function AuditLogsPage() {
         >
           {selectedLog && (
             <div className="space-y-4 text-xs sm:text-sm">
-              <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
                 <div>
                   <span className="text-slate-400 block text-xs">نوع الحركة:</span>
                   <div className="mt-1">{getActionBadge(selectedLog.action)}</div>
@@ -333,7 +333,7 @@ export default function AuditLogsPage() {
                   <span className="text-slate-400 block text-xs">عنوان IP:</span>
                   <span className="font-mono text-slate-700">{selectedLog.ipAddress || 'غير محدد'}</span>
                 </div>
-                <div className="col-span-2">
+                <div className="sm:col-span-2">
                   <span className="text-slate-400 block text-xs">المتصفح ووكيل المستخدم:</span>
                   <span className="font-mono text-[11px] text-slate-600 block break-all mt-0.5">
                     {selectedLog.userAgent || 'غير متوفر'}

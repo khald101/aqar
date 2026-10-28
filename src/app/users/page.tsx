@@ -217,12 +217,12 @@ export default function UsersPage() {
             </button>
           </form>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <Filter className="w-4 h-4 text-slate-400 shrink-0" />
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-teal-600"
+              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-teal-600 flex-1 sm:flex-none"
             >
               <option value="">جميع الأدوار ({users.length})</option>
               <option value="ADMIN">مدير النظام</option>

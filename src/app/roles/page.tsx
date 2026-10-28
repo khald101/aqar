@@ -211,7 +211,7 @@ export default function RolesPage() {
         ) : (
           <>
             {/* Roles Horizontal/Vertical Selector */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
               {roles.map((r) => {
                 const isSelected = activeRole?.id === r.id;
                 return (

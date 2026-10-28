@@ -326,7 +326,7 @@ export default function OwnersPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">رقم الهوية / السجل التجاري</label>
                 <input
@@ -351,7 +351,7 @@ export default function OwnersPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">اسم البنك</label>
                 <input

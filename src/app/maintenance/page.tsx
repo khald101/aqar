@@ -354,11 +354,11 @@ export default function MaintenancePage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white"
+              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white flex-1 sm:flex-none"
             >
               <option value="">جميع الأولويات</option>
               <option value="URGENT">عاجل وطارئ</option>
@@ -370,7 +370,7 @@ export default function MaintenancePage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white"
+              className="px-3 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white flex-1 sm:flex-none"
             >
               <option value="">جميع الحالات</option>
               <option value="NEW">جديد</option>
@@ -507,7 +507,7 @@ export default function MaintenancePage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">تصنيف المشكلة *</label>
                 <select
@@ -604,7 +604,7 @@ export default function MaintenancePage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">اسم الفني / المورد المكلف</label>
                 <input

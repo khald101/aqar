@@ -278,7 +278,7 @@ export default function AccountingPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {canCreateJournal && (
               <button
                 onClick={() => {
@@ -549,7 +549,7 @@ export default function AccountingPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl text-xs">
+                <div className="grid grid-cols-1 min-[380px]:grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl text-xs">
                   <div>
                     <span className="text-slate-400 block">إجمالي الإيرادات المحصلة:</span>
                     <span className="text-sm font-bold text-emerald-700">{s.totalRevenues.toLocaleString()} ر.س</span>
@@ -616,7 +616,7 @@ export default function AccountingPage() {
             {/* Debit Side */}
             <div className="p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-200/80 space-y-2">
               <span className="font-bold text-emerald-800 block text-xs">الطرف المدين (Debit)</span>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label className="block text-[11px] text-slate-500 mb-1">الحساب المدين *</label>
                   <select
@@ -651,7 +651,7 @@ export default function AccountingPage() {
             {/* Credit Side */}
             <div className="p-3.5 bg-sky-50/50 rounded-xl border border-sky-200/80 space-y-2">
               <span className="font-bold text-sky-800 block text-xs">الطرف الدائن (Credit)</span>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label className="block text-[11px] text-slate-500 mb-1">الحساب الدائن *</label>
                   <select
@@ -733,7 +733,7 @@ export default function AccountingPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">المبلغ الأساسي (ر.س) *</label>
                 <input

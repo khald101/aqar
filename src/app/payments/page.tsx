@@ -479,7 +479,7 @@ export default function PaymentsPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">المبلغ المراد تحصيله (ر.س) *</label>
                 <input
@@ -559,8 +559,8 @@ export default function PaymentsPage() {
         >
           {selectedReceipt && (
             <div className="space-y-4 text-xs sm:text-sm">
-              <div className="border-2 border-dashed border-emerald-300 rounded-2xl p-5 bg-emerald-50/30 space-y-3">
-                <div className="flex items-center justify-between border-b border-emerald-200 pb-3">
+              <div className="border-2 border-dashed border-emerald-300 rounded-2xl p-4 sm:p-5 bg-emerald-50/30 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200 pb-3">
                   <div>
                     <h3 className="text-base font-black text-slate-900">نظام عِمارة لإدارة الأملاك</h3>
                     <p className="text-xs text-slate-500">إيصال تحصيل وسند قبض مالي</p>
@@ -570,7 +570,7 @@ export default function PaymentsPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div>
                     <span className="text-slate-400 block text-xs">استلمنا من المستأجر:</span>
                     <span className="font-bold text-slate-900">{selectedReceipt.tenant.fullName}</span>
@@ -593,7 +593,7 @@ export default function PaymentsPage() {
                       {selectedReceipt.paymentMethod} {selectedReceipt.referenceNo ? `(#${selectedReceipt.referenceNo})` : ''}
                     </span>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <span className="text-slate-400 block text-xs">تاريخ وساعة القبض:</span>
                     <span className="font-semibold text-slate-700">
                       {new Date(selectedReceipt.paymentDate).toLocaleString('ar-SA')}
@@ -601,13 +601,13 @@ export default function PaymentsPage() {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-emerald-200/60 flex items-center justify-between text-[11px] text-slate-500">
+                <div className="pt-3 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-1 text-[11px] text-slate-500">
                   <span>تم إصدار السند إلكترونياً وتوثيقه في سجل التدقيق المالي</span>
                   <span className="font-bold text-emerald-700">معتمد ورسمي ✓</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-2">
+              <div className="flex flex-wrap justify-between items-center gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => window.print()}

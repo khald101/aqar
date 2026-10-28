@@ -178,9 +178,9 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
               <span className="text-slate-400 flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4 text-teal-600" />
+                <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
                 اتصال آمن ومصادقة مشفرة
               </span>
               <span className="text-teal-700 font-semibold cursor-default">

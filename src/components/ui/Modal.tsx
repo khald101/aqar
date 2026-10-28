@@ -51,7 +51,7 @@ export function Modal({
   }[maxWidth];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2.5 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-fade-in"
@@ -62,12 +62,12 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthClass} bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 animate-fade-in my-8 max-h-[90vh] flex flex-col`}
+        className={`relative w-full ${maxWidthClass} bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 animate-fade-in my-auto max-h-[92dvh] flex flex-col`}
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between gap-4 shrink-0 bg-slate-50/50">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900">{title}</h3>
+        <div className="px-4 py-3.5 sm:px-6 sm:py-5 border-b border-slate-100 flex items-center justify-between gap-3 shrink-0 bg-slate-50/50">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">{title}</h3>
             {description && (
               <p className="text-xs text-slate-500 mt-0.5">{description}</p>
             )}
@@ -82,7 +82,7 @@ export function Modal({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto grow">{children}</div>
+        <div className="p-4 sm:p-6 overflow-y-auto grow">{children}</div>
       </div>
     </div>
   );

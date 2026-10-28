@@ -103,6 +103,76 @@ const AmarahApp = (function () {
     }
   ];
 
+  // Dynamic Payments Store
+  let paymentsList = [
+    {
+      receipt: 'REC-2026-7892',
+      tenant: 'عمر التميمي',
+      amount: '18,000 ر.س',
+      method: 'بطاقة مدى البنكية',
+      auth: 'MADA-AUTH-942817',
+      date: '2026-10-27',
+      status: 'مكتمل ومسدد'
+    },
+    {
+      receipt: 'REC-2026-7891',
+      tenant: 'سعود الحربي',
+      amount: '37,500 ر.س',
+      method: 'بطاقة مدى البنكية',
+      auth: 'MADA-AUTH-882319',
+      date: '2026-10-25',
+      status: 'مكتمل ومسدد'
+    }
+  ];
+
+  // Dynamic Journal Entries Store
+  let journalList = [
+    {
+      entryNo: 'JRN-2026-004',
+      desc: 'إثبات تحصيل دفعة إيجارية شقة 101 برج النخبة',
+      debit: '1010 - بنك الراجحي (مدى)',
+      credit: '4010 - إيراد تأجير عقارات',
+      amount: '18,000 ر.س',
+      amountClass: 'text-emerald-700',
+      date: '2026-10-27'
+    },
+    {
+      entryNo: 'JRN-2026-003',
+      desc: 'صرف فاتورة صيانة سباكة طارئة',
+      debit: '5020 - مصروفات الصيانة وقطع الغيار',
+      credit: '1010 - بنك الراجحي',
+      amount: '450 ر.س',
+      amountClass: 'text-rose-700',
+      date: '2026-10-26'
+    }
+  ];
+
+  // Dynamic Maintenance Tickets Store
+  let ticketsList = [
+    {
+      ticketNo: 'TKT-412',
+      title: 'صيانة دورية للمصاعد الرئيسية',
+      unit: 'برج النخبة',
+      category: 'مصاعد',
+      priority: 'عادية',
+      priorityBadge: 'bg-blue-50 text-blue-700',
+      tech: 'خالد الزهراني',
+      status: 'مكتمل',
+      statusBadge: 'bg-emerald-100 text-emerald-800'
+    },
+    {
+      ticketNo: 'TKT-415',
+      title: 'تسريب مياه في دورة مياه الدور الثاني',
+      unit: 'مجمع الواحة - مكتب 304',
+      category: 'سباكة',
+      priority: 'عالية',
+      priorityBadge: 'bg-amber-50 text-amber-700',
+      tech: 'فريق الصيانة السريعة',
+      status: 'قيد المعالجة',
+      statusBadge: 'bg-amber-100 text-amber-800'
+    }
+  ];
+
   // RBAC Permission Map
   const rolePermissions = {
     ADMIN: ['*'],
@@ -318,6 +388,25 @@ const AmarahApp = (function () {
     }
 
     nav.innerHTML = html;
+
+    // Also render Mobile Quick Navigation Bar so all sections remain visible on mobile screens
+    const quickNav = document.getElementById('mobileQuickNav');
+    if (quickNav) {
+      const allMobileItems = [
+        ...(isTenant || isOwner ? [] : visibleOps),
+        ...visiblePortals,
+        ...(currentUser.role === 'ADMIN' ? visibleGov : [])
+      ];
+      quickNav.innerHTML = allMobileItems.map(item => {
+        const isActive = activeTab === item.id;
+        return `
+          <button onclick="AmarahApp.switchTab('${item.id}')" class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${isActive ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+            <i class="fa-solid ${item.icon} ${item.highlight && !isActive ? 'text-amber-500' : ''}"></i>
+            <span>${item.title}</span>
+          </button>
+        `;
+      }).join('');
+    }
   }
 
   // Main View Switcher
@@ -535,15 +624,63 @@ const AmarahApp = (function () {
                 <div><span class="block text-slate-400 text-[10px]">المؤجرة</span><strong class="text-emerald-700">${p.rented}</strong></div>
                 <div><span class="block text-slate-400 text-[10px]">الإشغال</span><strong class="text-teal-700">${p.occupancy}%</strong></div>
               </div>
-              <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+              <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-slate-100">
                 <span class="text-slate-500">المالك: ${p.owner}</span>
-                <span class="text-teal-600 font-bold cursor-pointer hover:underline" onclick="alert('تفاصيل وحدات ' + '${p.name}')">عرض الوحدات &larr;</span>
+                <button type="button" class="text-teal-600 font-bold cursor-pointer hover:underline" onclick="AmarahApp.openUnitsModal('${p.id}')">عرض الوحدات &larr;</button>
               </div>
             </div>
           `).join('')}
         </div>
       </div>
     `;
+  }
+
+  // Units Modal Logic
+  function openUnitsModal(propId) {
+    const prop = propertiesList.find(p => p.id === propId) || propertiesList[0];
+    const titleEl = document.getElementById('unitsModalTitle');
+    const subEl = document.getElementById('unitsModalSubtitle');
+    const bodyEl = document.getElementById('unitsModalBody');
+    if (titleEl) titleEl.textContent = `وحدات ${prop.name}`;
+    if (subEl) subEl.textContent = `${prop.city} - ${prop.district} | إجمالي الوحدات: ${prop.units}`;
+
+    if (bodyEl) {
+      const sampleCount = Math.min(prop.units, 6);
+      let rows = '';
+      for (let i = 1; i <= sampleCount; i++) {
+        const isRented = i <= prop.rented;
+        rows += `
+          <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl ${isRented ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center font-bold">
+                ${100 + i}
+              </div>
+              <div>
+                <span class="font-bold text-slate-900 block">وحدة رقم ${100 + i} (${prop.type})</span>
+                <span class="text-[11px] text-slate-500">الدور ${Math.ceil(i / 2)} • المساحة ${110 + i * 10} م²</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-800">${(30000 + i * 2500).toLocaleString('en-US')} ر.س / سنوياً</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isRented ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${isRented ? 'مؤجرة' : 'شاغرة ومتاحة'}
+              </span>
+            </div>
+          </div>
+        `;
+      }
+      bodyEl.innerHTML = rows;
+    }
+
+    const modal = document.getElementById('unitsModal');
+    if (modal) modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeUnitsModal() {
+    const modal = document.getElementById('unitsModal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
   }
 
   // Property Modal Logic (Open, Close, Submit)
@@ -597,7 +734,7 @@ const AmarahApp = (function () {
     closePropertyModal();
     renderMainView();
 
-    alert(`تم تسجيل الأصل العقاري "${name}" بنجاح في النظام!`);
+    showToast(`تم تسجيل الأصل العقاري "${name}" بنجاح في النظام!`);
   }
 
   // 3. CONTRACTS VIEW
@@ -619,7 +756,7 @@ const AmarahApp = (function () {
         </div>
 
         <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-3.5 sm:p-5 shadow-xs overflow-x-auto custom-scrollbar">
-          <div class="text-[11px] text-slate-400 sm:hidden mb-2.5 flex items-center gap-1.5"><i class="fa-solid fa-arrows-left-right text-teal-600"></i> اسحب الجدول أفقياً للاطلاع على كامل بيانات العقود</div>
+          <div class="text-[11px] text-slate-400 mb-2.5 flex items-center gap-1.5"><i class="fa-solid fa-arrows-left-right text-teal-600"></i> اسحب الجدول أفقياً للاطلاع على كامل بيانات العقود</div>
           <table class="w-full text-xs text-right whitespace-nowrap">
             <thead>
               <tr class="border-b border-slate-200 text-slate-400 font-bold text-[11px]">
@@ -696,7 +833,7 @@ const AmarahApp = (function () {
     contractsList.unshift(newContract);
     closeContractModal();
     renderMainView();
-    alert(`تم توثيق وإنشاء عقد الإيجار "${contractNum}" بنجاح في النظام!`);
+    showToast(`تم توثيق وإنشاء عقد الإيجار "${contractNum}" بنجاح في النظام!`);
   }
 
   // 4. PAYMENTS VIEW
@@ -708,7 +845,7 @@ const AmarahApp = (function () {
             <h2 class="text-lg font-bold text-slate-900">سندات القبض والتحصيلات المالية</h2>
             <p class="text-xs text-slate-500">نظام التحصيل الإلكتروني المعتمد حصرياً عبر شبكة مدى البنكية 🇸🇦</p>
           </div>
-          <button onclick="AmarahApp.openMadaModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-md flex items-center gap-2">
+          <button onclick="AmarahApp.openMadaModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs shadow-md flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-credit-card"></i> تسجيل تحصيل عبر مدى (Mada)
           </button>
         </div>
@@ -727,24 +864,17 @@ const AmarahApp = (function () {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">REC-2026-7892</td>
-                <td class="py-3 px-3 font-bold text-slate-800">عمر التميمي</td>
-                <td class="py-3 px-3 font-bold text-emerald-700">18,000 ر.س</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">بطاقة مدى البنكية</span></td>
-                <td class="py-3 px-3 font-mono text-slate-600">MADA-AUTH-942817</td>
-                <td class="py-3 px-3 text-slate-500">2026-10-27</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">مكتمل ومسدد</span></td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">REC-2026-7891</td>
-                <td class="py-3 px-3 font-bold text-slate-800">سعود الحربي</td>
-                <td class="py-3 px-3 font-bold text-emerald-700">37,500 ر.س</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">بطاقة مدى البنكية</span></td>
-                <td class="py-3 px-3 font-mono text-slate-600">MADA-AUTH-882319</td>
-                <td class="py-3 px-3 text-slate-500">2026-10-25</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">مكتمل ومسدد</span></td>
-              </tr>
+              ${paymentsList.map(pay => `
+                <tr>
+                  <td class="py-3 px-3 font-mono font-bold text-teal-700">${pay.receipt}</td>
+                  <td class="py-3 px-3 font-bold text-slate-800">${pay.tenant}</td>
+                  <td class="py-3 px-3 font-bold text-emerald-700">${pay.amount}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">${pay.method}</span></td>
+                  <td class="py-3 px-3 font-mono text-slate-600">${pay.auth}</td>
+                  <td class="py-3 px-3 text-slate-500">${pay.date}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">${pay.status}</span></td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>
@@ -761,7 +891,7 @@ const AmarahApp = (function () {
             <h2 class="text-lg font-bold text-slate-900">المحاسبة المالية والقيود المزدوجة</h2>
             <p class="text-xs text-slate-500">دليل الحسابات الشجري، قيود اليومية، وسندات الصرف وتسويات الملاك</p>
           </div>
-          <button onclick="alert('خاصية إضافة قيد محاسبي جديد')" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-2">
+          <button onclick="AmarahApp.openJournalModal()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-plus"></i> قيد محاسبي جديد
           </button>
         </div>
@@ -795,27 +925,61 @@ const AmarahApp = (function () {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">JRN-2026-004</td>
-                <td class="py-3 px-3 font-bold text-slate-800">إثبات تحصيل دفعة إيجارية شقة 101 برج النخبة</td>
-                <td class="py-3 px-3 text-slate-600">1010 - بنك الراجحي (مدى)</td>
-                <td class="py-3 px-3 text-slate-600">4010 - إيراد تأجير عقارات</td>
-                <td class="py-3 px-3 font-bold text-emerald-700">18,000 ر.س</td>
-                <td class="py-3 px-3 text-slate-500 font-mono">2026-10-27</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">JRN-2026-003</td>
-                <td class="py-3 px-3 font-bold text-slate-800">صرف فاتورة صيانة سباكة طارئة</td>
-                <td class="py-3 px-3 text-slate-600">5020 - مصروفات الصيانة وقطع الغيار</td>
-                <td class="py-3 px-3 text-slate-600">1010 - بنك الراجحي</td>
-                <td class="py-3 px-3 font-bold text-rose-700">450 ر.س</td>
-                <td class="py-3 px-3 text-slate-500 font-mono">2026-10-26</td>
-              </tr>
+              ${journalList.map(j => `
+                <tr>
+                  <td class="py-3 px-3 font-mono font-bold text-teal-700">${j.entryNo}</td>
+                  <td class="py-3 px-3 font-bold text-slate-800">${j.desc}</td>
+                  <td class="py-3 px-3 text-slate-600">${j.debit}</td>
+                  <td class="py-3 px-3 text-slate-600">${j.credit}</td>
+                  <td class="py-3 px-3 font-bold ${j.amountClass}">${j.amount}</td>
+                  <td class="py-3 px-3 text-slate-500 font-mono">${j.date}</td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>
       </div>
     `;
+  }
+
+  // Journal Modal Logic
+  function openJournalModal() {
+    const descEl = document.getElementById('newJournalDesc');
+    const amountEl = document.getElementById('newJournalAmount');
+    if (descEl) descEl.value = '';
+    if (amountEl) amountEl.value = '';
+    const modal = document.getElementById('journalModal');
+    if (modal) modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeJournalModal() {
+    const modal = document.getElementById('journalModal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function handleJournalSubmit(e) {
+    e.preventDefault();
+    const desc = document.getElementById('newJournalDesc')?.value.trim() || 'قيد تسوية محاسبية';
+    const debit = document.getElementById('newJournalDebit')?.value || '1010 - بنك الراجحي (مدى)';
+    const credit = document.getElementById('newJournalCredit')?.value || '4010 - إيراد تأجير عقارات';
+    const amountVal = Number(document.getElementById('newJournalAmount')?.value) || 5000;
+    const nextNo = 'JRN-2026-00' + (journalList.length + 3);
+
+    journalList.unshift({
+      entryNo: nextNo,
+      desc,
+      debit,
+      credit,
+      amount: amountVal.toLocaleString('en-US') + ' ر.س',
+      amountClass: 'text-emerald-700',
+      date: '2026-10-28'
+    });
+
+    closeJournalModal();
+    renderMainView();
+    showToast(`تم ترحيل القيد المحاسبي "${nextNo}" بنجاح`);
   }
 
   // 6. MAINTENANCE VIEW
@@ -827,7 +991,7 @@ const AmarahApp = (function () {
             <h2 class="text-lg font-bold text-slate-900">الصيانة وأوامر العمل الميدانية</h2>
             <p class="text-xs text-slate-500">متابعة البلاغات، تكليف الفنيين، وتوثيق تقارير الإنجاز</p>
           </div>
-          <button onclick="AmarahApp.openNewTicketModal()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-2">
+          <button onclick="AmarahApp.openNewTicketModal()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-plus"></i> رفع بلاغ صيانة جديد
           </button>
         </div>
@@ -846,24 +1010,17 @@ const AmarahApp = (function () {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">TKT-412</td>
-                <td class="py-3 px-3 font-bold text-slate-800">صيانة دورية للمصاعد الرئيسية</td>
-                <td class="py-3 px-3 text-slate-600">برج النخبة</td>
-                <td class="py-3 px-3">مصاعد</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold text-[10px]">عادية</span></td>
-                <td class="py-3 px-3 font-semibold text-slate-800">خالد الزهراني</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">مكتمل</span></td>
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-mono font-bold text-teal-700">TKT-415</td>
-                <td class="py-3 px-3 font-bold text-slate-800">تسريب مياه في دورة مياه الدور الثاني</td>
-                <td class="py-3 px-3 text-slate-600">مجمع الواحة - مكتب 304</td>
-                <td class="py-3 px-3">سباكة</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px]">عالية</span></td>
-                <td class="py-3 px-3 font-semibold text-slate-800">فريق الصيانة السريعة</td>
-                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px]">قيد المعالجة</span></td>
-              </tr>
+              ${ticketsList.map(t => `
+                <tr>
+                  <td class="py-3 px-3 font-mono font-bold text-teal-700">${t.ticketNo}</td>
+                  <td class="py-3 px-3 font-bold text-slate-800">${t.title}</td>
+                  <td class="py-3 px-3 text-slate-600">${t.unit}</td>
+                  <td class="py-3 px-3">${t.category}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full ${t.priorityBadge} font-bold text-[10px]">${t.priority}</span></td>
+                  <td class="py-3 px-3 font-semibold text-slate-800">${t.tech}</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full ${t.statusBadge} font-bold text-[10px]">${t.status}</span></td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>
@@ -1349,8 +1506,18 @@ const AmarahApp = (function () {
     document.getElementById('receiptAuthCode').textContent = lastMadaAuth;
     document.getElementById('receiptNumberVal').textContent = lastMadaReceipt;
 
+    paymentsList.unshift({
+      receipt: lastMadaReceipt,
+      tenant: currentUser.role === 'TENANT' ? currentUser.name : 'عمر التميمي',
+      amount: '18,000 ر.س',
+      method: 'بطاقة مدى البنكية',
+      auth: lastMadaAuth,
+      date: '2026-10-28',
+      status: 'مكتمل ومسدد'
+    });
+
     // Refresh view in background
-    if (activeTab === 'portal-tenant') renderMainView();
+    if (activeTab === 'portal-tenant' || activeTab === 'payments') renderMainView();
   }
 
   function showMadaReceiptDirect() {
@@ -1376,8 +1543,29 @@ const AmarahApp = (function () {
 
   function handleTicketSubmit(e) {
     e.preventDefault();
+    const form = e.target;
+    const textInput = form.querySelector('input[type="text"]');
+    const selects = form.querySelectorAll('select');
+    const titleVal = textInput?.value.trim() || 'فحص وصيانة طارئة للوحدة';
+    const categoryVal = selects[0]?.value || 'تكييف وتبريد';
+    const priorityVal = selects[1]?.value || 'عادية';
+
+    ticketsList.unshift({
+      ticketNo: 'TKT-' + (416 + ticketsList.length),
+      title: titleVal,
+      unit: 'برج النخبة - شقة 101',
+      category: categoryVal,
+      priority: priorityVal,
+      priorityBadge: priorityVal.includes('طارئة') || priorityVal.includes('عالية') ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700',
+      tech: 'خالد الزهراني',
+      status: 'قيد المعالجة',
+      statusBadge: 'bg-amber-100 text-amber-800'
+    });
+
+    if (textInput) textInput.value = '';
     closeNewTicketModal();
-    alert('تم رفع بلاغ الصيانة بنجاح وإشعار فريق الصيانة الفني فوراً!');
+    if (activeTab === 'maintenance') renderMainView();
+    showToast('تم رفع بلاغ الصيانة بنجاح وإشعار فريق الصيانة الفني فوراً!');
   }
 
   // AI Simulator slider calculation
@@ -1423,13 +1611,35 @@ const AmarahApp = (function () {
     document.body.style.overflow = '';
   }
 
+  let toastTimer = null;
+  function showToast(msg) {
+    const banner = document.getElementById('toastBanner');
+    const text = document.getElementById('toastBannerText');
+    if (banner && text) {
+      text.textContent = msg;
+      banner.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 4000);
+    }
+  }
+
+  function toggleNotifications() {
+    const notifMenu = document.getElementById('notifMenu');
+    const personaMenu = document.getElementById('personaMenu');
+    if (personaMenu) personaMenu.classList.add('hidden');
+    if (notifMenu) notifMenu.classList.toggle('hidden');
+  }
+
   function showNotification(msg) {
-    alert(msg);
+    toggleNotifications();
+    showToast(msg);
   }
 
   function resetData() {
     tenantRentPaid = false;
-    alert('تمت إعادة تعيين البيانات التجريبية الافتراضية بنجاح.');
+    showToast('تمت إعادة تعيين البيانات التجريبية الافتراضية بنجاح.');
     renderMainView();
   }
 
@@ -1444,12 +1654,18 @@ const AmarahApp = (function () {
       }
     });
 
-    // Close persona menu on click outside
+    // Close persona and notification menus on click outside
     document.addEventListener('click', function (e) {
-      const btn = e.target.closest('button[title*="اختبار أدوار"]');
-      const menu = document.getElementById('personaMenu');
-      if (!btn && menu && !menu.contains(e.target)) {
-        menu.classList.add('hidden');
+      const personaBtn = e.target.closest('#personaDropdownBtn');
+      const personaMenu = document.getElementById('personaMenu');
+      if (!personaBtn && personaMenu && !personaMenu.contains(e.target)) {
+        personaMenu.classList.add('hidden');
+      }
+
+      const notifBtn = e.target.closest('#notifBtn');
+      const notifMenu = document.getElementById('notifMenu');
+      if (!notifBtn && notifMenu && !notifMenu.contains(e.target)) {
+        notifMenu.classList.add('hidden');
       }
     });
   }
@@ -1459,6 +1675,8 @@ const AmarahApp = (function () {
     switchTab,
     switchRole,
     togglePersonaDropdown,
+    toggleNotifications,
+    showToast,
     toggleSidebar,
     closeSidebar,
     openMadaModal,
@@ -1478,6 +1696,11 @@ const AmarahApp = (function () {
     openContractModal,
     closeContractModal,
     handleContractSubmit,
+    openJournalModal,
+    closeJournalModal,
+    handleJournalSubmit,
+    openUnitsModal,
+    closeUnitsModal,
     updateAiSim,
     showNotification,
     resetData

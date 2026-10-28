@@ -290,7 +290,7 @@ export default function TenantPortalPage() {
                 <StatusBadge status={contract.status} />
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+              <div className="grid grid-cols-1 min-[380px]:grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                 <div>
                   <span className="text-slate-400 block">الإيجار السنوي:</span>
                   <span className="text-base font-extrabold text-slate-900">
@@ -555,7 +555,7 @@ export default function TenantPortalPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">تصنيف العطل *</label>
                 <select

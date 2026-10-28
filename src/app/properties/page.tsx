@@ -275,7 +275,7 @@ export default function PropertiesPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {canCreateProperty && (
               <button
                 onClick={() => {
@@ -326,7 +326,7 @@ export default function PropertiesPage() {
         ) : (
           <>
             {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-slate-200">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200">
           <button
             onClick={() => setActiveTab('properties')}
             className={`pb-3 px-4 text-xs sm:text-sm font-bold border-b-2 transition-colors flex items-center gap-2 ${
@@ -553,7 +553,7 @@ export default function PropertiesPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">رمز العقار الفريد *</label>
                 <input
@@ -581,7 +581,7 @@ export default function PropertiesPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">المدينة *</label>
                 <input
@@ -689,7 +689,7 @@ export default function PropertiesPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">رقم الوحدة *</label>
                 <input
@@ -718,7 +718,7 @@ export default function PropertiesPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">الطابق</label>
                 <input

@@ -330,7 +330,7 @@ export default function TenantsPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">رقم الهوية الوطنية / الإقامة *</label>
                 <input
@@ -356,7 +356,7 @@ export default function TenantsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
                 <input

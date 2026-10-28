@@ -555,7 +555,7 @@ export default function ContractsPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">رقم العقد *</label>
                 <input
@@ -591,7 +591,7 @@ export default function ContractsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">العقار *</label>
                 <select
@@ -643,7 +643,7 @@ export default function ContractsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">تاريخ بداية العقد *</label>
                 <input
@@ -667,7 +667,7 @@ export default function ContractsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">القيمة الإجمالية (ر.س) *</label>
                 <input
