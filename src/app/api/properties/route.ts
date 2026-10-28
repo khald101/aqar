@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, code, type, address, city, district, deedNumber, ownerId, sharePercentage = 100 } = body;
+    const { name, code, type, address, city, district, deedNumber, ownerId, sharePercentage = 100, initialUnitsCount = 0 } = body;
 
     if (!name || !code || !type || !city) {
       return NextResponse.json({ error: 'يرجى إكمال الحقول الإلزامية للعقار' }, { status: 400 });
@@ -107,6 +107,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'رمز العقار مسجل بالفعل مسبقاً' }, { status: 409 });
     }
 
+    const unitsToCreate = Math.min(50, Math.max(0, parseInt(initialUnitsCount) || 0));
+
     const newProperty = await prisma.$transaction(async (tx) => {
       const prop = await tx.property.create({
         data: {
@@ -117,9 +119,28 @@ export async function POST(req: NextRequest) {
           city: city.trim(),
           district: district?.trim() || '',
           deedNumber: deedNumber?.trim() || '',
+          totalUnits: unitsToCreate,
           status: 'ACTIVE',
         },
       });
+
+      if (unitsToCreate > 0) {
+        for (let i = 1; i <= unitsToCreate; i++) {
+          await tx.unit.create({
+            data: {
+              propertyId: prop.id,
+              unitNumber: `${100 + i}`,
+              floor: Math.ceil(i / 4),
+              type: type === 'COMMERCIAL' ? 'OFFICE' : 'APARTMENT',
+              areaSqM: 120,
+              rooms: 3,
+              bathrooms: 2,
+              yearlyRent: 45000,
+              status: 'VACANT',
+            },
+          });
+        }
+      }
 
       if (ownerId) {
         await tx.propertyOwnership.create({

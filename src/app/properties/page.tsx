@@ -88,6 +88,7 @@ export default function PropertiesPage() {
   const [propDistrict, setPropDistrict] = useState('');
   const [propAddress, setPropAddress] = useState('');
   const [propDeed, setPropDeed] = useState('');
+  const [propInitialUnits, setPropInitialUnits] = useState('4');
 
   // New Unit Form
   const [unitPropId, setUnitPropId] = useState('');
@@ -174,6 +175,7 @@ export default function PropertiesPage() {
           district: propDistrict,
           address: propAddress,
           deedNumber: propDeed,
+          initialUnitsCount: parseInt(propInitialUnits) || 0,
         }),
       });
 
@@ -453,6 +455,34 @@ export default function PropertiesPage() {
                     <span className="text-emerald-600 font-bold">{p.rentedCount} مؤجرة</span>
                     <span className="text-sky-600 font-bold">{p.vacantCount} شاغرة</span>
                   </div>
+                  <div className="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearch(p.name);
+                        setActiveTab('units');
+                      }}
+                      className="text-xs font-bold text-teal-700 hover:text-teal-800 hover:underline flex items-center gap-1"
+                    >
+                      <Home className="w-3.5 h-3.5" />
+                      <span>عرض الوحدات ({p.unitsCount})</span>
+                    </button>
+                    {canCreateUnit && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUnitPropId(p.id);
+                          setFormError(null);
+                          setFormSuccess(null);
+                          setIsUnitModalOpen(true);
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>إضافة وحدة</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -616,15 +646,29 @@ export default function PropertiesPage() {
               />
             </div>
 
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">رقم الصك العقاري</label>
-              <input
-                type="text"
-                value={propDeed}
-                onChange={(e) => setPropDeed(e.target.value)}
-                placeholder="31010900XXXX"
-                className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">رقم الصك العقاري</label>
+                <input
+                  type="text"
+                  value={propDeed}
+                  onChange={(e) => setPropDeed(e.target.value)}
+                  placeholder="31010900XXXX"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">عدد الوحدات الابتدائية</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="200"
+                  value={propInitialUnits}
+                  onChange={(e) => setPropInitialUnits(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-600 font-mono font-bold"
+                />
+              </div>
             </div>
 
             <div className="pt-3 flex justify-end gap-2 border-t border-slate-100">
