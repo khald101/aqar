@@ -92,13 +92,13 @@ export default function TenantPortalPage() {
         fetch('/api/maintenance'),
       ]);
 
-      if (conRes.ok && payRes.ok && mRes.ok) {
+      if (conRes.ok && mRes.ok) {
         const conData = await conRes.json();
-        const payData = await payRes.json();
+        const payData = payRes.ok ? await payRes.json() : null;
         const mData = await mRes.json();
 
         const myContract = conData.contracts?.[0] || null;
-        const myPayments = payData.payments || [];
+        const myPayments = payData?.payments || myContract?.payments || [];
         const myTickets = mData.tickets || [];
 
         setData({ contract: myContract, payments: myPayments, tickets: myTickets });

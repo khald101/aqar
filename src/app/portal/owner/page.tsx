@@ -56,10 +56,10 @@ export default function OwnerPortalPage() {
 
         if (propRes.ok && setRes.ok) {
           const propData = await propRes.json();
-          const setData = await setRes.json();
+          const settlementsData = await setRes.json();
 
           const myProperties = propData.properties || [];
-          const mySettlements = setData.settlements || [];
+          const mySettlements = settlementsData.settlements || [];
 
           const totalUnits = myProperties.reduce((acc: number, p: any) => acc + (p.unitsCount || 0), 0);
           const rentedUnits = myProperties.reduce((acc: number, p: any) => acc + (p.rentedCount || 0), 0);
